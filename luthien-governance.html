@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luthien Research PBC — Governance &amp; Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+
+    --bg: #faf9f6;
+    --surface: #ffffff;
+    --surface2: #f3f1ec;
+    --border: rgba(0, 0, 0, 0.07);
+    --border-bright: rgba(0, 0, 0, 0.14);
+    --text: #1c1917;
+    --text-dim: #78716c;
+
+    --scott: #1d4ed8;
+    --scott-dim: rgba(29, 78, 216, 0.08);
+    --jai: #7c3aed;
+    --jai-dim: rgba(124, 58, 237, 0.08);
+    --mission: #b45309;
+    --mission-dim: rgba(180, 83, 9, 0.08);
+    --investor: #059669;
+    --investor-dim: rgba(5, 150, 105, 0.08);
+    --danger: #dc2626;
+    --danger-dim: rgba(220, 38, 38, 0.08);
+    --safe: #059669;
+    --safe-dim: rgba(5, 150, 105, 0.08);
+    --warn: #d97706;
+    --warn-dim: rgba(217, 119, 6, 0.08);
+    --accent: #0891b2;
+    --accent-dim: rgba(8, 145, 178, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1814;
+      --surface: #242220;
+      --surface2: #2e2c28;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-bright: rgba(255, 255, 255, 0.14);
+      --text: #f5f5f4;
+      --text-dim: #a8a29e;
+
+      --scott: #60a5fa;
+      --scott-dim: rgba(96, 165, 250, 0.12);
+      --jai: #c4b5fd;
+      --jai-dim: rgba(196, 181, 253, 0.12);
+      --mission: #fbbf24;
+      --mission-dim: rgba(251, 191, 36, 0.12);
+      --investor: #34d399;
+      --investor-dim: rgba(52, 211, 153, 0.12);
+      --danger: #f87171;
+      --danger-dim: rgba(248, 113, 113, 0.12);
+      --safe: #34d399;
+      --safe-dim: rgba(52, 211, 153, 0.12);
+      --warn: #fbbf24;
+      --warn-dim: rgba(251, 191, 36, 0.12);
+      --accent: #22d3ee;
+      --accent-dim: rgba(34, 211, 238, 0.12);
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      repeating-linear-gradient(
+        0deg, transparent, transparent 39px,
+        var(--border) 39px, var(--border) 40px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 39px,
+        var(--border) 39px, var(--border) 40px
+      );
+    background-size: 40px 40px;
+    color: var(--text);
+    font-family: var(--font-body);
+    padding: 48px 40px;
+    min-height: 100vh;
+    overflow-wrap: break-word;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeScale {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .animate { animation: fadeUp 0.45s ease-out both; animation-delay: calc(var(--i, 0) * 0.07s); }
+  .animate-scale { animation: fadeScale 0.4s ease-out both; animation-delay: calc(var(--i, 0) * 0.07s); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+    text-wrap: balance;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    margin-bottom: 36px;
+    letter-spacing: 0.5px;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* ========== MERMAID ========== */
+  .mermaid-wrap {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 24px;
+    overflow: auto;
+    margin-bottom: 24px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .mermaid-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
+  .mermaid-wrap::-webkit-scrollbar-track { background: transparent; }
+  .mermaid-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .mermaid-wrap .mermaid {
+    display: flex;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    transform-origin: top center;
+  }
+  .mermaid-wrap.is-zoomed { cursor: grab; }
+  .mermaid-wrap.is-panning { cursor: grabbing; user-select: none; }
+
+  .zoom-controls {
+    position: absolute; top: 8px; right: 8px;
+    display: flex; gap: 2px; z-index: 10;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 2px;
+  }
+  .zoom-controls button {
+    width: 28px; height: 28px; border: none; background: transparent;
+    color: var(--text-dim); font-family: var(--font-mono); font-size: 14px;
+    cursor: pointer; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .zoom-controls button:hover { background: var(--border); color: var(--text); }
+
+  .mermaid .nodeLabel { font-family: var(--font-body) !important; font-size: 14px !important; }
+  .mermaid .edgeLabel { font-family: var(--font-mono) !important; font-size: 12px !important; }
+
+  /* ========== SCENARIO CARDS ========== */
+  .scenarios { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 28px; }
+  @media (max-width: 900px) { .scenarios { grid-template-columns: 1fr; } }
+
+  .scenario {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    border-top: 4px solid var(--accent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .scenario:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .scenario__num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .scenario__title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+  .scenario__section-head {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    margin-top: 12px;
+  }
+  .scenario__section-head:first-of-type { margin-top: 0; }
+
+  .scenario__body {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    margin-top: 10px;
+  }
+  .badge--safe { background: var(--safe-dim); color: var(--safe); }
+  .badge--warn { background: var(--warn-dim); color: var(--warn); }
+  .badge--danger { background: var(--danger-dim); color: var(--danger); }
+  .badge--info { background: var(--accent-dim); color: var(--accent); }
+
+  .badge__dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* ========== VOTING MATH ========== */
+  .voting-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 28px;
+  }
+
+  .voting-section h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+
+  .vote-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 600px) {
+    .vote-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+
+  .vote-label {
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 200px;
+    flex-shrink: 0;
+  }
+
+  .vote-bar-wrap {
+    flex: 1;
+    min-width: 0;
+    height: 28px;
+    background: var(--surface2);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .vote-bar {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+    white-space: nowrap;
+    transition: width 0.8s ease;
+  }
+
+  .vote-equation {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text-dim);
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+  }
+  .vote-equation strong { color: var(--text); }
+
+  .breakpoint-box {
+    border: 2px dashed var(--warn);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    background: var(--warn-dim);
+  }
+  .breakpoint-box__title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--warn);
+    margin-bottom: 8px;
+  }
+  .breakpoint-box__value {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .breakpoint-box__desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+
+  .safety-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--safe-dim);
+    border: 1px solid color-mix(in srgb, var(--safe) 30%, transparent);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .safety-note__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--safe);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  /* ========== GOVERNANCE NOTES ========== */
+  .gov-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 28px;
+  }
+  .gov-section h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  .gov-list { list-style: none; padding: 0; }
+  .gov-list li {
+    padding: 10px 0 10px 20px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+  .gov-list li:last-child { border-bottom: none; }
+  .gov-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 16px;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    background: var(--text-dim);
+  }
+  .gov-list code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--surface2);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  /* ========== CALLOUT ========== */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--mission);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+  .callout strong { color: var(--text); }
+
+  @media (max-width: 768px) {
+    body { padding: 20px 16px; }
+    h1 { font-size: 28px; }
+    .mermaid-wrap { padding: 16px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1 class="animate" style="--i:0">Governance &amp; Control</h1>
+  <p class="subtitle animate" style="--i:1">luthien research pbc &mdash; who controls what, and when</p>
+
+  <!-- ==================== SECTION 1: BOARD STRUCTURE ==================== -->
+  <div class="section-label animate" style="--i:2">Board Structure</div>
+
+  <div class="mermaid-wrap animate" style="--i:3">
+    <div class="zoom-controls">
+      <button onclick="zoomDiagram(this, 1.2)" title="Zoom in">+</button>
+      <button onclick="zoomDiagram(this, 0.8)" title="Zoom out">&minus;</button>
+      <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+    </div>
+    <pre class="mermaid">
+      graph TD
+        BOARD["Board of Directors"]
+
+        subgraph classb ["Elected by Class B Holders (Founders)"]
+          D1["Scott Wofford<br/>Class B Director<br/>1 vote"]
+          D2["Jai Dhyani<br/>Class B Director<br/>1 vote"]
+        end
+
+        subgraph classm ["Elected by Class M Holder (Mission Guardian)"]
+          D3["Mission Guardian Director<br/>N+1 votes = 3 votes<br/>(VACANT until MGE established)"]
+        end
+
+        BOARD --- classb
+        BOARD --- classm
+
+        D1 --> |"1 vote"| DECISIONS["Board Decisions"]
+        D2 --> |"1 vote"| DECISIONS
+        D3 --> |"3 votes"| DECISIONS
+
+        DECISIONS --> RESULT{"Outcome:<br/>MGE Director holds<br/>board majority (3 of 5)"}
+
+        classDef board fill:#f8f4e8,stroke:#78716c,stroke-width:2px,color:#1c1917
+        classDef scott fill:#dbeafe,stroke:#1d4ed8,stroke-width:1.5px,color:#1e3a8a
+        classDef jai fill:#ede9fe,stroke:#7c3aed,stroke-width:1.5px,color:#4c1d95
+        classDef mge fill:#fef3c7,stroke:#b45309,stroke-width:1.5px,color:#78350f
+        classDef decision fill:#f0fdf4,stroke:#059669,stroke-width:2px,color:#064e3b
+        classDef groupB fill:#eff6ff,stroke:#1d4ed8,color:#1e3a8a
+        classDef groupM fill:#fffbeb,stroke:#b45309,color:#78350f
+
+        class BOARD board
+        class D1 scott
+        class D2 jai
+        class D3 mge
+        class DECISIONS board
+        class RESULT decision
+        class classb groupB
+        class classm groupM
+    </pre>
+  </div>
+
+  <!-- ==================== SECTION 2: SCENARIOS ==================== -->
+  <div class="section-label animate" style="--i:5">Control Scenarios</div>
+
+  <div class="scenarios">
+
+    <div class="scenario animate" style="--i:6; --accent: var(--accent);">
+      <div class="scenario__num">Scenario 1</div>
+      <div class="scenario__title">Current State</div>
+      <div class="scenario__section-head">Board Control</div>
+      <div class="scenario__body">
+        Scott and Jai each hold 1 board vote. MGE seat is <strong>vacant</strong>. All board decisions require agreement between both founders, or Jai breaks ties via +1 share in series-specific votes.
+      </div>
+      <div class="scenario__section-head">Shareholder Control</div>
+      <div class="scenario__body">
+        Founders hold 100% of issued shares and 100% of voting power. No outside shareholders.
+      </div>
+      <span class="badge badge--info"><span class="badge__dot"></span> Founders control everything</span>
+    </div>
+
+    <div class="scenario animate" style="--i:7; --accent: var(--mission);">
+      <div class="scenario__num">Scenario 2</div>
+      <div class="scenario__title">MGE Established</div>
+      <div class="scenario__section-head">Board Control</div>
+      <div class="scenario__body">
+        Mission Guardian Entity receives 1 Class M share and elects a director. That director gets <strong>N+1 = 3 votes</strong> vs. founders' combined 2 votes. <strong>MGE director controls the board.</strong>
+      </div>
+      <div class="scenario__section-head">Shareholder Control</div>
+      <div class="scenario__body">
+        Founders still hold all economic shares and voting power. MGE holds only 1 share. Board control shifts, but shareholder control does not.
+      </div>
+      <span class="badge badge--warn"><span class="badge__dot"></span> Board majority shifts to MGE</span>
+    </div>
+
+    <div class="scenario animate" style="--i:8; --accent: var(--investor);">
+      <div class="scenario__num">Scenario 3</div>
+      <div class="scenario__title">Post-Investment</div>
+      <div class="scenario__section-head">Board Control</div>
+      <div class="scenario__body">
+        Board structure unchanged unless charter is amended. Investors holding Class A shares do <strong>not</strong> elect directors. Board remains founders + MGE.
+      </div>
+      <div class="scenario__section-head">Shareholder Control</div>
+      <div class="scenario__body">
+        Founder Class B shares carry <strong>7x voting</strong> vs. investor Class A shares at 1x. Founders maintain shareholder majority even with significant dilution. See voting math below.
+      </div>
+      <span class="badge badge--safe"><span class="badge__dot"></span> 7x voting protects founder control</span>
+    </div>
+
+    <div class="scenario animate" style="--i:9; --accent: var(--danger);">
+      <div class="scenario__num">Scenario 4</div>
+      <div class="scenario__title">Founder Departs</div>
+      <div class="scenario__section-head">Board Control</div>
+      <div class="scenario__body">
+        Remaining founder keeps their board seat. Departing founder's seat may need to be filled or eliminated. MGE director (if established) still holds N+1 votes.
+      </div>
+      <div class="scenario__section-head">Operational Control</div>
+      <div class="scenario__body">
+        <strong>Immediate transfer</strong> to remaining founder. Departing founder must formally request to return. Share repurchase/vesting provisions apply to departed shares.
+      </div>
+      <span class="badge badge--danger"><span class="badge__dot"></span> Operational control transfers</span>
+    </div>
+
+  </div>
+
+  <!-- ==================== SECTION 3: VOTING MATH ==================== -->
+  <div class="section-label animate" style="--i:10">Voting Power &amp; Dilution Math</div>
+
+  <div class="voting-section animate" style="--i:11">
+    <h3>The 7x Multiplier Effect</h3>
+
+    <div class="vote-equation">
+      <strong>Founder votes</strong> = 7,225,001 Class B shares &times; 7 = <strong>50,575,007 votes</strong><br>
+      <strong>Currently authorized Class A</strong> = 1,499,997 shares &times; 1 = <strong>1,499,997 votes</strong>
+    </div>
+
+    <div class="vote-row">
+      <div class="vote-label">Founder votes (7x)</div>
+      <div class="vote-bar-wrap">
+        <div class="vote-bar" style="width: 97.1%; background: var(--scott);">50,575,007</div>
+      </div>
+    </div>
+    <div class="vote-row">
+      <div class="vote-label">Max Class A votes (current auth.)</div>
+      <div class="vote-bar-wrap">
+        <div class="vote-bar" style="width: 2.9%; background: var(--investor);">1.5M</div>
+      </div>
+    </div>
+
+    <div class="safety-note">
+      <div class="safety-note__icon">&#10003;</div>
+      <div>
+        <strong>Even if every authorized Class A share were issued today,</strong> founders would still hold 97.1% of voting power. Investors can't come close to outvoting founders under the current charter.
+      </div>
+    </div>
+
+    <div class="breakpoint-box">
+      <div class="breakpoint-box__title">Dilution Breakpoint</div>
+      <div class="breakpoint-box__value">50,575,008 Class A shares</div>
+      <div class="breakpoint-box__desc">
+        This is the minimum number of Class A shares (at 1x voting) needed to outvote founder Class B shares (at 7x). That's <strong>~33.7x the currently authorized 1.5M Class A shares</strong>. Authorizing more shares requires a charter amendment, which itself requires a shareholder vote &mdash; which founders control. This creates a self-reinforcing lock: founders must approve any dilution that could threaten their own voting power.
+      </div>
+    </div>
+
+    <h3 style="margin-top: 28px;">What if investors get a LOT of stock?</h3>
+
+    <div class="vote-equation">
+      <strong>Example:</strong> Company issues 10M Class A shares to investors<br>
+      Founder votes: <strong>50,575,007</strong> &nbsp;&middot;&nbsp; Investor votes: <strong>10,000,000</strong><br>
+      Founders still hold <strong>83.5%</strong> of voting power
+    </div>
+
+    <div class="vote-row">
+      <div class="vote-label">Founder votes</div>
+      <div class="vote-bar-wrap">
+        <div class="vote-bar" style="width: 83.5%; background: var(--scott);">50.6M (83.5%)</div>
+      </div>
+    </div>
+    <div class="vote-row">
+      <div class="vote-label">10M Class A issued</div>
+      <div class="vote-bar-wrap">
+        <div class="vote-bar" style="width: 16.5%; background: var(--investor);">10M (16.5%)</div>
+      </div>
+    </div>
+
+    <div class="vote-equation" style="margin-top:16px;">
+      <strong>Example:</strong> Company issues 30M Class A shares to investors<br>
+      Founder votes: <strong>50,575,007</strong> &nbsp;&middot;&nbsp; Investor votes: <strong>30,000,000</strong><br>
+      Founders still hold <strong>62.8%</strong> of voting power
+    </div>
+
+    <div class="vote-row">
+      <div class="vote-label">Founder votes</div>
+      <div class="vote-bar-wrap">
+        <div class="vote-bar" style="width: 62.8%; background: var(--scott);">50.6M (62.8%)</div>
+      </div>
+    </div>
+    <div class="vote-row">
+      <div class="vote-label">30M Class A issued</div>
+      <div class="vote-bar-wrap">
+        <div class="vote-bar" style="width: 37.2%; background: var(--investor);">30M (37.2%)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== SECTION 4: DECISION TREE ==================== -->
+  <div class="section-label animate" style="--i:12">Key Decision Points</div>
+
+  <div class="mermaid-wrap animate" style="--i:13">
+    <div class="zoom-controls">
+      <button onclick="zoomDiagram(this, 1.2)" title="Zoom in">+</button>
+      <button onclick="zoomDiagram(this, 0.8)" title="Zoom out">&minus;</button>
+      <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+    </div>
+    <pre class="mermaid">
+      graph TD
+        START["Luthien PBC Incorporated<br/>Founders control board + shares"]
+
+        Q1{"Establish Mission<br/>Guardian Entity?"}
+        START --> Q1
+
+        Q1 -->|"Not yet"| STATE_A["Founders Control Everything<br/>2 directors, 100% votes"]
+        Q1 -->|"Yes"| MGE_EST["MGE Gets 1 Class M Share<br/>Elects director with N+1 votes"]
+
+        MGE_EST --> STATE_B["Board: MGE has majority<br/>Shares: Founders have majority"]
+
+        Q2{"Issue Class A to<br/>investors?"}
+        STATE_A --> Q2
+        STATE_B --> Q2
+
+        Q2 -->|"No"| STATE_HOLD["No change to voting power"]
+        Q2 -->|"Yes"| INVEST["Investors get Class A (1x vote)<br/>Founders keep Class B (7x vote)"]
+
+        INVEST --> SAFE{"Class A issued<br/>< 50.6M shares?"}
+
+        SAFE -->|"Yes"| STATE_C["Founders retain voting majority<br/>7x multiplier protects control"]
+        SAFE -->|"No"| STATE_D["Founders lose voting majority<br/>Requires charter amendment<br/>that founders must approve"]
+
+        Q3{"Founder takes<br/>leave or departs?"}
+        STATE_A --> Q3
+        STATE_B --> Q3
+        STATE_C --> Q3
+
+        Q3 -->|"Leave of absence"| LEAVE["Operational control transfers<br/>to remaining founder<br/>Must request to return"]
+        Q3 -->|"Permanent departure"| DEPART["Share repurchase triggers<br/>Board seat vacated<br/>Remaining founder + MGE govern"]
+
+        classDef start fill:#f8f4e8,stroke:#78716c,stroke-width:2px,color:#1c1917
+        classDef question fill:#eff6ff,stroke:#1d4ed8,stroke-width:2px,color:#1e3a8a
+        classDef safe fill:#f0fdf4,stroke:#059669,stroke-width:1.5px,color:#064e3b
+        classDef warn fill:#fffbeb,stroke:#b45309,stroke-width:1.5px,color:#78350f
+        classDef danger fill:#fef2f2,stroke:#dc2626,stroke-width:1.5px,color:#991b1b
+        classDef neutral fill:#f5f5f4,stroke:#78716c,stroke-width:1.5px,color:#1c1917
+
+        class START start
+        class Q1,Q2,Q3,SAFE question
+        class STATE_A,STATE_C,STATE_HOLD safe
+        class STATE_B,MGE_EST,INVEST,LEAVE warn
+        class STATE_D,DEPART danger
+    </pre>
+  </div>
+
+  <!-- ==================== SECTION 5: GOVERNANCE NOTES ==================== -->
+  <div class="section-label animate" style="--i:14">Protective Mechanisms</div>
+
+  <div class="gov-section animate" style="--i:15">
+    <h3>Layers of Mission Protection</h3>
+    <ul class="gov-list">
+      <li><strong>PBC structure</strong> &mdash; Delaware Public Benefit Corporation. Fiduciary duties legally require balancing mission, stockholders, and stakeholders</li>
+      <li><strong>7x dual-class voting</strong> &mdash; Founder Class B shares carry 7 votes each vs. 1 vote for Class A. Founders must approve any charter changes that could dilute their control</li>
+      <li><strong>Mission Guardian Entity</strong> &mdash; When established (Trust or Non-Profit, TBD), elects a director with <code>N+1</code> board votes, ensuring mission-aligned board majority</li>
+      <li><strong>Mission pledges</strong> &mdash; All directors and officers sign pledges to uphold the company's mission in executing their duties</li>
+      <li><strong>Charter amendment lock</strong> &mdash; Increasing authorized shares or changing voting rights requires shareholder approval, which founders control via 7x voting</li>
+      <li><strong>Leave of absence clause</strong> &mdash; Operational control automatically transfers to remaining founder; departing founder must formally request to return</li>
+      <li><strong>Self-reinforcing design</strong> &mdash; Each mechanism protects the others. Founders can't be outvoted without their own approval. MGE provides an independent mission check even on founders.</li>
+    </ul>
+  </div>
+
+  <div class="callout animate" style="--i:16">
+    <strong>Key insight:</strong> The governance design creates two independent checks. The 7x voting protects founders against investor override on shareholder votes. The MGE director's N+1 board votes protect the mission even against founder decisions. Together, no single party can act against the mission without approval from at least one other party.
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    look: 'classic',
+    themeVariables: {
+      primaryColor: isDark ? '#2e2c28' : '#f8f4e8',
+      primaryBorderColor: isDark ? '#a8a29e' : '#78716c',
+      primaryTextColor: isDark ? '#f5f5f4' : '#1c1917',
+      secondaryColor: isDark ? '#1e293b' : '#e0f2fe',
+      secondaryBorderColor: isDark ? '#22d3ee' : '#0891b2',
+      secondaryTextColor: isDark ? '#f5f5f4' : '#164e63',
+      tertiaryColor: isDark ? '#3b1a30' : '#fce7f3',
+      tertiaryBorderColor: isDark ? '#f472b6' : '#be185d',
+      tertiaryTextColor: isDark ? '#f5f5f4' : '#831843',
+      lineColor: isDark ? '#a8a29e' : '#78716c',
+      fontSize: '14px',
+      fontFamily: "'DM Sans', system-ui, sans-serif",
+    }
+  });
+</script>
+<script>
+  function updateZoomState(wrap) {
+    var target = wrap.querySelector('.mermaid');
+    var zoom = parseFloat(target.dataset.zoom || '1');
+    wrap.classList.toggle('is-zoomed', zoom > 1);
+  }
+  function zoomDiagram(btn, factor) {
+    var wrap = btn.closest('.mermaid-wrap');
+    var target = wrap.querySelector('.mermaid');
+    var current = parseFloat(target.dataset.zoom || '1');
+    var next = Math.min(Math.max(current * factor, 0.3), 5);
+    target.dataset.zoom = next;
+    target.style.transform = 'scale(' + next + ')';
+    updateZoomState(wrap);
+  }
+  function resetZoom(btn) {
+    var wrap = btn.closest('.mermaid-wrap');
+    var target = wrap.querySelector('.mermaid');
+    target.dataset.zoom = '1';
+    target.style.transform = 'scale(1)';
+    updateZoomState(wrap);
+  }
+  document.querySelectorAll('.mermaid-wrap').forEach(function(wrap) {
+    wrap.addEventListener('wheel', function(e) {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      var target = wrap.querySelector('.mermaid');
+      var current = parseFloat(target.dataset.zoom || '1');
+      var factor = e.deltaY < 0 ? 1.1 : 0.9;
+      var next = Math.min(Math.max(current * factor, 0.3), 5);
+      target.dataset.zoom = next;
+      target.style.transform = 'scale(' + next + ')';
+      updateZoomState(wrap);
+    }, { passive: false });
+    var startX, startY, scrollL, scrollT;
+    wrap.addEventListener('mousedown', function(e) {
+      if (e.target.closest('.zoom-controls')) return;
+      var target = wrap.querySelector('.mermaid');
+      if (parseFloat(target.dataset.zoom || '1') <= 1) return;
+      wrap.classList.add('is-panning');
+      startX = e.clientX; startY = e.clientY;
+      scrollL = wrap.scrollLeft; scrollT = wrap.scrollTop;
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (!wrap.classList.contains('is-panning')) return;
+      wrap.scrollLeft = scrollL - (e.clientX - startX);
+      wrap.scrollTop = scrollT - (e.clientY - startY);
+    });
+    window.addEventListener('mouseup', function() {
+      wrap.classList.remove('is-panning');
+    });
+  });
+</script>
+
+</body>
+</html>
