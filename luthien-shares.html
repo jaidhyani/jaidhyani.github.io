@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luthien Research PBC — Share Structure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+
+    --bg: #faf9f6;
+    --surface: #ffffff;
+    --surface2: #f3f1ec;
+    --border: rgba(0, 0, 0, 0.07);
+    --border-bright: rgba(0, 0, 0, 0.14);
+    --text: #1c1917;
+    --text-dim: #78716c;
+
+    --scott: #1d4ed8;
+    --scott-dim: rgba(29, 78, 216, 0.08);
+    --jai: #7c3aed;
+    --jai-dim: rgba(124, 58, 237, 0.08);
+    --mission: #b45309;
+    --mission-dim: rgba(180, 83, 9, 0.08);
+    --esop: #059669;
+    --esop-dim: rgba(5, 150, 105, 0.08);
+    --classb: #0891b2;
+    --classb-dim: rgba(8, 145, 178, 0.08);
+    --ffpref: #be185d;
+    --ffpref-dim: rgba(190, 24, 93, 0.08);
+    --classa: #059669;
+    --classm: #b45309;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1814;
+      --surface: #242220;
+      --surface2: #2e2c28;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-bright: rgba(255, 255, 255, 0.14);
+      --text: #f5f5f4;
+      --text-dim: #a8a29e;
+
+      --scott: #60a5fa;
+      --scott-dim: rgba(96, 165, 250, 0.12);
+      --jai: #c4b5fd;
+      --jai-dim: rgba(196, 181, 253, 0.12);
+      --mission: #fbbf24;
+      --mission-dim: rgba(251, 191, 36, 0.12);
+      --esop: #34d399;
+      --esop-dim: rgba(52, 211, 153, 0.12);
+      --classb: #22d3ee;
+      --classb-dim: rgba(34, 211, 238, 0.12);
+      --ffpref: #f472b6;
+      --ffpref-dim: rgba(244, 114, 182, 0.12);
+      --classa: #34d399;
+      --classm: #fbbf24;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      repeating-linear-gradient(
+        0deg, transparent, transparent 39px,
+        var(--border) 39px, var(--border) 40px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 39px,
+        var(--border) 39px, var(--border) 40px
+      );
+    background-size: 40px 40px;
+    color: var(--text);
+    font-family: var(--font-body);
+    padding: 48px 40px;
+    min-height: 100vh;
+    overflow-wrap: break-word;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeScale {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .animate {
+    animation: fadeUp 0.45s ease-out both;
+    animation-delay: calc(var(--i, 0) * 0.07s);
+  }
+
+  .animate-scale {
+    animation: fadeScale 0.4s ease-out both;
+    animation-delay: calc(var(--i, 0) * 0.07s);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+    text-wrap: balance;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    margin-bottom: 36px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ========== KPI ROW ========== */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    border-top: 3px solid var(--accent, var(--border-bright));
+  }
+
+  .kpi-card__value {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .kpi-card__label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  .kpi-card__detail {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* ========== MERMAID ========== */
+  .mermaid-wrap {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 24px;
+    overflow: auto;
+    margin-bottom: 28px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .mermaid-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
+  .mermaid-wrap::-webkit-scrollbar-track { background: transparent; }
+  .mermaid-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .mermaid-wrap::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  .mermaid-wrap .mermaid {
+    display: flex;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    transform-origin: top center;
+  }
+
+  .mermaid-wrap.is-zoomed { cursor: grab; }
+  .mermaid-wrap.is-panning { cursor: grabbing; user-select: none; }
+
+  .zoom-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 2px;
+    z-index: 10;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px;
+  }
+
+  .zoom-controls button {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .zoom-controls button:hover {
+    background: var(--border);
+    color: var(--text);
+  }
+
+  .mermaid .nodeLabel {
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+  }
+
+  .mermaid .edgeLabel {
+    font-family: var(--font-mono) !important;
+    font-size: 12px !important;
+  }
+
+  .mermaid .node rect,
+  .mermaid .node circle,
+  .mermaid .node polygon {
+    stroke-width: 1.5px !important;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* ========== HOLDER CARDS ========== */
+  .holders-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  @media (max-width: 768px) {
+    .holders-grid { grid-template-columns: 1fr; }
+  }
+
+  .holder-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    border-left: 4px solid var(--accent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .holder-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .holder-card__name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+
+  .holder-card__role {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .holder-card__total {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .holder-card__total small {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dim);
+    letter-spacing: 0;
+  }
+
+  .share-bar {
+    display: flex;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background: var(--surface2);
+  }
+
+  .share-bar__segment {
+    height: 100%;
+    transition: width 0.6s ease;
+  }
+
+  .share-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .share-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  .share-row__label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .share-row__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .share-row__count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .share-row__pct {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-left: 4px;
+  }
+
+  /* ========== RESERVED CARDS ========== */
+  .reserved-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  @media (max-width: 768px) {
+    .reserved-grid { grid-template-columns: 1fr; }
+  }
+
+  .reserved-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    border-left: 4px solid var(--accent);
+  }
+
+  .reserved-card__title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+
+  .reserved-card__shares {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .reserved-card__desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ========== GOVERNANCE ========== */
+  .governance-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 28px;
+  }
+
+  .governance-section h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+
+  .gov-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .gov-list li {
+    padding: 10px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gov-list li:last-child {
+    border-bottom: none;
+  }
+
+  .gov-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--text-dim);
+  }
+
+  .gov-list code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--surface2);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  /* ========== LEGEND ========== */
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  /* ========== CALLOUT ========== */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--mission);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+
+  .callout strong { color: var(--text); }
+
+  @media (max-width: 768px) {
+    body { padding: 20px 16px; }
+    h1 { font-size: 28px; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .mermaid-wrap { padding: 16px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1 class="animate" style="--i:0">Luthien Research PBC</h1>
+  <p class="subtitle animate" style="--i:1">capitalization structure &mdash; 10,000,000 authorized shares</p>
+
+  <!-- KPI Row -->
+  <div class="kpi-row">
+    <div class="kpi-card animate-scale" style="--i:2; --accent: var(--text-dim);">
+      <div class="kpi-card__value">10M</div>
+      <div class="kpi-card__label">Total Authorized</div>
+    </div>
+    <div class="kpi-card animate-scale" style="--i:3; --accent: var(--classb);">
+      <div class="kpi-card__value">7,225,001</div>
+      <div class="kpi-card__label">Class B Common</div>
+      <div class="kpi-card__detail">72.25% &middot; Founders</div>
+    </div>
+    <div class="kpi-card animate-scale" style="--i:4; --accent: var(--ffpref);">
+      <div class="kpi-card__value">1,275,001</div>
+      <div class="kpi-card__label">FF Preferred</div>
+      <div class="kpi-card__detail">12.75% &middot; Founders</div>
+    </div>
+    <div class="kpi-card animate-scale" style="--i:5; --accent: var(--classa);">
+      <div class="kpi-card__value">1,499,997</div>
+      <div class="kpi-card__label">Class A Common</div>
+      <div class="kpi-card__detail">~15% &middot; Future ESOP</div>
+    </div>
+    <div class="kpi-card animate-scale" style="--i:6; --accent: var(--classm);">
+      <div class="kpi-card__value">1</div>
+      <div class="kpi-card__label">Class M Common</div>
+      <div class="kpi-card__detail">Mission Guardian</div>
+    </div>
+  </div>
+
+  <!-- Mermaid: Share Flow Diagram -->
+  <div class="section-label animate" style="--i:7">Share Distribution Flow</div>
+
+  <div class="mermaid-wrap animate" style="--i:8">
+    <div class="zoom-controls">
+      <button onclick="zoomDiagram(this, 1.2)" title="Zoom in">+</button>
+      <button onclick="zoomDiagram(this, 0.8)" title="Zoom out">&minus;</button>
+      <button onclick="resetZoom(this)" title="Reset zoom">&#8634;</button>
+    </div>
+    <pre class="mermaid">
+      graph TD
+        AUTH["Luthien Research PBC<br/>10,000,000 Authorized Shares"]
+
+        CB["Class B Common Stock<br/>7,225,001 shares"]
+        FFP["FF Preferred Stock<br/>1,275,001 shares"]
+        CA["Class A Common Stock<br/>1,499,997 shares"]
+        CM["Class M Common Stock<br/>1 share"]
+
+        AUTH --> CB
+        AUTH --> FFP
+        AUTH --> CA
+        AUTH --> CM
+
+        SCOTT_B["Scott Wofford<br/>3,612,500 shares"]
+        JAI_B["Jai Dhyani<br/>3,612,501 shares"]
+
+        SCOTT_F["Scott Wofford<br/>637,500 shares"]
+        JAI_F["Jai Dhyani<br/>637,501 shares"]
+
+        ESOP["Future Equity Plan<br/>Reserved ~15%"]
+        MGE["Mission Guardian Entity<br/>Issued when established"]
+
+        CB --> SCOTT_B
+        CB --> JAI_B
+        FFP --> SCOTT_F
+        FFP --> JAI_F
+        CA --> ESOP
+        CM --> MGE
+
+        SCOTT_TOT["Scott Total<br/>4,250,000 shares (42.5%)"]
+        JAI_TOT["Jai Total<br/>4,250,002 shares (42.5%)"]
+
+        SCOTT_B --> SCOTT_TOT
+        SCOTT_F --> SCOTT_TOT
+        JAI_B --> JAI_TOT
+        JAI_F --> JAI_TOT
+
+        classDef company fill:#f8f4e8,stroke:#78716c,stroke-width:2px,color:#1c1917
+        classDef classB fill:#e0f2fe,stroke:#0891b2,stroke-width:1.5px,color:#164e63
+        classDef ffPref fill:#fce7f3,stroke:#be185d,stroke-width:1.5px,color:#831843
+        classDef classA fill:#d1fae5,stroke:#059669,stroke-width:1.5px,color:#064e3b
+        classDef classM fill:#fef3c7,stroke:#b45309,stroke-width:1.5px,color:#78350f
+        classDef scott fill:#dbeafe,stroke:#1d4ed8,stroke-width:1.5px,color:#1e3a8a
+        classDef jai fill:#ede9fe,stroke:#7c3aed,stroke-width:1.5px,color:#4c1d95
+        classDef reserve fill:#d1fae5,stroke:#059669,stroke-width:1.5px,color:#064e3b
+        classDef mission fill:#fef3c7,stroke:#b45309,stroke-width:1.5px,color:#78350f
+        classDef total fill:#f5f5f4,stroke:#57534e,stroke-width:2px,color:#1c1917
+
+        class AUTH company
+        class CB classB
+        class FFP ffPref
+        class CA classA
+        class CM classM
+        class SCOTT_B,SCOTT_F scott
+        class JAI_B,JAI_F jai
+        class ESOP reserve
+        class MGE mission
+        class SCOTT_TOT scott
+        class JAI_TOT jai
+    </pre>
+  </div>
+
+  <div class="legend animate" style="--i:9">
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--classb)"></div> Class B Common</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--ffpref)"></div> FF Preferred</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--classa)"></div> Class A Common (ESOP)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--classm)"></div> Class M Common (Mission)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--scott)"></div> Scott Wofford</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--jai)"></div> Jai Dhyani</div>
+  </div>
+
+  <!-- Holder Detail Cards -->
+  <div class="section-label animate" style="--i:10">Founder Allocations</div>
+
+  <div class="holders-grid">
+    <div class="holder-card animate" style="--i:11; --accent: var(--scott);">
+      <div class="holder-card__name">Scott Wofford</div>
+      <div class="holder-card__role">Co-Founder &middot; Secretary &middot; Treasurer</div>
+      <div class="holder-card__total">4,250,000 <small>shares (42.50%)</small></div>
+      <div class="share-bar">
+        <div class="share-bar__segment" style="width:85%; background: var(--classb);"></div>
+        <div class="share-bar__segment" style="width:15%; background: var(--ffpref);"></div>
+      </div>
+      <div class="share-breakdown">
+        <div class="share-row">
+          <span class="share-row__label">
+            <span class="share-row__dot" style="background: var(--classb);"></span>
+            Class B Common
+          </span>
+          <span><span class="share-row__count">3,612,500</span><span class="share-row__pct">85%</span></span>
+        </div>
+        <div class="share-row">
+          <span class="share-row__label">
+            <span class="share-row__dot" style="background: var(--ffpref);"></span>
+            FF Preferred
+          </span>
+          <span><span class="share-row__count">637,500</span><span class="share-row__pct">15%</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="holder-card animate" style="--i:12; --accent: var(--jai);">
+      <div class="holder-card__name">Jai Dhyani</div>
+      <div class="holder-card__role">Co-Founder &middot; President &middot; Tie-Breaker</div>
+      <div class="holder-card__total">4,250,002 <small>shares (42.50%)</small></div>
+      <div class="share-bar">
+        <div class="share-bar__segment" style="width:85%; background: var(--classb);"></div>
+        <div class="share-bar__segment" style="width:15%; background: var(--ffpref);"></div>
+      </div>
+      <div class="share-breakdown">
+        <div class="share-row">
+          <span class="share-row__label">
+            <span class="share-row__dot" style="background: var(--classb);"></span>
+            Class B Common
+          </span>
+          <span><span class="share-row__count">3,612,501</span><span class="share-row__pct">85%</span></span>
+        </div>
+        <div class="share-row">
+          <span class="share-row__label">
+            <span class="share-row__dot" style="background: var(--ffpref);"></span>
+            FF Preferred
+          </span>
+          <span><span class="share-row__count">637,501</span><span class="share-row__pct">15%</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reserved Shares -->
+  <div class="section-label animate" style="--i:13">Reserved &amp; Future Allocations</div>
+
+  <div class="reserved-grid">
+    <div class="reserved-card animate" style="--i:14; --accent: var(--classa);">
+      <div class="reserved-card__title">Employee Stock Option Pool</div>
+      <div class="reserved-card__shares" style="color: var(--classa);">1,499,997 shares</div>
+      <div class="reserved-card__desc">
+        Class A Common Stock reserved for future equity plan. Just under 15% of authorized shares.
+        To be implemented when needed.
+      </div>
+    </div>
+    <div class="reserved-card animate" style="--i:15; --accent: var(--classm);">
+      <div class="reserved-card__title">Mission Guardian Entity</div>
+      <div class="reserved-card__shares" style="color: var(--classm);">1 share</div>
+      <div class="reserved-card__desc">
+        Class M Common Stock. Grants the right to elect 1 director with N+1 board votes.
+        Entity to be established later (Trust or Non-Profit).
+      </div>
+    </div>
+  </div>
+
+  <!-- Governance -->
+  <div class="governance-section animate" style="--i:16">
+    <h3>Board &amp; Governance Structure</h3>
+    <ul class="gov-list">
+      <li><strong>2 Class B Directors</strong> &mdash; elected by Class B Common holders (Scott and Jai), one vote each</li>
+      <li><strong>1 Class M Director</strong> &mdash; elected by Mission Guardian Entity when established, receives <code>N+1</code> votes (majority of board)</li>
+      <li><strong>7x dual-class voting</strong> &mdash; founder shares carry 7x voting power vs. future common shares</li>
+      <li><strong>Mission pledges</strong> required for all directors and officers</li>
+      <li><strong>Jai holds tie-breaker</strong> &mdash; +1 share of each series guarantees majority in series-specific votes</li>
+      <li><strong>Leave of absence clause</strong> &mdash; operational control transfers to remaining founder; departing founder must formally request return</li>
+    </ul>
+  </div>
+
+  <div class="callout animate" style="--i:17">
+    <strong>PBC three-party balancing test.</strong> As a Delaware Public Benefit Corporation, Luthien&rsquo;s fiduciary duties account for the mission, the stockholders, and stakeholders at large. The mission statement prioritizes human flourishing in the context of advanced AI development.
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    look: 'classic',
+    themeVariables: {
+      primaryColor: isDark ? '#2e2c28' : '#f8f4e8',
+      primaryBorderColor: isDark ? '#a8a29e' : '#78716c',
+      primaryTextColor: isDark ? '#f5f5f4' : '#1c1917',
+      secondaryColor: isDark ? '#1e293b' : '#e0f2fe',
+      secondaryBorderColor: isDark ? '#22d3ee' : '#0891b2',
+      secondaryTextColor: isDark ? '#f5f5f4' : '#164e63',
+      tertiaryColor: isDark ? '#3b1a30' : '#fce7f3',
+      tertiaryBorderColor: isDark ? '#f472b6' : '#be185d',
+      tertiaryTextColor: isDark ? '#f5f5f4' : '#831843',
+      lineColor: isDark ? '#a8a29e' : '#78716c',
+      fontSize: '14px',
+      fontFamily: "'DM Sans', system-ui, sans-serif",
+    }
+  });
+</script>
+<script>
+  function updateZoomState(wrap) {
+    var target = wrap.querySelector('.mermaid');
+    var zoom = parseFloat(target.dataset.zoom || '1');
+    wrap.classList.toggle('is-zoomed', zoom > 1);
+  }
+
+  function zoomDiagram(btn, factor) {
+    var wrap = btn.closest('.mermaid-wrap');
+    var target = wrap.querySelector('.mermaid');
+    var current = parseFloat(target.dataset.zoom || '1');
+    var next = Math.min(Math.max(current * factor, 0.3), 5);
+    target.dataset.zoom = next;
+    target.style.transform = 'scale(' + next + ')';
+    updateZoomState(wrap);
+  }
+
+  function resetZoom(btn) {
+    var wrap = btn.closest('.mermaid-wrap');
+    var target = wrap.querySelector('.mermaid');
+    target.dataset.zoom = '1';
+    target.style.transform = 'scale(1)';
+    updateZoomState(wrap);
+  }
+
+  document.querySelectorAll('.mermaid-wrap').forEach(function(wrap) {
+    wrap.addEventListener('wheel', function(e) {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      var target = wrap.querySelector('.mermaid');
+      var current = parseFloat(target.dataset.zoom || '1');
+      var factor = e.deltaY < 0 ? 1.1 : 0.9;
+      var next = Math.min(Math.max(current * factor, 0.3), 5);
+      target.dataset.zoom = next;
+      target.style.transform = 'scale(' + next + ')';
+      updateZoomState(wrap);
+    }, { passive: false });
+
+    var startX, startY, scrollL, scrollT;
+    wrap.addEventListener('mousedown', function(e) {
+      if (e.target.closest('.zoom-controls')) return;
+      var target = wrap.querySelector('.mermaid');
+      if (parseFloat(target.dataset.zoom || '1') <= 1) return;
+      wrap.classList.add('is-panning');
+      startX = e.clientX;
+      startY = e.clientY;
+      scrollL = wrap.scrollLeft;
+      scrollT = wrap.scrollTop;
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (!wrap.classList.contains('is-panning')) return;
+      wrap.scrollLeft = scrollL - (e.clientX - startX);
+      wrap.scrollTop = scrollT - (e.clientY - startY);
+    });
+    window.addEventListener('mouseup', function() {
+      wrap.classList.remove('is-panning');
+    });
+  });
+</script>
+
+</body>
+</html>
