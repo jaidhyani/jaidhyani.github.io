@@ -425,12 +425,12 @@
       <div class="kpi__label">Milestones done</div>
     </div>
     <div class="kpi">
-      <div class="kpi__val" style="color:var(--accent);">12</div>
-      <div class="kpi__label">Cards due today</div>
+      <div class="kpi__val" style="color:var(--accent);">6</div>
+      <div class="kpi__label">Critical path tasks</div>
     </div>
     <div class="kpi">
-      <div class="kpi__val" style="color:var(--blue);">30</div>
-      <div class="kpi__label">Cards due Mar 18</div>
+      <div class="kpi__val" style="color:var(--blue);">35</div>
+      <div class="kpi__label">Days to Demo Day</div>
     </div>
     <div class="kpi">
       <div class="kpi__val" style="color:var(--red);">15</div>
@@ -438,76 +438,43 @@
     </div>
   </div>
 
-  <!-- DUE MARCH 12 -->
+  <!-- CRITICAL PATH: WAVE 2 -->
   <div class="section animate" style="--i:6">
     <div class="section__header">
-      <h2 class="section__title">Due Thu Mar 12</h2>
-      <span class="section__badge badge--active">Today</span>
+      <h2 class="section__title">Critical Path &rarr; Wave 2 (Mar 18)</h2>
+      <span class="section__badge badge--active">If these slip, Wave 2 slips</span>
     </div>
+    <p style="font-size:14px; color:var(--text-dim); margin-bottom:16px;">
+      <strong>Done when:</strong> A cold engineer runs <code style="font-family:var(--font-mono); font-size:13px; background:var(--surface2); padding:2px 6px; border-radius:3px;">pipx run luthien-cli --help</code>, follows the output, and has Luthien proxying their Claude Code session within 10 minutes &mdash; zero Slack messages to Scott.
+    </p>
     <div class="table-wrap">
       <div class="table-scroll">
         <table class="data-table">
-          <thead><tr><th>Task</th><th>Owner</th><th>Status</th><th>Labels</th></tr></thead>
+          <thead><tr><th>Task</th><th>Owner</th><th>Why it's critical path</th><th>Status</th></tr></thead>
           <tbody>
             <tr>
               <td><strong>CLI works</strong>: luthien-cli installable via pipx, runs setup, starts proxy</td>
               <td><span class="owner-tag">Jai</span></td>
+              <td style="color:var(--text-dim); font-size:13px;">The entire self-serve onboarding flow depends on this</td>
               <td><span class="status status--active"><span class="status__dot"></span>In progress</span></td>
-              <td><span class="source-tag">Onboarding</span></td>
             </tr>
             <tr>
               <td><strong>Document OAuth passthrough</strong>, make it default, make API usage obvious</td>
               <td><span class="owner-tag">Jai</span></td>
+              <td style="color:var(--text-dim); font-size:13px;">Without this, users get surprise API bills &mdash; kills trust immediately</td>
               <td><span class="status status--active"><span class="status__dot"></span>In progress</span></td>
-              <td><span class="source-tag">Documentation</span></td>
             </tr>
             <tr>
-              <td><strong>Inject policy awareness</strong> into LLM context</td>
+              <td><strong>Telemetry: total tokens through proxy</strong> (external users only)</td>
               <td><span class="owner-tag">Jai</span></td>
+              <td style="color:var(--text-dim); font-size:13px;">The Demo Day KPI &mdash; must be measuring before Wave 2 users arrive</td>
               <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
-              <td><span class="source-tag">Onboarding</span></td>
             </tr>
             <tr>
-              <td>Sign RSPAs + incorporation docs</td>
+              <td><strong>MILESTONE: Schedule send Wave 2 emails</strong></td>
               <td><span class="owner-tag">Scott</span></td>
-              <td><span class="status status--blocked"><span class="status__dot"></span>Blocked (Virgil)</span></td>
-              <td><span class="source-tag">Fundraising</span></td>
-            </tr>
-            <tr>
-              <td>Book March flights for retreat</td>
-              <td><span class="owner-tag">Scott</span></td>
+              <td style="color:var(--text-dim); font-size:13px;">No emails = no Wave 2 users</td>
               <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
-              <td><span class="source-tag">Planning</span></td>
-            </tr>
-            <tr>
-              <td>Book next Scott/Mike check-in (Tue/Wed)</td>
-              <td><span class="owner-tag">Scott</span></td>
-              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
-              <td><span class="source-tag">Planning</span></td>
-            </tr>
-            <tr>
-              <td>Make CHANGELOG + Trello update part of PR flow</td>
-              <td><span class="owner-tag">Jai</span></td>
-              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
-              <td><span class="source-tag">Software Dev</span></td>
-            </tr>
-            <tr>
-              <td>Add multi-environment management to CLI</td>
-              <td><span class="owner-tag">Jai</span></td>
-              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
-              <td><span class="source-tag">Onboarding</span></td>
-            </tr>
-            <tr>
-              <td>Changelog fragments system (PR #198)</td>
-              <td><span class="owner-tag">Jai</span></td>
-              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
-              <td><span class="source-tag">Software Dev</span></td>
-            </tr>
-            <tr>
-              <td>Dynamic Policy Creation System (PR #252)</td>
-              <td><span class="owner-tag">Jai</span></td>
-              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
-              <td><span class="source-tag">Onboarding</span></td>
             </tr>
           </tbody>
         </table>
@@ -515,34 +482,76 @@
     </div>
   </div>
 
-  <!-- DUE MARCH 18 -->
+  <!-- CRITICAL PATH: DEMO DAY -->
+  <div class="section animate" style="--i:7">
+    <div class="section__header">
+      <h2 class="section__title">Critical Path &rarr; Demo Day (Apr 16)</h2>
+      <span class="section__badge badge--purple">If these slip, Demo Day slips</span>
+    </div>
+    <p style="font-size:14px; color:var(--text-dim); margin-bottom:16px;">
+      <strong>Done when:</strong> Graph shows week-over-week token growth from external users. At least 2 user quotes about value captured.
+    </p>
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Task</th><th>Owner</th><th>Why it's critical path</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Wave 2 milestone achieved</strong> (see above)</td>
+              <td></td>
+              <td style="color:var(--text-dim); font-size:13px;">No self-serve users = no token growth = no Demo Day graph</td>
+            </tr>
+            <tr>
+              <td><strong>Bash Arena benchmark</strong>: before/after safety + utility metrics (~2-3 days)</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td style="color:var(--text-dim); font-size:13px;">Quantified proof that Luthien adds value, not just overhead</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALSO DUE: MAR 12 -->
   <div class="section animate" style="--i:8">
     <div class="section__header">
-      <h2 class="section__title">Due Wed Mar 18</h2>
-      <span class="section__badge badge--upcoming">Wave 2 gate</span>
+      <h2 class="section__title">Also Due Thu Mar 12</h2>
+      <span class="section__badge badge--active">Not critical path</span>
+    </div>
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Task</th><th>Owner</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Sign RSPAs + incorporation docs</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="status status--blocked"><span class="status__dot"></span>Blocked (Virgil)</span></td>
+            </tr>
+            <tr>
+              <td>Book March flights for retreat</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALSO DUE: MAR 18 -->
+  <div class="section animate" style="--i:9">
+    <div class="section__header">
+      <h2 class="section__title">Also Due Wed Mar 18</h2>
+      <span class="section__badge badge--upcoming">Not critical path</span>
     </div>
     <div class="table-wrap">
       <div class="table-scroll">
         <table class="data-table">
           <thead><tr><th>Task</th><th>Owner</th><th>Category</th></tr></thead>
           <tbody>
-            <tr style="background:var(--accent-dim);">
-              <td><strong>MILESTONE: Wave 2</strong> &mdash; cold engineer self-serves in &lt;10 min</td>
-              <td></td>
-              <td><span class="source-tag">Milestone</span></td>
-            </tr>
-            <tr style="background:var(--accent-dim);">
-              <td><strong>MILESTONE: Schedule send Wave 2 emails</strong></td>
-              <td><span class="owner-tag">Scott</span></td>
-              <td><span class="source-tag">Milestone</span></td>
-            </tr>
             <tr>
-              <td><strong>Telemetry: total tokens through proxy</strong> (external users only) &mdash; the Demo Day KPI</td>
-              <td><span class="owner-tag">Jai</span></td>
-              <td><span class="source-tag">Infrastructure</span></td>
-            </tr>
-            <tr>
-              <td><strong>Generate policy from claude.md</strong> (~1 day)</td>
+              <td>Generate policy from claude.md (~1 day)</td>
               <td><span class="owner-tag">Jai</span></td>
               <td><span class="source-tag">Onboarding</span></td>
             </tr>
@@ -577,6 +586,21 @@
               <td><span class="source-tag">Onboarding</span></td>
             </tr>
             <tr>
+              <td>Get luthiencontrol.ai/luthienproxy.ai domains</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="source-tag">Infrastructure</span></td>
+            </tr>
+            <tr>
+              <td>Inject policy awareness into LLM context</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Onboarding</span></td>
+            </tr>
+            <tr>
+              <td>Make CHANGELOG + Trello update part of PR flow</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Software Dev</span></td>
+            </tr>
+            <tr>
               <td>Email potential angel investor friends</td>
               <td><span class="owner-tag">Scott</span></td>
               <td><span class="source-tag">Fundraising</span></td>
@@ -605,6 +629,11 @@
               <td>Disable auth requirement from localhost by default</td>
               <td><span class="owner-tag">Jai</span></td>
               <td><span class="source-tag">Software Dev</span></td>
+            </tr>
+            <tr>
+              <td>Book next Scott/Mike check-in (Tue/Wed)</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="source-tag">Planning</span></td>
             </tr>
             <tr>
               <td>Bug: /compact fails with 'Tool names must be unique'</td>
@@ -647,7 +676,7 @@
               <td><span class="source-tag">Landing Page</span></td>
             </tr>
             <tr>
-              <td>Review competitor websites (CodeRabbit, Qodo, Arch) &mdash; positioning summary</td>
+              <td>Review competitor websites (CodeRabbit, Qodo, Arch)</td>
               <td><span class="owner-tag">Mike</span></td>
               <td><span class="source-tag">Landing Page</span></td>
             </tr>
@@ -657,27 +686,17 @@
     </div>
   </div>
 
-  <!-- AFTER MAR 19 -->
+  <!-- ALSO DUE: MAR 19 - APR 16 -->
   <div class="section animate" style="--i:10">
     <div class="section__header">
-      <h2 class="section__title">Mar 19 &ndash; Apr 16</h2>
-      <span class="section__badge badge--purple">Demo Day prep</span>
+      <h2 class="section__title">Also Due Mar 19 &ndash; Apr 16</h2>
+      <span class="section__badge badge--purple">Not critical path</span>
     </div>
     <div class="table-wrap">
       <div class="table-scroll">
         <table class="data-table">
           <thead><tr><th>Task</th><th>Owner</th><th>Category</th></tr></thead>
           <tbody>
-            <tr style="background:var(--accent-dim);">
-              <td><strong>MILESTONE: April 16 &mdash; Demo Day</strong> (tokens up-and-to-right, 2+ user quotes)</td>
-              <td></td>
-              <td><span class="source-tag">Milestone</span></td>
-            </tr>
-            <tr>
-              <td><strong>Bash Arena benchmark</strong>: before/after Luthien safety + utility metrics (~2-3 days)</td>
-              <td><span class="owner-tag">Jai</span></td>
-              <td><span class="source-tag">Benchmark</span></td>
-            </tr>
             <tr>
               <td>Get credible quote for landing page (Fabian, OpenAI, etc.)</td>
               <td><span class="owner-tag">Scott</span></td>
