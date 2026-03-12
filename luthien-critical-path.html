@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luthien Critical Path — March 12, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-body: 'Bricolage Grotesque', system-ui, sans-serif;
+    --font-mono: 'Fragment Mono', 'SF Mono', Consolas, monospace;
+    --bg: #0c0f14;
+    --surface: #13161e;
+    --surface2: #1a1e28;
+    --surface-elevated: #212633;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-bright: rgba(255, 255, 255, 0.12);
+    --text: #e4e2dc;
+    --text-dim: #8a8880;
+    --accent: #f59e0b;
+    --accent-dim: rgba(245, 158, 11, 0.1);
+    --green: #4ade80;
+    --green-dim: rgba(74, 222, 128, 0.08);
+    --red: #f87171;
+    --red-dim: rgba(248, 113, 113, 0.08);
+    --orange: #fb923c;
+    --orange-dim: rgba(251, 146, 60, 0.08);
+    --blue: #60a5fa;
+    --blue-dim: rgba(96, 165, 250, 0.08);
+    --purple: #c084fc;
+    --purple-dim: rgba(192, 132, 252, 0.08);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f8f6f1;
+      --surface: #ffffff;
+      --surface2: #f0ede6;
+      --surface-elevated: #fffdf8;
+      --border: rgba(0, 0, 0, 0.07);
+      --border-bright: rgba(0, 0, 0, 0.14);
+      --text: #1a1814;
+      --text-dim: #7a7468;
+      --accent: #b45309;
+      --accent-dim: rgba(180, 83, 9, 0.07);
+      --green: #16a34a;
+      --green-dim: rgba(22, 163, 74, 0.06);
+      --red: #dc2626;
+      --red-dim: rgba(220, 38, 38, 0.06);
+      --orange: #d97706;
+      --orange-dim: rgba(217, 119, 6, 0.06);
+      --blue: #2563eb;
+      --blue-dim: rgba(37, 99, 235, 0.06);
+      --purple: #9333ea;
+      --purple-dim: rgba(147, 51, 234, 0.06);
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 15% 0%, var(--accent-dim) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 100%, var(--blue-dim) 0%, transparent 40%);
+    color: var(--text);
+    font-family: var(--font-body);
+    padding: clamp(20px, 4vw, 60px);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate {
+    animation: fadeUp 0.4s ease-out both;
+    animation-delay: calc(var(--i, 0) * 0.04s);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+    }
+  }
+
+  .page { max-width: 1200px; margin: 0 auto; }
+
+  /* ============ HEADER ============ */
+  .header { margin-bottom: 48px; }
+  .header__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .header__title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+  .header__subtitle {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--text-dim);
+    max-width: 700px;
+  }
+  .header__meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 16px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* ============ TIMELINE ============ */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-bottom: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .timeline__phase {
+    padding: 20px 16px;
+    position: relative;
+  }
+  .timeline__phase--done { background: var(--green-dim); border-left: 3px solid var(--green); }
+  .timeline__phase--active { background: var(--accent-dim); border-left: 3px solid var(--accent); }
+  .timeline__phase--future { background: var(--surface); border-left: 3px solid var(--border-bright); }
+  .timeline__date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .timeline__name {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .timeline__done {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    .timeline { grid-template-columns: 1fr; }
+  }
+
+  /* ============ KPIs ============ */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .kpi__val {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* ============ SECTION ============ */
+  .section {
+    margin-bottom: 40px;
+  }
+  .section__header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-bright);
+  }
+  .section__title {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .section__badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .badge--done { background: var(--green-dim); color: var(--green); }
+  .badge--active { background: var(--accent-dim); color: var(--accent); }
+  .badge--upcoming { background: var(--blue-dim); color: var(--blue); }
+  .badge--gap { background: var(--red-dim); color: var(--red); }
+  .badge--purple { background: var(--purple-dim); color: var(--purple); }
+
+  /* ============ TABLE ============ */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .table-scroll { overflow-x: auto; }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    background: var(--surface2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--border-bright);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    vertical-align: top;
+  }
+  .data-table tbody tr:last-child td { border-bottom: none; }
+  .data-table tbody tr { transition: background 0.15s; }
+  .data-table tbody tr:hover { background: var(--accent-dim); }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .status__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status--done .status__dot { background: var(--green); }
+  .status--active .status__dot { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .status--blocked .status__dot { background: var(--red); }
+  .status--upcoming .status__dot { background: var(--blue); }
+
+  .owner-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .source-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--purple-dim);
+    color: var(--purple);
+    white-space: nowrap;
+  }
+
+  /* ============ GAP CARDS ============ */
+  .gaps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 12px;
+  }
+  .gap-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+  .gap-card__title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .gap-card__detail {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .gap-card__meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* ============ SOURCE LIST ============ */
+  .sources {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .sources__title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+  .sources__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+  .source-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13px;
+    padding: 8px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .source-item__icon {
+    flex-shrink: 0;
+    width: 18px;
+    text-align: center;
+  }
+  .source-item__name { color: var(--text); }
+  .source-item__date {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 40px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header animate" style="--i:0">
+    <div class="header__eyebrow">Critical Path Tracker</div>
+    <h1 class="header__title">Luthien &rarr; Demo Day</h1>
+    <p class="header__subtitle">All milestones, critical-path tasks, and gaps identified from Google Docs cross-referenced against the Trello board. 35 days to Demo Day.</p>
+    <div class="header__meta">
+      <span>Generated: Mar 12, 2026</span>
+      <span>Board: Luthien (Trello)</span>
+      <span>7 Google Docs analyzed</span>
+    </div>
+  </header>
+
+  <!-- TIMELINE -->
+  <div class="timeline animate" style="--i:2">
+    <div class="timeline__phase timeline__phase--done">
+      <div class="timeline__date">Mar 12 &middot; Done</div>
+      <div class="timeline__name">Wave 1</div>
+      <div class="timeline__done">Hand-held trials<br>5 design partners emailed</div>
+    </div>
+    <div class="timeline__phase timeline__phase--active">
+      <div class="timeline__date">Mar 18 &middot; 6 days</div>
+      <div class="timeline__name">Wave 2</div>
+      <div class="timeline__done">Cold engineer self-serves<br>in &lt;10 min, zero Slack</div>
+    </div>
+    <div class="timeline__phase timeline__phase--future">
+      <div class="timeline__date">Mar 19 &ndash; Apr 15</div>
+      <div class="timeline__name">Adoption</div>
+      <div class="timeline__done">Tokens up week-over-week<br>2+ user quotes captured</div>
+    </div>
+    <div class="timeline__phase timeline__phase--future">
+      <div class="timeline__date">Apr 16</div>
+      <div class="timeline__name">Demo Day</div>
+      <div class="timeline__done">Graph goes up-and-to-right<br>Pitch deck with LOI</div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis animate" style="--i:4">
+    <div class="kpi">
+      <div class="kpi__val" style="color:var(--green);">1/4</div>
+      <div class="kpi__label">Milestones done</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__val" style="color:var(--accent);">12</div>
+      <div class="kpi__label">Cards due today</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__val" style="color:var(--blue);">30</div>
+      <div class="kpi__label">Cards due Mar 18</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__val" style="color:var(--red);">15</div>
+      <div class="kpi__label">Gaps (not on Trello)</div>
+    </div>
+  </div>
+
+  <!-- DUE MARCH 12 -->
+  <div class="section animate" style="--i:6">
+    <div class="section__header">
+      <h2 class="section__title">Due Thu Mar 12</h2>
+      <span class="section__badge badge--active">Today</span>
+    </div>
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Task</th><th>Owner</th><th>Status</th><th>Labels</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>CLI works</strong>: luthien-cli installable via pipx, runs setup, starts proxy</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="status status--active"><span class="status__dot"></span>In progress</span></td>
+              <td><span class="source-tag">Onboarding</span></td>
+            </tr>
+            <tr>
+              <td><strong>Document OAuth passthrough</strong>, make it default, make API usage obvious</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="status status--active"><span class="status__dot"></span>In progress</span></td>
+              <td><span class="source-tag">Documentation</span></td>
+            </tr>
+            <tr>
+              <td><strong>Inject policy awareness</strong> into LLM context</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
+              <td><span class="source-tag">Onboarding</span></td>
+            </tr>
+            <tr>
+              <td>Sign RSPAs + incorporation docs</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="status status--blocked"><span class="status__dot"></span>Blocked (Virgil)</span></td>
+              <td><span class="source-tag">Fundraising</span></td>
+            </tr>
+            <tr>
+              <td>Book March flights for retreat</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
+              <td><span class="source-tag">Planning</span></td>
+            </tr>
+            <tr>
+              <td>Book next Scott/Mike check-in (Tue/Wed)</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
+              <td><span class="source-tag">Planning</span></td>
+            </tr>
+            <tr>
+              <td>Make CHANGELOG + Trello update part of PR flow</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
+              <td><span class="source-tag">Software Dev</span></td>
+            </tr>
+            <tr>
+              <td>Add multi-environment management to CLI</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
+              <td><span class="source-tag">Onboarding</span></td>
+            </tr>
+            <tr>
+              <td>Changelog fragments system (PR #198)</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
+              <td><span class="source-tag">Software Dev</span></td>
+            </tr>
+            <tr>
+              <td>Dynamic Policy Creation System (PR #252)</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="status status--upcoming"><span class="status__dot"></span>Upcoming</span></td>
+              <td><span class="source-tag">Onboarding</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- DUE MARCH 18 -->
+  <div class="section animate" style="--i:8">
+    <div class="section__header">
+      <h2 class="section__title">Due Wed Mar 18</h2>
+      <span class="section__badge badge--upcoming">Wave 2 gate</span>
+    </div>
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Task</th><th>Owner</th><th>Category</th></tr></thead>
+          <tbody>
+            <tr style="background:var(--accent-dim);">
+              <td><strong>MILESTONE: Wave 2</strong> &mdash; cold engineer self-serves in &lt;10 min</td>
+              <td></td>
+              <td><span class="source-tag">Milestone</span></td>
+            </tr>
+            <tr style="background:var(--accent-dim);">
+              <td><strong>MILESTONE: Schedule send Wave 2 emails</strong></td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="source-tag">Milestone</span></td>
+            </tr>
+            <tr>
+              <td><strong>Telemetry: total tokens through proxy</strong> (external users only) &mdash; the Demo Day KPI</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Infrastructure</span></td>
+            </tr>
+            <tr>
+              <td><strong>Generate policy from claude.md</strong> (~1 day)</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Onboarding</span></td>
+            </tr>
+            <tr>
+              <td>Implement SVG per Jai's feedback</td>
+              <td><span class="owner-tag">Mike</span></td>
+              <td><span class="source-tag">Landing Page</span></td>
+            </tr>
+            <tr>
+              <td>Ship billing mode visibility PR</td>
+              <td><span class="owner-tag">Peter</span></td>
+              <td><span class="source-tag">Software Dev</span></td>
+            </tr>
+            <tr>
+              <td>Error handling for insufficient cloud usage/credits</td>
+              <td><span class="owner-tag">Peter</span></td>
+              <td><span class="source-tag">Software Dev</span></td>
+            </tr>
+            <tr>
+              <td>One-click cloud deploy (Railway + OAuth pass-through)</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Infrastructure</span></td>
+            </tr>
+            <tr>
+              <td>Cloud offering setup (free tier for onboarding) [STRETCH]</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Infrastructure</span></td>
+            </tr>
+            <tr>
+              <td>Default demo policies (logging URL + English language rules)</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Onboarding</span></td>
+            </tr>
+            <tr>
+              <td>Email potential angel investor friends</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="source-tag">Fundraising</span></td>
+            </tr>
+            <tr>
+              <td>Draft newsletter for PBC transition</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="source-tag">Fundraising</span></td>
+            </tr>
+            <tr>
+              <td>Apply for ControlConf 2026 (+ workshop)</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="source-tag">Fundraising</span></td>
+            </tr>
+            <tr>
+              <td>Remove Codex support</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Software Dev</span></td>
+            </tr>
+            <tr>
+              <td>Verify init scripts work on Linux and Windows</td>
+              <td><span class="owner-tag">Peter</span></td>
+              <td><span class="source-tag">Software Dev</span></td>
+            </tr>
+            <tr>
+              <td>Disable auth requirement from localhost by default</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Software Dev</span></td>
+            </tr>
+            <tr>
+              <td>Bug: /compact fails with 'Tool names must be unique'</td>
+              <td></td>
+              <td><span class="source-tag">Bug</span></td>
+            </tr>
+            <tr>
+              <td>Add shellcheck --shell=bash to dev_checks.sh</td>
+              <td><span class="owner-tag">Peter</span></td>
+              <td><span class="source-tag">Infrastructure</span></td>
+            </tr>
+            <tr>
+              <td>UX: Policy config shows 'Reactivate' instead of 'Deactivate'</td>
+              <td></td>
+              <td><span class="source-tag">Bug</span></td>
+            </tr>
+            <tr>
+              <td>UX: /history page shows sessions, not conversations</td>
+              <td></td>
+              <td><span class="source-tag">Bug</span></td>
+            </tr>
+            <tr>
+              <td>Cut below 'What You Get' in README, link to dev-README</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">README</span></td>
+            </tr>
+            <tr>
+              <td>Landing page: redesign concerns/objections section</td>
+              <td><span class="owner-tag">Mike</span></td>
+              <td><span class="source-tag">Landing Page</span></td>
+            </tr>
+            <tr>
+              <td>"Has this ever happened to you?" section &mdash; test or kill</td>
+              <td><span class="owner-tag">Mike</span></td>
+              <td><span class="source-tag">Landing Page</span></td>
+            </tr>
+            <tr>
+              <td>Move AI safety mission statement higher on page</td>
+              <td><span class="owner-tag">Mike</span></td>
+              <td><span class="source-tag">Landing Page</span></td>
+            </tr>
+            <tr>
+              <td>Review competitor websites (CodeRabbit, Qodo, Arch) &mdash; positioning summary</td>
+              <td><span class="owner-tag">Mike</span></td>
+              <td><span class="source-tag">Landing Page</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER MAR 19 -->
+  <div class="section animate" style="--i:10">
+    <div class="section__header">
+      <h2 class="section__title">Mar 19 &ndash; Apr 16</h2>
+      <span class="section__badge badge--purple">Demo Day prep</span>
+    </div>
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Task</th><th>Owner</th><th>Category</th></tr></thead>
+          <tbody>
+            <tr style="background:var(--accent-dim);">
+              <td><strong>MILESTONE: April 16 &mdash; Demo Day</strong> (tokens up-and-to-right, 2+ user quotes)</td>
+              <td></td>
+              <td><span class="source-tag">Milestone</span></td>
+            </tr>
+            <tr>
+              <td><strong>Bash Arena benchmark</strong>: before/after Luthien safety + utility metrics (~2-3 days)</td>
+              <td><span class="owner-tag">Jai</span></td>
+              <td><span class="source-tag">Benchmark</span></td>
+            </tr>
+            <tr>
+              <td>Get credible quote for landing page (Fabian, OpenAI, etc.)</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="source-tag">Landing Page</span></td>
+            </tr>
+            <tr>
+              <td>Integrate Sentry for error tracking</td>
+              <td></td>
+              <td><span class="source-tag">Infrastructure</span></td>
+            </tr>
+            <tr>
+              <td>Add Prometheus metrics endpoint</td>
+              <td></td>
+              <td><span class="source-tag">Infrastructure</span></td>
+            </tr>
+            <tr>
+              <td>Custom LLM metrics + Grafana dashboards</td>
+              <td></td>
+              <td><span class="source-tag">Infrastructure</span></td>
+            </tr>
+            <tr>
+              <td>Video tutorial for README</td>
+              <td></td>
+              <td><span class="source-tag">README</span></td>
+            </tr>
+            <tr>
+              <td>Architecture diagram bigger on landing page</td>
+              <td></td>
+              <td><span class="source-tag">Landing Page</span></td>
+            </tr>
+            <tr>
+              <td>Page flow restructure &mdash; 'story down the page'</td>
+              <td></td>
+              <td><span class="source-tag">Landing Page</span></td>
+            </tr>
+            <tr>
+              <td>Ask Marius who at Apollo is closest to lab conversations on control</td>
+              <td><span class="owner-tag">Scott</span></td>
+              <td><span class="source-tag">Partnerships</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAPS -->
+  <div class="section animate" style="--i:12">
+    <div class="section__header">
+      <h2 class="section__title">Gaps: Not on Trello</h2>
+      <span class="section__badge badge--gap">Action needed</span>
+    </div>
+    <p style="font-size:14px; color:var(--text-dim); margin-bottom:16px;">
+      Critical-path items found in Google Docs that have no corresponding Trello card.
+    </p>
+    <div class="gaps">
+      <div class="gap-card">
+        <div class="gap-card__title">Exchange sample data with Apollo</div>
+        <div class="gap-card__detail">JSONL sessions with policy metadata. Action item from Apollo collab kick-off, ETA 3/19.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Apollo Collab Doc</span>
+          <span class="section__badge badge--upcoming" style="font-size:10px;">Due Mar 19</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Apollo API integration prototype</div>
+        <div class="gap-card__detail">Work out API integration concepts and build prototype. Owner: Jai, ETA: 3/19.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Apollo Collab Doc</span>
+          <span class="section__badge badge--upcoming" style="font-size:10px;">Due Mar 19</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Schedule Apollo follow-up call</div>
+        <div class="gap-card__detail">Review API concepts and data exchange results. Owner: Scott, ETA: 3/19.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Apollo Collab Doc</span>
+          <span class="section__badge badge--upcoming" style="font-size:10px;">Due Mar 19</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Apollo public endorsement statements</div>
+        <div class="gap-card__detail">Discuss what both sides are comfortable endorsing before Demo Day. ETA: 4/10.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Apollo Collab Doc</span>
+          <span class="section__badge badge--purple" style="font-size:10px;">Due Apr 10</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Graceful failure handling</div>
+        <div class="gap-card__detail">User sees clear error + recovery steps, not raw 401. Peter has PR #310 but discussed as incomplete in weekly meeting.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Design Sprint + Weekly</span>
+          <span class="section__badge badge--active" style="font-size:10px;">Due Mar 18</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Progressive disclosure on dashboard</div>
+        <div class="gap-card__detail">Current UI is information overload for new users. Need version that progressively reveals functionality.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Design Sprint Part 1</span>
+          <span class="section__badge badge--upcoming" style="font-size:10px;">Due Mar 18</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">3 CTO/PE calls to validate willingness-to-pay</div>
+        <div class="gap-card__detail">"Highest-info-value action" per Economics doc. Schedule calls with AI-first startup CTOs and ask "would you sign a $50K contract?"</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Economics v1</span>
+          <span class="section__badge badge--purple" style="font-size:10px;">Before Demo Day</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">5+ review cycles on economics/pitch</div>
+        <div class="gap-card__detail">Josh said "at least five" before Demo Day. Weekly reviews: Josh (skeptic), Finn (VC hat), Yori (advisor), Mykolas (open-source biz).</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Economics v1</span>
+          <span class="section__badge badge--purple" style="font-size:10px;">Weekly</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Weekly stability score "poker" meeting</div>
+        <div class="gap-card__detail">Scott proposed, team agreed. Start call with stability number, probe differences in confidence levels.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Weekly Meeting</span>
+          <span class="section__badge badge--active" style="font-size:10px;">Recurring</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Mike to set up Claude Code + GitHub</div>
+        <div class="gap-card__detail">Action from Mike/Scott agenda. Mike needs CC setup to dogfood Luthien while working on landing page.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Mike/Scott Agenda</span>
+          <span class="section__badge badge--active" style="font-size:10px;">This week</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Scott audio message to Mike (founding story)</div>
+        <div class="gap-card__detail">Context for About section. Scott committed to sending by Sunday (Mar 16).</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Mike/Scott Agenda</span>
+          <span class="section__badge badge--upcoming" style="font-size:10px;">Due Mar 16</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Rewrite quickstart through CLI</div>
+        <div class="gap-card__detail">Design Sprint notes say "trello card" but may not have been created. Streamline README quickstart through luthien-cli.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Design Sprint Part 1</span>
+          <span class="section__badge badge--active" style="font-size:10px;">Due Mar 18</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Simplify root README (progressive disclosure)</div>
+        <div class="gap-card__detail">Design Sprint notes say "trello card" but may not have been created.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Design Sprint Part 1</span>
+          <span class="section__badge badge--active" style="font-size:10px;">Due Mar 18</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Cloud offering reprioritization</div>
+        <div class="gap-card__detail">Marked STRETCH on Trello but Design Sprint + Economics doc both call it ~1 day and high-value for onboarding + telemetry. Consider promoting.</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Design Sprint + Economics</span>
+          <span class="section__badge badge--active" style="font-size:10px;">Reprioritize?</span>
+        </div>
+      </div>
+      <div class="gap-card">
+        <div class="gap-card__title">Ask Marius re: lab conversations on control</div>
+        <div class="gap-card__detail">Apollo kick-off action item, ETA was 3/12 (today). On Trello in wrong column (after Mar 19).</div>
+        <div class="gap-card__meta">
+          <span class="source-tag">Apollo Collab Doc</span>
+          <span class="section__badge badge--gap" style="font-size:10px;">Overdue</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOURCES -->
+  <div class="sources animate" style="--i:14">
+    <div class="sources__title">Sources Analyzed</div>
+    <div class="sources__grid">
+      <div class="source-item">
+        <span class="source-item__icon">&#x1F4C4;</span>
+        <span class="source-item__name">Luthien's Economics v1</span>
+        <span class="source-item__date">Mar 12</span>
+      </div>
+      <div class="source-item">
+        <span class="source-item__icon">&#x1F4C4;</span>
+        <span class="source-item__name">Design Sprint Part 1: Scott's rough notes</span>
+        <span class="source-item__date">Mar 12</span>
+      </div>
+      <div class="source-item">
+        <span class="source-item__icon">&#x1F4C4;</span>
+        <span class="source-item__name">Design Sprint Part 2: Scott's rough notes</span>
+        <span class="source-item__date">Mar 10</span>
+      </div>
+      <div class="source-item">
+        <span class="source-item__icon">&#x1F3A5;</span>
+        <span class="source-item__name">Luthien weekly: sprint to be invisible</span>
+        <span class="source-item__date">Mar 11</span>
+      </div>
+      <div class="source-item">
+        <span class="source-item__icon">&#x1F4C4;</span>
+        <span class="source-item__name">Wed March 11 &mdash; team call agenda</span>
+        <span class="source-item__date">Mar 11</span>
+      </div>
+      <div class="source-item">
+        <span class="source-item__icon">&#x1F4C4;</span>
+        <span class="source-item__name">Mike/Scott: Wed, March 11 Agenda</span>
+        <span class="source-item__date">Mar 12</span>
+      </div>
+      <div class="source-item">
+        <span class="source-item__icon">&#x1F91D;</span>
+        <span class="source-item__name">Apollo / Luthien Collab Kick-off</span>
+        <span class="source-item__date">Mar 12</span>
+      </div>
+      <div class="source-item">
+        <span class="source-item__icon">&#x1F4CB;</span>
+        <span class="source-item__name">Trello board: Luthien (all lists)</span>
+        <span class="source-item__date">Live</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer animate" style="--i:16">
+    Generated by Claude Code (Opus 4.6) &middot; Cross-referenced 7 Google Docs via agog + Trello CLI &middot; Mar 12, 2026
+  </div>
+
+</div>
+</body>
+</html>
