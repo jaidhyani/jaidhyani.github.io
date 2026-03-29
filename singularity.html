@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Singularity Media</title>
+<title>Singularity World-Building Media</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300&family=Anybody:wght@300;400&display=swap" rel="stylesheet">
@@ -29,7 +29,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* grain overlay */
   body::after {
     content: '';
     position: fixed;
@@ -48,7 +47,7 @@
   }
 
   header {
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
     border-bottom: 1px solid var(--border);
     padding-bottom: 2rem;
   }
@@ -60,6 +59,36 @@
     letter-spacing: 0.08em;
     color: var(--text);
     text-transform: uppercase;
+  }
+
+  .alt-link {
+    display: inline-block;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.2rem;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .alt-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
   }
 
   .grid {
@@ -84,8 +113,8 @@
     transform: translateY(-3px);
   }
 
-  .card:hover .thumb::after {
-    opacity: 0;
+  .card:hover .thumb img {
+    transform: scale(1.04);
   }
 
   .thumb {
@@ -94,12 +123,19 @@
     overflow: hidden;
   }
 
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
   .thumb::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, var(--card-bg) 0%, transparent 50%);
-    transition: opacity 0.4s ease;
+    background: linear-gradient(to top, var(--card-bg) 0%, transparent 40%);
+    pointer-events: none;
   }
 
   .card-body {
@@ -138,53 +174,9 @@
     letter-spacing: 0.04em;
   }
 
-  /* ── unique thumb visuals ── */
-
-  .thumb-egg {
-    background:
-      radial-gradient(ellipse 60% 80% at 50% 50%, #e8d5b8 0%, #c4a882 30%, transparent 70%),
-      radial-gradient(circle at 30% 70%, rgba(255,220,180,0.15) 0%, transparent 50%),
-      #1a1510;
-  }
-
-  .thumb-pantheon {
-    background:
-      repeating-conic-gradient(from 0deg at 50% 110%, #1a3a4a 0deg 15deg, transparent 15deg 30deg),
-      linear-gradient(170deg, #0c2233 0%, #1a4455 40%, #0a1a28 100%);
-    background-blend-mode: overlay;
-  }
-
-  .thumb-paperclips {
-    background:
-      repeating-linear-gradient(45deg, transparent 0px, transparent 8px, rgba(180,180,190,0.06) 8px, rgba(180,180,190,0.06) 9px),
-      repeating-linear-gradient(-45deg, transparent 0px, transparent 12px, rgba(180,180,190,0.04) 12px, rgba(180,180,190,0.04) 13px),
-      radial-gradient(circle at 70% 40%, #2a2a30 0%, #0a0a0c 100%);
-  }
-
-  .thumb-lena {
-    background:
-      linear-gradient(135deg, transparent 40%, rgba(120,40,40,0.3) 60%, transparent 80%),
-      repeating-linear-gradient(0deg, rgba(100,255,100,0.02) 0px, rgba(100,255,100,0.02) 1px, transparent 1px, transparent 3px),
-      linear-gradient(180deg, #0a100a 0%, #141a14 50%, #0a0c0a 100%);
-  }
-
-  .thumb-permutation {
-    background:
-      conic-gradient(from 45deg at 60% 50%, #1a1028, #28184a, #1a1028, #0e0a18, #1a1028),
-      repeating-radial-gradient(circle at 40% 40%, transparent 0px, transparent 20px, rgba(100,60,180,0.05) 20px, rgba(100,60,180,0.05) 21px);
-  }
-
-  .thumb-birthdays {
-    background:
-      radial-gradient(circle at 20% 30%, rgba(255,160,60,0.15) 0%, transparent 40%),
-      radial-gradient(circle at 80% 60%, rgba(255,100,40,0.1) 0%, transparent 35%),
-      radial-gradient(circle at 50% 80%, rgba(255,200,100,0.08) 0%, transparent 50%),
-      linear-gradient(160deg, #140c04 0%, #1a1008 40%, #0c0804 100%);
-  }
-
   @media (max-width: 680px) {
     .page { padding: 3rem 1.2rem 3rem; }
-    header { margin-bottom: 3rem; }
+    header { margin-bottom: 2rem; }
     .grid { grid-template-columns: 1fr; gap: 1.5rem; }
   }
 </style>
@@ -192,13 +184,57 @@
 <body>
 <div class="page">
   <header>
-    <h1>Singularity</h1>
+    <h1>Singularity World-Building Media</h1>
+    <a class="alt-link" href="singularity-claude.html">Claude's version &rarr;</a>
   </header>
 
+  <div class="section-label">Game</div>
+  <div class="grid">
+    <a class="card" href="https://www.decisionproblem.com/paperclips/" target="_blank" rel="noopener">
+      <div class="thumb"><img src="singularity-img/paperclips.webp" alt="Universal Paperclips" loading="lazy"></div>
+      <div class="card-body">
+        <div class="card-title">Universal Paperclips</div>
+        <div class="card-meta">
+          <span class="tag">Game</span>
+          <span class="author">Frank Lantz</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Novel</div>
+  <div class="grid">
+    <a class="card" href="https://www.goodreads.com/book/show/156784.Permutation_City" target="_blank" rel="noopener">
+      <div class="thumb"><img src="singularity-img/permutation-city.webp" alt="Permutation City" loading="lazy"></div>
+      <div class="card-body">
+        <div class="card-title">Permutation City</div>
+        <div class="card-meta">
+          <span class="tag">Novel</span>
+          <span class="author">Greg Egan</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Series</div>
+  <div class="grid">
+    <a class="card" href="https://www.netflix.com/title/81937398" target="_blank" rel="noopener">
+      <div class="thumb"><img src="singularity-img/pantheon.webp" alt="Pantheon" loading="lazy"></div>
+      <div class="card-body">
+        <div class="card-title">Pantheon</div>
+        <div class="card-meta">
+          <span class="tag">Series</span>
+          <span class="author">Netflix</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Short Stories</div>
   <div class="grid">
 
     <a class="card" href="http://www.galactanet.com/oneoff/theegg_mod.html" target="_blank" rel="noopener">
-      <div class="thumb thumb-egg"></div>
+      <div class="thumb"><img src="singularity-img/the-egg.webp" alt="The Egg" loading="lazy"></div>
       <div class="card-body">
         <div class="card-title">The Egg</div>
         <div class="card-meta">
@@ -208,30 +244,8 @@
       </div>
     </a>
 
-    <a class="card" href="https://www.imdb.com/title/tt11680642/" target="_blank" rel="noopener">
-      <div class="thumb thumb-pantheon"></div>
-      <div class="card-body">
-        <div class="card-title">Pantheon</div>
-        <div class="card-meta">
-          <span class="tag">Series</span>
-          <span class="author">AMC+</span>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="https://www.decisionproblem.com/paperclips/" target="_blank" rel="noopener">
-      <div class="thumb thumb-paperclips"></div>
-      <div class="card-body">
-        <div class="card-title">Universal Paperclips</div>
-        <div class="card-meta">
-          <span class="tag">Game</span>
-          <span class="author">Frank Lantz</span>
-        </div>
-      </div>
-    </a>
-
     <a class="card" href="https://qntm.org/mmacevedo" target="_blank" rel="noopener">
-      <div class="thumb thumb-lena"></div>
+      <div class="thumb"><img src="singularity-img/lena.webp" alt="Lena" loading="lazy"></div>
       <div class="card-body">
         <div class="card-title">Lena</div>
         <div class="card-meta">
@@ -241,19 +255,8 @@
       </div>
     </a>
 
-    <a class="card" href="https://www.goodreads.com/book/show/156784.Permutation_City" target="_blank" rel="noopener">
-      <div class="thumb thumb-permutation"></div>
-      <div class="card-body">
-        <div class="card-title">Permutation City</div>
-        <div class="card-meta">
-          <span class="tag">Novel</span>
-          <span class="author">Greg Egan</span>
-        </div>
-      </div>
-    </a>
-
     <a class="card" href="https://reactormag.com/reprints-seven-birthdays-ken-liu/" target="_blank" rel="noopener">
-      <div class="thumb thumb-birthdays"></div>
+      <div class="thumb"><img src="singularity-img/seven-birthdays.webp" alt="Seven Birthdays" loading="lazy"></div>
       <div class="card-body">
         <div class="card-title">Seven Birthdays</div>
         <div class="card-meta">
