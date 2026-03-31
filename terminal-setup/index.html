@@ -133,7 +133,7 @@
 <p class="subtitle">iTerm2 + tmux + zsh on macOS, looking good out of the box</p>
 
 <div class="oneliner" onclick="copy(this)">
-  <code>bash &lt;(curl -fsSL jai.one/terminal-setup/setup.sh)</code>
+  <code>bash &lt;(curl -fsSL https://jai.one/terminal-setup/setup.sh)</code>
   <span class="hint">click to copy</span>
 </div>
 
@@ -171,7 +171,7 @@
 
 <script>
 function copy(el) {
-  navigator.clipboard.writeText('bash <(curl -fsSL jai.one/terminal-setup/setup.sh)');
+  navigator.clipboard.writeText('bash <(curl -fsSL https://jai.one/terminal-setup/setup.sh)');
   el.classList.add('copied');
   el.querySelector('.hint').textContent = 'copied!';
   setTimeout(() => {

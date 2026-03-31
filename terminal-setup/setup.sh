@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Terminal Setup: iTerm2 + tmux (Catppuccin Mocha) + zsh (Powerlevel10k)
 #
-# One-liner: bash <(curl -fsSL jai.one/terminal-setup/setup.sh)
+# One-liner: bash <(curl -fsSL https://jai.one/terminal-setup/setup.sh)
 #
 # Everything is interactive — prompts before each action.
 # Safe to re-run.
