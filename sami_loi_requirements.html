@@ -8,6 +8,7 @@
   :root {
     --bg: #0f1115;
     --panel: #171a21;
+    --panel-2: #1b1f28;
     --ink: #e6e8ee;
     --mute: #9aa3b2;
     --rule: #252a34;
@@ -15,84 +16,190 @@
     --warn: #e0b341;
     --miss: #d86a6a;
     --link: #7aa7ff;
+    --accent: #b892ff;
   }
   html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
   body { font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
-  main { max-width: 840px; margin: 0 auto; padding: 48px 20px 80px; }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 20px 80px; }
   h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.01em; }
   .sub { color: var(--mute); margin: 0 0 28px; }
   h2 { font-size: 18px; margin: 32px 0 10px; letter-spacing: -0.01em; }
+  h3 { font-size: 15px; margin: 24px 0 8px; color: var(--mute); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
   h2 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: middle; margin-right: 8px; }
   .ok .dot { background: var(--ok); }
   .warn .dot { background: var(--warn); }
   .miss .dot { background: var(--miss); }
   table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 8px; overflow: hidden; }
-  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
-  th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--mute); font-weight: 600; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; font-size: 14px; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--mute); font-weight: 600; }
   tr:last-child td { border-bottom: none; }
   td.pr { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td.note { color: var(--mute); font-size: 13px; }
   a { color: var(--link); text-decoration: none; }
   a:hover { text-decoration: underline; }
   ul { padding-left: 20px; }
-  li { margin: 4px 0; }
+  li { margin: 6px 0; }
+  li .src { color: var(--mute); font-size: 13px; display: block; margin-top: 2px; }
   .muted { color: var(--mute); }
   .tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; margin-left: 6px; background: #252a34; color: var(--mute); }
+  .quote { background: var(--panel-2); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 12px 0; color: var(--ink); font-size: 14px; border-radius: 0 6px 6px 0; }
+  .quote .cite { display: block; color: var(--mute); font-size: 12px; margin-top: 4px; }
   footer { margin-top: 40px; color: var(--mute); font-size: 13px; border-top: 1px solid var(--rule); padding-top: 16px; }
   code { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; background: #1d2129; padding: 1px 5px; border-radius: 3px; }
+  sup.fn { font-size: 10px; color: var(--accent); padding: 0 2px; }
+  sup.fn a { color: var(--accent); }
+  .refs dt { font-weight: 600; margin-top: 10px; color: var(--ink); }
+  .refs dd { margin: 2px 0 0 0; color: var(--mute); font-size: 13px; }
+  .refs dd + dd { margin-top: 2px; }
+  .badge { display: inline-block; font-size: 10px; padding: 1px 5px; border-radius: 3px; background: #252a34; color: var(--mute); margin-left: 6px; letter-spacing: 0.04em; }
 </style>
 </head>
 <body>
 <main>
   <h1>Luthien LOI Requirements vs Open PRs</h1>
-  <p class="sub">Mapping the adoption-roadmap doc ("Requirements vs Reality") onto the current <code>LuthienResearch/luthien-proxy</code> open-PR queue. Snapshot: 2026-04-14.</p>
+  <p class="sub">Mapping the adoption-roadmap doc ("Requirements vs Reality") onto the current <a href="https://github.com/LuthienResearch/luthien-proxy/pulls">LuthienResearch/luthien-proxy</a> open-PR queue. Snapshot: 2026-04-14. Annotated with sources.</p>
 
-  <p>The doc is a 30-user production-adoption gap analysis with three tiers: <strong>Ready today</strong>, <strong>Small–medium gaps</strong> (days-to-weeks), and <strong>Large gaps</strong> (weeks-to-months). Phase 2 of its roadmap is largely in flight; Phase 3–4 has zero open work.</p>
+  <div class="quote">
+    The doc is a non-binding pilot LOI (Tab 1) plus an internal gap-analysis roadmap (Tab 2) evaluating Luthien as the LLM proxy for a 30-user team running Claude Code + OpenCode. It sorts requirements into <strong>Ready today</strong>, <strong>Small–medium gaps</strong> (days-to-weeks), and <strong>Large gaps</strong> (weeks-to-months), and proposes a 4-phase adoption plan.
+    <span class="cite">Source: <a href="https://docs.google.com/document/d/1SvcamrAarQPnMKLwCVWzSVvF2xcZYjpCj2A9V8K0QqE/edit">Luthien LOI &amp; Adoption Roadmap</a> (Google Doc, private). Cited inline as <strong>[Doc&nbsp;T2]</strong>.</span>
+  </div>
 
-  <h2 class="ok"><span class="dot"></span>Direct hits — gap has an in-flight PR</h2>
+  <h2 class="ok"><span class="dot"></span>Direct hits — doc gap has an in-flight PR</h2>
   <table>
-    <thead><tr><th>Doc requirement</th><th>PR</th><th>Title</th></tr></thead>
+    <thead><tr><th>Doc requirement</th><th>PR</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td>User identity (OAuth extraction, <code>user_id</code> column)</td><td class="pr">#577</td><td>User identity extraction and storage</td></tr>
-      <tr><td>User identity (filter, label, surface in UI)</td><td class="pr">#580</td><td>User differentiation — identify, filter, label</td></tr>
-      <tr><td>Server-side search API (Postgres tsvector)</td><td class="pr">#578</td><td>Server-side session search with full-text content search</td></tr>
-      <tr><td>Data retention + backup (pg_partman, S3)</td><td class="pr">#571</td><td>Data retention policy + optional S3 archival</td></tr>
-      <tr><td>Datadog / W3C TRACEPARENT trace correlation</td><td class="pr">#562</td><td>OTEL exporter HTTP/protobuf default <span class="tag">foundation only</span></td></tr>
-      <tr><td>Upstream header injection (doc cites as already contributed)</td><td class="pr">#549</td><td>Configurable upstream header injection <span class="tag">still open</span></td></tr>
+      <tr>
+        <td>User identity: OAuth extraction, <code>user_id</code> column<sup class="fn"><a href="#doc-userid">1</a></sup></td>
+        <td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/577">#577</a></td>
+        <td class="note">User identity extraction and storage — branch <code>554</code>.</td>
+      </tr>
+      <tr>
+        <td>User identity: filter &amp; surface in UI</td>
+        <td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/580">#580</a></td>
+        <td class="note">User differentiation — per-user filter, colored badges, labeling table.</td>
+      </tr>
+      <tr>
+        <td>Server-side search API (tsvector)<sup class="fn"><a href="#doc-search">2</a></sup></td>
+        <td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/578">#578</a></td>
+        <td class="note">Full-text content search over conversation history.</td>
+      </tr>
+      <tr>
+        <td>Data retention + backup<sup class="fn"><a href="#doc-retention">3</a></sup></td>
+        <td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/571">#571</a></td>
+        <td class="note">Configurable purge + optional S3 archival.</td>
+      </tr>
+      <tr>
+        <td>Datadog / W3C TRACEPARENT correlation<sup class="fn"><a href="#doc-dd">4</a></sup></td>
+        <td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/562">#562</a></td>
+        <td class="note">OTEL HTTP/protobuf default — foundation. Actual TRACEPARENT-parent wiring not in any open PR. See <a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/dev/context/otel-conventions.md">dev/context/otel-conventions.md</a>.</td>
+      </tr>
+      <tr>
+        <td>Upstream header injection<sup class="fn"><a href="#doc-headers">5</a></sup></td>
+        <td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/549">#549</a></td>
+        <td class="note">Doc cites as already contributed by partner; PR is still open at time of snapshot.</td>
+      </tr>
     </tbody>
   </table>
 
-  <h2 class="warn"><span class="dot"></span>Production-hardening PRs on the doc's path (not named, but clearly needed)</h2>
+  <h2 class="warn"><span class="dot"></span>Production-hardening PRs on the doc's path (not named, clearly needed)</h2>
   <table>
-    <thead><tr><th>Purpose</th><th>PR</th><th>Title</th></tr></thead>
+    <thead><tr><th>Purpose</th><th>PR</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td>Fargate/Cloud Run readiness</td><td class="pr">#570</td><td>Report DB connectivity in <code>/health</code>, add <code>/ready</code></td></tr>
-      <tr><td>Fargate/Cloud Run readiness</td><td class="pr">#516</td><td>Rich DB + Redis health checks on <code>/health</code></td></tr>
-      <tr><td>Fargate/Cloud Run readiness</td><td class="pr">#515</td><td>Rich DB + Redis health checks (v1)</td></tr>
-      <tr><td>Observability</td><td class="pr">#517</td><td>Prometheus <code>/metrics</code> endpoint</td></tr>
-      <tr><td>Role separation (admin vs client keys)</td><td class="pr">#574</td><td>Reject <code>CLIENT_API_KEY</code> on admin endpoints</td></tr>
-      <tr><td>Injection defense (doc's "ready today" row)</td><td class="pr">#573</td><td>StringReplacementPolicy request-side filtering</td></tr>
-      <tr><td>Adjacent to lossless capture / export</td><td class="pr">#576</td><td>Webhook event export for completed conversations</td></tr>
+      <tr><td>Fargate/Cloud Run readiness<sup class="fn"><a href="#doc-fargate">6</a></sup></td><td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/570">#570</a></td><td class="note">DB connectivity in <code>/health</code>, new <code>/ready</code>.</td></tr>
+      <tr><td>Fargate/Cloud Run readiness</td><td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/516">#516</a></td><td class="note">Rich DB + Redis health checks (v2).</td></tr>
+      <tr><td>Fargate/Cloud Run readiness</td><td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/515">#515</a></td><td class="note">Rich health checks (v1, superseded).</td></tr>
+      <tr><td>Observability</td><td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/517">#517</a></td><td class="note">Prometheus <code>/metrics</code>.</td></tr>
+      <tr><td>Role separation</td><td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/574">#574</a></td><td class="note">Reject <code>CLIENT_API_KEY</code> on admin endpoints. See <a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/dev/context/authentication.md">dev/context/authentication.md</a> for the auth-mode matrix.</td></tr>
+      <tr><td>Injection defense<sup class="fn"><a href="#doc-injection">7</a></sup></td><td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/573">#573</a></td><td class="note">StringReplacementPolicy request-side filtering — doc treats basic version as "ready today."</td></tr>
+      <tr><td>Adjacent to lossless capture / export</td><td class="pr"><a href="https://github.com/LuthienResearch/luthien-proxy/pull/576">#576</a></td><td class="note">Webhook event export for completed conversations.</td></tr>
     </tbody>
   </table>
 
   <h2 class="miss"><span class="dot"></span>Doc gaps with no PR in flight</h2>
   <ul>
-    <li><strong>Horizontal scaling</strong> — uvicorn workers, Redis-ize in-process singletons, load test (30 users / 100+ concurrent)</li>
-    <li><strong>Multi-provider</strong> (OpenAI, Gemini) — deliberate v3.0 direction; <span class="muted">#547 is actively removing remaining OpenAI refs</span></li>
-    <li><strong>Session resume / replay</strong></li>
-    <li><strong>Lossless session capture</strong> — Claude Code <code>Stop</code> hook + <code>transcript_path</code> merge with API logs</li>
-    <li><strong>Lambda deployment</strong> (true serverless)</li>
-    <li><strong>Vector / semantic search</strong> (pgvector or external)</li>
+    <li><strong>Horizontal scaling</strong> — uvicorn workers, Redis-ize in-process singletons, load test.
+      <span class="src">Source: [Doc T2] "Small-Medium Gaps" row — <em>"30 users, 100+ concurrent, 1-2 weeks. Add uvicorn workers, fix in-process singletons to use Redis. Load test."</em></span>
+    </li>
+    <li><strong>Multi-provider</strong> (OpenAI, Gemini) — flagged as the <em>strategic</em> blocker, not a time-boxed one. Luthien v3.0 deliberately dropped non-Anthropic providers; PR <a href="https://github.com/LuthienResearch/luthien-proxy/pull/547">#547</a> is actively removing remaining OpenAI references.
+      <span class="src">Source: [Doc T2] "Multi-Provider: The Strategic Question" — lists 4 options (convince maintainers, fork, split proxies, accept Anthropic-only).</span>
+    </li>
+    <li><strong>Session resume / replay</strong> — Claude Code session format is undocumented/internal.
+      <span class="src">Source: [Doc T2] Large Gaps — <em>"Claude Code's session format is internal/undocumented. Export exists, resume needs format conversion."</em></span>
+    </li>
+    <li><strong>Lossless session capture</strong> — Stop hook + <code>transcript_path</code> merge with API logs. Requires client-side scaffolding (not just proxy work).
+      <span class="src">Source: [Doc T2] Large Gaps — <em>"API calls don't include Claude Code's internal context (skills, CLAUDE.md, file reads). Need Stop hook to capture transcript_path + merge with Luthien's API logs."</em> Phase 3 bullet: <em>"lossless session capture via Stop hook, session export."</em></span>
+    </li>
+    <li><strong>Lambda deployment</strong> — requires persistent Postgres + Redis; Fargate works today, true serverless needs storage-layer rewrite.
+      <span class="src">Source: [Doc T2] Large Gaps.</span>
+    </li>
+    <li><strong>Vector / semantic search</strong> — pgvector or external.
+      <span class="src">Source: [Doc T2] Large Gaps — <em>"Postgres tsvector for full-text, pgvector or external for semantic. Standard but significant."</em></span>
+    </li>
   </ul>
 
   <h2>Unrelated to the doc</h2>
-  <p class="muted">#550, #545 (CLI fixes), #543 (scheduler), #546 (supply-chain feed), #505, #506, #489, #485, #441, #429, #424, #510, #575, #547.</p>
+  <p class="muted">
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/550">#550</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/545">#545</a> (CLI fixes),
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/543">#543</a> (scheduler),
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/546">#546</a> (supply-chain feed),
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/505">#505</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/506">#506</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/489">#489</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/485">#485</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/441">#441</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/429">#429</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/424">#424</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/510">#510</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/575">#575</a>,
+    <a href="https://github.com/LuthienResearch/luthien-proxy/pull/547">#547</a>.
+  </p>
 
   <h2>Bottom line</h2>
-  <p>Phase 2 of the roadmap — identity, search, retention, health, metrics, auth separation — is largely already in the PR queue. The outstanding work is <strong>Phase 3–4</strong>: scaling, multi-provider, resume, and lossless capture. The multi-provider question is strategic, not implementation-time-bounded, and the doc correctly identifies it as the make-or-break item.</p>
+  <p>Phase 2 of the roadmap — identity, search, retention, health, metrics, auth separation — is largely already in the PR queue. The outstanding work is <strong>Phase 3–4</strong>: scaling, multi-provider, resume, and lossless capture. The multi-provider question is strategic, not implementation-time-bounded, and the doc correctly identifies it as the make-or-break item. <strong>Lossless capture requires client-side scaffolding</strong> (a Claude Code hook + CLI uploader), not just proxy-side work — neither side has an open PR yet.</p>
+
+  <h2>Footnotes — quoted from [Doc T2]</h2>
+  <ol style="font-size: 13px; color: var(--mute);">
+    <li id="doc-userid"><em>"User identity — 3-5 days — Extract from OAuth token or header. Add user_id column."</em></li>
+    <li id="doc-search"><em>"Server-side search API — 1 week — Postgres tsvector index, server-side filter endpoints."</em></li>
+    <li id="doc-retention"><em>"Data retention + backup — 3-5 days — pg_partman partitioning, pg_dump → S3 archival."</em></li>
+    <li id="doc-dd"><em>"Datadog trace correlation — 1-2 days — Accept W3C TRACEPARENT, parent Luthien spans under it. ~50 lines."</em></li>
+    <li id="doc-headers"><em>"We've forked and contributed (upstream header injection PR #549, TRACEPARENT patch)"</em> — "What to Present to the Maintainers" section.</li>
+    <li id="doc-fargate"><em>"Fargate/Cloud Run deployment — Long-running container, works today"</em> — listed as Ready Today; health/ready endpoints make it production-ready.</li>
+    <li id="doc-injection"><em>"Injection defense (regex) — StringReplacementPolicy tested"</em> — Ready Today row.</li>
+  </ol>
+
+  <h2>References &amp; points of interest</h2>
+  <dl class="refs">
+    <dt>Primary source</dt>
+    <dd><a href="https://docs.google.com/document/d/1SvcamrAarQPnMKLwCVWzSVvF2xcZYjpCj2A9V8K0QqE/edit">Luthien LOI &amp; Adoption Roadmap</a> — Tab 1: non-binding pilot LOI template. Tab 2: "Luthien Adoption Roadmap — Requirements vs Reality" gap analysis. <span class="badge">PRIVATE</span></dd>
+
+    <dt>Repo</dt>
+    <dd><a href="https://github.com/LuthienResearch/luthien-proxy">LuthienResearch/luthien-proxy</a> · <a href="https://github.com/LuthienResearch/luthien-proxy/pulls">Open PRs</a></dd>
+    <dd><a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/ARCHITECTURE.md">ARCHITECTURE.md</a> — request lifecycle, module map, key abstractions, data model.</dd>
+    <dd><a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/dev-README.md">dev-README.md</a> — canonical dev guide.</dd>
+
+    <dt>Codebase context (dev/context/)</dt>
+    <dd><a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/dev/context/authentication.md">authentication.md</a> — auth-mode matrix (client_key / passthrough / both), relevant to PR #574.</dd>
+    <dd><a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/dev/context/otel-conventions.md">otel-conventions.md</a> — current OTEL span layout, relevant to the Datadog/TRACEPARENT gap.</dd>
+    <dd><a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/dev/context/streaming_response_structures.md">streaming_response_structures.md</a> — SSE event shapes the doc calls "verified with real Claude Code."</dd>
+    <dd><a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/dev/context/observability_records.md">observability_records.md</a>, <a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/dev/context/redis-otel-analysis.md">redis-otel-analysis.md</a>, <a href="https://github.com/LuthienResearch/luthien-proxy/blob/main/dev/context/sentry.md">sentry.md</a>.</dd>
+
+    <dt>Sibling repo</dt>
+    <dd><a href="https://github.com/LuthienResearch/luthien-org">LuthienResearch/luthien-org</a> — feedback synthesis, requirements docs, UI mockups. <code>ui-fb-dev/1-feedback-synthesis/</code>, <code>ui-fb-dev/2-requirements/</code>, <code>ui-fb-dev/design-system.md</code>.</dd>
+
+    <dt>Points of interest</dt>
+    <dd><strong>Lossless capture needs client-side work</strong> — the proxy only sees HTTP; Claude Code's skills, CLAUDE.md, file reads, and local tool execution only exist in-process. A Claude Code <code>Stop</code> hook + transcript uploader is the shape proposed in [Doc T2] — but nothing about the receiving endpoint, correlation key, or UI join is designed yet.</dd>
+    <dd><strong>OpenCode is the hidden driver</strong> — the partner team's use of OpenAI + Gemini via OpenCode is what makes multi-provider "make-or-break." An Anthropic-only Luthien plus a separate proxy for others is a real option the doc names.</dd>
+    <dd><strong>Scale target</strong> — 30 users, 100+ concurrent, "dozens of agents." This is the stated stress-test profile; no open PR has load-testing or worker-count work.</dd>
+    <dd><strong>Aurora Serverless v2</strong> compatibility claim rests on <code>asyncpg</code> + standard Postgres — verified by the doc, not by any PR.</dd>
+
+    <dt>Data provenance</dt>
+    <dd>Open-PR list generated via <code>gh pr list --repo LuthienResearch/luthien-proxy --state open --limit 50</code> on 2026-04-14. 27 PRs at snapshot time.</dd>
+  </dl>
 
   <footer>
-    Source doc: Luthien LOI / Adoption Roadmap (Google Doc, private). PR data: <code>gh pr list --repo LuthienResearch/luthien-proxy --state open</code>.
+    Generated 2026-04-14 from the Google Doc + live PR queue. Annotated with sources on the same day. If a PR merges or the doc changes, this page will drift — it's a snapshot, not a dashboard.
   </footer>
 </main>
 </body>
