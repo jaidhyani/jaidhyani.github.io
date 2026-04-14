@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luthien LOI Requirements vs Open PRs</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --ink: #e6e8ee;
+    --mute: #9aa3b2;
+    --rule: #252a34;
+    --ok: #5fb878;
+    --warn: #e0b341;
+    --miss: #d86a6a;
+    --link: #7aa7ff;
+  }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+  body { font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 840px; margin: 0 auto; padding: 48px 20px 80px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--mute); margin: 0 0 28px; }
+  h2 { font-size: 18px; margin: 32px 0 10px; letter-spacing: -0.01em; }
+  h2 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: middle; margin-right: 8px; }
+  .ok .dot { background: var(--ok); }
+  .warn .dot { background: var(--warn); }
+  .miss .dot { background: var(--miss); }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 8px; overflow: hidden; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--mute); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  td.pr { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  ul { padding-left: 20px; }
+  li { margin: 4px 0; }
+  .muted { color: var(--mute); }
+  .tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; margin-left: 6px; background: #252a34; color: var(--mute); }
+  footer { margin-top: 40px; color: var(--mute); font-size: 13px; border-top: 1px solid var(--rule); padding-top: 16px; }
+  code { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; background: #1d2129; padding: 1px 5px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Luthien LOI Requirements vs Open PRs</h1>
+  <p class="sub">Mapping the adoption-roadmap doc ("Requirements vs Reality") onto the current <code>LuthienResearch/luthien-proxy</code> open-PR queue. Snapshot: 2026-04-14.</p>
+
+  <p>The doc is a 30-user production-adoption gap analysis with three tiers: <strong>Ready today</strong>, <strong>Small–medium gaps</strong> (days-to-weeks), and <strong>Large gaps</strong> (weeks-to-months). Phase 2 of its roadmap is largely in flight; Phase 3–4 has zero open work.</p>
+
+  <h2 class="ok"><span class="dot"></span>Direct hits — gap has an in-flight PR</h2>
+  <table>
+    <thead><tr><th>Doc requirement</th><th>PR</th><th>Title</th></tr></thead>
+    <tbody>
+      <tr><td>User identity (OAuth extraction, <code>user_id</code> column)</td><td class="pr">#577</td><td>User identity extraction and storage</td></tr>
+      <tr><td>User identity (filter, label, surface in UI)</td><td class="pr">#580</td><td>User differentiation — identify, filter, label</td></tr>
+      <tr><td>Server-side search API (Postgres tsvector)</td><td class="pr">#578</td><td>Server-side session search with full-text content search</td></tr>
+      <tr><td>Data retention + backup (pg_partman, S3)</td><td class="pr">#571</td><td>Data retention policy + optional S3 archival</td></tr>
+      <tr><td>Datadog / W3C TRACEPARENT trace correlation</td><td class="pr">#562</td><td>OTEL exporter HTTP/protobuf default <span class="tag">foundation only</span></td></tr>
+      <tr><td>Upstream header injection (doc cites as already contributed)</td><td class="pr">#549</td><td>Configurable upstream header injection <span class="tag">still open</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="warn"><span class="dot"></span>Production-hardening PRs on the doc's path (not named, but clearly needed)</h2>
+  <table>
+    <thead><tr><th>Purpose</th><th>PR</th><th>Title</th></tr></thead>
+    <tbody>
+      <tr><td>Fargate/Cloud Run readiness</td><td class="pr">#570</td><td>Report DB connectivity in <code>/health</code>, add <code>/ready</code></td></tr>
+      <tr><td>Fargate/Cloud Run readiness</td><td class="pr">#516</td><td>Rich DB + Redis health checks on <code>/health</code></td></tr>
+      <tr><td>Fargate/Cloud Run readiness</td><td class="pr">#515</td><td>Rich DB + Redis health checks (v1)</td></tr>
+      <tr><td>Observability</td><td class="pr">#517</td><td>Prometheus <code>/metrics</code> endpoint</td></tr>
+      <tr><td>Role separation (admin vs client keys)</td><td class="pr">#574</td><td>Reject <code>CLIENT_API_KEY</code> on admin endpoints</td></tr>
+      <tr><td>Injection defense (doc's "ready today" row)</td><td class="pr">#573</td><td>StringReplacementPolicy request-side filtering</td></tr>
+      <tr><td>Adjacent to lossless capture / export</td><td class="pr">#576</td><td>Webhook event export for completed conversations</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="miss"><span class="dot"></span>Doc gaps with no PR in flight</h2>
+  <ul>
+    <li><strong>Horizontal scaling</strong> — uvicorn workers, Redis-ize in-process singletons, load test (30 users / 100+ concurrent)</li>
+    <li><strong>Multi-provider</strong> (OpenAI, Gemini) — deliberate v3.0 direction; <span class="muted">#547 is actively removing remaining OpenAI refs</span></li>
+    <li><strong>Session resume / replay</strong></li>
+    <li><strong>Lossless session capture</strong> — Claude Code <code>Stop</code> hook + <code>transcript_path</code> merge with API logs</li>
+    <li><strong>Lambda deployment</strong> (true serverless)</li>
+    <li><strong>Vector / semantic search</strong> (pgvector or external)</li>
+  </ul>
+
+  <h2>Unrelated to the doc</h2>
+  <p class="muted">#550, #545 (CLI fixes), #543 (scheduler), #546 (supply-chain feed), #505, #506, #489, #485, #441, #429, #424, #510, #575, #547.</p>
+
+  <h2>Bottom line</h2>
+  <p>Phase 2 of the roadmap — identity, search, retention, health, metrics, auth separation — is largely already in the PR queue. The outstanding work is <strong>Phase 3–4</strong>: scaling, multi-provider, resume, and lossless capture. The multi-provider question is strategic, not implementation-time-bounded, and the doc correctly identifies it as the make-or-break item.</p>
+
+  <footer>
+    Source doc: Luthien LOI / Adoption Roadmap (Google Doc, private). PR data: <code>gh pr list --repo LuthienResearch/luthien-proxy --state open</code>.
+  </footer>
+</main>
+</body>
+</html>
