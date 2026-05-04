@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLMs are not Next-Token Predictors</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <button id="theme-toggle">light</button>
+
+        <div class="draft-notice">
+            This is an unfinished draft. If you're reading this, it's probably because
+            I wanted you to be able to see a recent sample of my writing and/or I'm
+            asking for feedback.
+        </div>
+
+        <div class="hero">
+            <h1>LLMs are not Next-Token Predictors</h1>
+            <div class="byline">an interactive rant</div>
+        </div>
+
+        <div class="prose has-dropcap" id="intro">
+		<p>LLMs are not next-token predictors.</p>
+
+		<p>I don't mean they're not <em>just</em> next-token predictors. I'm not referring
+		to capabilities that emerge from post-training. I'm not claiming any unique insight or
+		breakthrough.</p>
+
+		<p>I'm saying that good old-fashioned transformer-decoder LLMs pretrained on large
+		corpuses are optimized for something other than next-token prediction. That this is a
+		straightforward and mathematically demonstrable fact. That it's a subtle but important
+		difference. And that the slightly inaccurate way we typically talk about LLMs confuses
+		our thinking and intuitions around them.</p>
+
+		<p>I'm not really making an argument. I'm describing what's already there in plain
+		sight, and how it doesn't really line up with the story we've told so many times that
+		even the LLMs themselves have internalized it.</p>
+
+		<p>(Spoiler for the punchline: kv activations are important and backprop flows from
+		each token prediction to every previous forward pass through them.)</p>
+	</div>
+
+        <div class="viz-section" id="sec1">
+            <div class="canvas-wrap">
+                <canvas></canvas>
+                <button class="btn-play-overlay">&#9654; Play</button>
+                <button class="btn-reset-overlay">reset</button>
+            </div>
+        </div>
+
+	<div class="prose" id="between-zero-and-one">
+		<p>That's the rough story the folk model tells.</p>
+
+		<p>Below, the same story — but with each forward pass shown as its own column, so we
+		can see what's actually happening between passes.</p>
+	</div>
+
+	<hr class="section-break">
+
+        <div class="viz-section" id="sec2">
+            <div class="canvas-wrap">
+                <canvas></canvas>
+                <button class="btn-play-overlay">&#9654; Play</button>
+                <button class="btn-reset-overlay">reset</button>
+            </div>
+        </div>
+
+
+        <div class="prose" id="between-one-and-two">
+		<p>There are at least two important falsehoods implicit in this understanding of LLMs:</p>
+
+		<ol class="falsehoods">
+			<li><p>LLMs have no persistent internal state aside from their fixed weights —
+			there is the token stream, and nothing more.</p></li>
+			<li><p>Each forward pass receives training signal only from its own prediction.
+			We never reach back and adjust earlier-position computations to improve a later
+			answer.</p></li>
+		</ol>
+
+		<p>If both were true, the LLM would in fact be just a next-token predictor. Neither is.</p>
+
+		<p>Here's a more accurate (but still simplified) model of an LLM in action, incorporating KV activations.</p>
+	</div>
+
+        <div class="viz-section" id="sec3">
+            <div class="canvas-wrap">
+                <canvas></canvas>
+                <button class="btn-play-overlay">&#9654; Play</button>
+                <button class="btn-reset-overlay">reset</button>
+            </div>
+        </div>
+
+
+	<div class="prose" id="between-two-and-three">
+		<p>Every attention head in a transformer really has two outputs: there's an additive
+		write to the residual stream, and there are the KV activations. The KV activations
+		are persistent internal state for the LLM, and will inform every subsequent layer
+		<em>in future forward passes</em>. Information flows down through layers within a
+		forward pass, but <em>sideways</em><sup><a href="#fn-1" id="fnref-1" class="fn-ref">1</a></sup>
+		across different forward passes within attention mechanisms on each layer.</p>
+
+		<p>Anyone who spends any time studying LLMs understands that KV activations store
+		persistent state, but it's completely lost in the "LLMs are just next-token-predictors"
+		story. And as I'll argue, telling that story often enough can cause even people who
+		understand KV activations as persistent state to discount that aspect.</p>
+	</div>
+
+	<hr class="section-break">
+
+        <div class="prose" id="between-something">
+		<p>Now consider backpropagation. We compare each forward pass's output to the
+		ground-truth next token and compute the gradient of every parameter with respect to
+		the resulting loss. The loss is next-token cross-entropy, summed over every position
+		in the document.</p>
+
+		<p>Because every KV activation informs downstream layer activations on every subsequent
+		forward pass, gradient from position N's prediction flows back through the KV state at
+		every earlier position. Every KV-relevant weight gets gradient from every future
+		token's prediction. And every parameter in the model is upstream of some KV.</p>
+        </div>
+
+
+        <div class="viz-section" id="sec4">
+            <div class="canvas-wrap">
+                <canvas></canvas>
+                <button class="btn-play-overlay">&#9654; Play</button>
+                <button class="btn-reset-overlay">reset</button>
+            </div>
+        </div>
+
+
+
+        <div class="prose" id="between-something-2">
+		<p>And now we can see that the second claim — that backprop only affects weights with
+		regard to next-token prediction — is also false. On the contrary: every parameter is
+		optimized to predict <strong>every</strong> future token that will appear in the context.</p>
+
+		<p>LLMs are not next-token predictors. They are full-context predictors whose visible
+		output happens to be one token at a time.</p>
+        </div>
+
+	<hr class="section-break">
+
+        <div class="prose" id="implications">
+		<p>In substituting mere-next-token-prediction as the main intuition for thinking about
+		LLMs, a lot of discussion ends up obscured or confused on important points.</p>
+
+		<h2 class="implication-heading"><span class="impl-num">1</span>Most LLM state lives in KV activations.</h2>
+		<p>We're usually very aware of this when considering hardware requirements and cache
+		economics. It tends to fall by the wayside elsewhere. For example, it was — and for
+		some providers still is — common to redact the reasoning block of a reasoning model's
+		response from future turns. The model generates <code>&lt;reasoning&gt;&lt;response&gt;</code>;
+		on the next turn we remove <code>&lt;reasoning&gt;</code> from history and the model
+		sees only that it said <code>&lt;response&gt;</code>. This saves context tokens, at the
+		cost of obliterating not just the KV activations of the reasoning, but also the KV
+		activations of the response itself — which must now be recomputed as if
+		<code>&lt;response&gt;</code> had been produced without any reasoning at all.</p>
+
+		<p>It would be as if a human suddenly forgot the thought process that led to something
+		they said, and had to instantaneously construct a fabricated history of what they were
+		thinking when they said it — which may or may not diverge wildly from what they were
+		actually thinking. It's perhaps for this reason that Anthropic switched to preserving
+		thinking blocks by default as of Opus 4.5. The same dynamic plausibly underlies
+		anecdotal reports of coding assistants becoming much less effective after compaction
+		events, even when the compacted context retains all the semantically important content:
+		too much of the state was in the KV cache, completely inaccessible to the compaction
+		process, and irreversibly lost afterward.</p>
+
+		<h2 class="implication-heading"><span class="impl-num">2</span>LLMs (and/or their personas) may have inaccurate self-models.</h2>
+		<p><a href="https://lesswrong.com/posts/small-models-can-introspect-too" class="ext">"Small Models Can Introspect Too"</a>
+		built on Anthropic's <a href="https://transformer-circuits.pub/2025/introspection/index.html" class="ext">"Emergent Introspective Awareness in Large Language Models"</a>
+		to show that not only could surprisingly small models detect concept injections, but
+		that this capability improved when the context included (a) an explanation of how KV
+		activations could mechanically enable some degree of introspection, and (b) the
+		abstract of the Anthropic paper. This suggests that introspection capabilities in the
+		absence of that context were effectively sandbagged — the LLM acted as if it lacked a
+		capability that it had — and that some portion of the effect plausibly derives from
+		inaccurate self-modeling.</p>
+
+		<p>If there are measurable effects from making the persona aware of KV mechanics, there
+		could be more impact from the realization that LLMs are always engaged in long-term
+		prediction at a fundamental architectural level. This has implications for evaluation
+		and oversight. Beyond the sandbagging concern, models with inaccurate self-models may
+		be more likely to confabulate explanations for their own behavior, or to make less
+		effective use of evidence available via introspection. And monitoring efforts that rely
+		on legible token-output traces may face an "awareness overhang" as models become more
+		aware of latent long-term-planning capabilities that bypass the token stream entirely.</p>
+
+		<h2 class="implication-heading"><span class="impl-num">3</span>The "next-token predictor" framing distorts the broader discourse.</h2>
+		<p>The volume of discussion built on top of the "just a next-token predictor"
+		assumption tends to promote and exacerbate misconceptions. It seems likely, for
+		example, that this encourages people to be more dismissive of current and potential
+		LLM capabilities. Questions of latent long-term planning simply don't come up — but on
+		architectural grounds alone, they should be a higher priority.</p>
+
+		<h2 class="implication-heading"><span class="impl-num">4</span>Intuitions about model experience and welfare should reflect this.</h2>
+		<p>Whatever you think LLMs are doing, your model of their experience and moral standing
+		should account for the fact that most of their state — and most of what they're being
+		optimized for — lives outside the narrow channel through which they talk to us.</p>
+        </div>
+
+        <footer class="footnotes">
+            <ol>
+                <li id="fn-1"><p>Technically KV-activation flows are still downward — they don't actually affect subsequent KV-activation calculations at the same layer, only everything downstream in future forward passes. <a href="#fnref-1" class="fn-back">↩</a></p></li>
+            </ol>
+        </footer>
+    </div>
+    <script src="factory.js"></script>
+</body>
+</html>
