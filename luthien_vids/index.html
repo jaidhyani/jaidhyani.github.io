@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luthien Proxy — demo videos (draft)</title>
+<style>
+  :root {
+    --bg: #09090b;
+    --panel: #111114;
+    --border: #1f1f23;
+    --fg: #e4e4e7;
+    --muted: #71717a;
+    --accent: #4ec9b0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.55;
+    padding: 48px 24px 96px;
+  }
+  main { max-width: 1100px; margin: 0 auto; }
+  header { margin-bottom: 48px; }
+  h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; }
+  h1 .accent { color: var(--accent); }
+  .lead { color: var(--muted); margin-top: 8px; max-width: 720px; }
+  .meta { color: var(--muted); font-size: 13px; margin-top: 16px; }
+  .meta a { color: var(--accent); text-decoration: none; }
+  .meta a:hover { text-decoration: underline; }
+
+  section { margin-top: 48px; }
+  section h2 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .card.full { grid-column: 1 / -1; }
+  .card video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
+  }
+  .card-body { padding: 16px 20px; }
+  .card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .card p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .card .duration {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: var(--accent);
+    margin-left: 6px;
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>Luthien Proxy <span class="accent">— demo videos</span></h1>
+  <p class="lead">
+    Draft cuts for the demo videos covering install, policy configuration, and
+    using Claude Code through the proxy. Raw clips, no captions yet — pacing
+    and content first, polish later.
+  </p>
+  <p class="meta">
+    Source: <a href="https://github.com/LuthienResearch/luthien-proxy/pull/723">PR #723</a>
+    · Recorded with <a href="https://github.com/charmbracelet/vhs">VHS</a>
+    + <a href="https://playwright.dev">Playwright</a>
+    · Backend pinned to a deterministic mock for reproducibility
+  </p>
+</header>
+
+<section>
+  <h2>The headline contrast</h2>
+  <div class="grid">
+    <div class="card full">
+      <video src="contrast-hstack.mp4" controls preload="metadata" muted playsinline></video>
+      <div class="card-body">
+        <h3>Side by side: without Luthien vs with Luthien <span class="duration">8s</span></h3>
+        <p>Same prompt, "How do I install the requests library?". Direct Claude says <code>pip install requests</code>; routed through Luthien with a pip→uv rewrite policy active, the response comes back as <code>uv pip install requests</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Install</h2>
+  <div class="grid">
+    <div class="card full">
+      <video src="install.mp4" controls preload="metadata" muted playsinline></video>
+      <div class="card-body">
+        <h3>One-line install <span class="duration">13s</span></h3>
+        <p><code>curl -fsSL https://luthien.cc/install.sh | bash</code> through the <code>luthien onboard</code> flow to a running gateway with the OnboardingPolicy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Using Claude Code through the proxy</h2>
+  <div class="grid">
+    <div class="card">
+      <video src="without-luthien.mp4" controls preload="metadata" muted playsinline></video>
+      <div class="card-body">
+        <h3>Without Luthien <span class="duration">8s</span></h3>
+        <p><code>claude -p</code> direct, no proxy. Returns <code>pip install requests</code>.</p>
+      </div>
+    </div>
+    <div class="card">
+      <video src="with-luthien-prefer-uv.mp4" controls preload="metadata" muted playsinline></video>
+      <div class="card-body">
+        <h3>With Luthien <span class="duration">8s</span></h3>
+        <p>Same prompt via <code>luthien claude -p</code>; pip→uv rewrite policy active. Returns <code>uv pip install requests</code>.</p>
+      </div>
+    </div>
+    <div class="card full">
+      <video src="interactive-claude.mp4" controls preload="metadata" muted playsinline></video>
+      <div class="card-body">
+        <h3>Full Claude Code TUI <span class="duration">7s</span></h3>
+        <p>Not <code>-p</code>: the actual interactive Ink TUI through the proxy. Prompt typed, response streams back rewritten in place.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Configuring policies</h2>
+  <div class="grid">
+    <div class="card">
+      <video src="policy-in-action.mp4" controls preload="metadata" muted playsinline></video>
+      <div class="card-body">
+        <h3>CLI tour <span class="duration">6s</span></h3>
+        <p><code>luthien policy list / set / current</code>. Operator surface for switching policies without touching YAML.</p>
+      </div>
+    </div>
+    <div class="card">
+      <video src="policy-config.mp4" controls preload="metadata" muted playsinline></video>
+      <div class="card-body">
+        <h3>Web UI <span class="duration">11s</span></h3>
+        <p>The <code>/policy-config</code> dashboard: Available, Proposed, and Active policy panes; click into a policy to inspect or activate it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The audit trail</h2>
+  <div class="grid">
+    <div class="card full">
+      <video src="history.mp4" controls preload="metadata" muted playsinline></video>
+      <div class="card-body">
+        <h3>Conversation history <span class="duration">17s</span></h3>
+        <p>Every session and every turn recorded. Click into a conversation; each turn is tagged <strong>POLICY MODIFIED</strong> with an explicit <code>string_replacement: Response modified by string replacement</code> marker. The proxy is a control plane — and a black-box recorder.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
