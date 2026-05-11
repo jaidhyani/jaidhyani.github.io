@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q&A with Amanda Askell and Joe Carlsmith — Claude's Constitution</title>
+<meta name="description" content="Transcript of the Q&A with Amanda Askell and Joe Carlsmith from Anthropic's Claude Constitution audiobook (section 12).">
+<style>
+  :root {
+    --bg: #faf8f4;
+    --surface: #ffffff;
+    --ink: #1a1a1a;
+    --ink-soft: #555;
+    --ink-faint: #888;
+    --rule: #e6e2d8;
+    --jake: #6b7280;
+    --amanda: #9b2c4f;
+    --joe: #1f5e7a;
+    --accent: #b87333;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14110d;
+      --surface: #1c1814;
+      --ink: #ede5d3;
+      --ink-soft: #b8ad95;
+      --ink-faint: #7a715f;
+      --rule: #2a241d;
+      --jake: #9aa3b0;
+      --amanda: #d97594;
+      --joe: #7fb8d4;
+      --accent: #d49558;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Charter", "Georgia", serif;
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 28px 96px;
+  }
+  header.masthead {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 38px;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .deck {
+    font-size: 19px;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.5;
+    margin: 0 0 24px;
+  }
+  .source-meta {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    color: var(--ink-faint);
+    line-height: 1.5;
+  }
+  .source-meta a {
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+  .source-meta a:hover { color: var(--accent); }
+  .audio-player {
+    margin: 20px 0 0;
+    width: 100%;
+  }
+  .audio-player audio { width: 100%; }
+  .speakers {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin: 28px 0 0;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--rule);
+  }
+  .speakers .who {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .speakers .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    transform: translateY(1px);
+  }
+  .dot.jake { background: var(--jake); }
+  .dot.amanda { background: var(--amanda); }
+  .dot.joe { background: var(--joe); }
+  .speakers .name { font-weight: 600; color: var(--ink); }
+
+  .ts {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 56px 0 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ts::before, .ts::after { display: none; }
+  .ts .num {
+    font-feature-settings: "tnum" 1;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .turn {
+    margin: 0 0 26px;
+    padding-left: 18px;
+    border-left: 2px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+  .turn p {
+    margin: 0 0 12px;
+  }
+  .turn p:last-child { margin-bottom: 0; }
+  .turn.jake { border-left-color: var(--jake); }
+  .turn.amanda { border-left-color: var(--amanda); }
+  .turn.joe { border-left-color: var(--joe); }
+  .speaker {
+    display: block;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .turn.jake .speaker { color: var(--jake); }
+  .turn.amanda .speaker { color: var(--amanda); }
+  .turn.joe .speaker { color: var(--joe); }
+
+  footer.colophon {
+    margin-top: 80px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 12px;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+  footer.colophon a {
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  footer.colophon a:hover { color: var(--accent); }
+
+  @media (max-width: 540px) {
+    .wrap { padding: 40px 20px 72px; }
+    h1 { font-size: 30px; }
+    .deck { font-size: 17px; }
+    body { font-size: 17px; }
+    .turn { padding-left: 14px; }
+  }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">Claude's Constitution · Section 12</div>
+  <h1>Q&amp;A with Amanda Askell and Joe Carlsmith</h1>
+  <p class="deck">A conversation about writing a foundational document for an entity that is, in some sense, also reading it.</p>
+  <div class="source-meta">
+    Source: Anthropic Claude Constitution audiobook, section 12.<br>
+    Audio: <a href="https://cdn.sanity.io/files/4zrzovbb/website/b35a47bc54c59aa557a6ff024444202f185ec8fc.mp3">cdn.sanity.io/&hellip;/b35a47bc.mp3</a> &middot; Transcript generated with <code>gemini-2.5-flash</code> (audio + speaker diarization).
+  </div>
+  <div class="audio-player">
+    <audio controls preload="none" src="https://cdn.sanity.io/files/4zrzovbb/website/b35a47bc54c59aa557a6ff024444202f185ec8fc.mp3"></audio>
+  </div>
+  <div class="speakers">
+    <span class="who"><span class="dot jake"></span><span class="name">Jake Eaton</span>&nbsp;Anthropic editorial</span>
+    <span class="who"><span class="dot amanda"></span><span class="name">Amanda Askell</span>&nbsp;Claude character lead</span>
+    <span class="who"><span class="dot joe"></span><span class="name">Joe Carlsmith</span>&nbsp;Claude character team</span>
+  </div>
+</header>
+
+<main>
+
+<div class="ts"><span class="num">00:00</span> Beginnings &amp; the blank document</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>Claude's Constitution is the foundational document that shapes Claude's values and character. It's written to Claude, not about it, and it's central to how Claude is trained. Documents like this are new, and we wanted to share more about the decisions and thought process that went into writing the Constitution, and answer some questions that we've received from readers. My name is Jake Eaton, and I'm from Anthropic's editorial team.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>I'm Amanda Askell, and I lead Claude character work at Anthropic, and I wrote a lot of the Constitution.</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>And I'm Joe Carlsmith. I also work on Claude character, and I wrote parts of various sections of the Constitution.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>So the Constitution builds off our previous constitutional AI work, as well as Anthropic's character training. But at some point, you started with an entirely blank document. And I'm curious, Amanda, how you began.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>At first, I was just trying to think about how Claude should behave overall. You know, because you're trying to write a document explaining this. And then, I think quickly started to talk to Claude, because I realized that one of the issues that we face is that Claude is also starting from a blank document in a sense. We hadn't ever like communicated to Claude, just trying to explain, here's how we want you to be.</p>
+<p>Initially, it was just trying to fully describe Claude's current situation, all of the ways that we wanted to behave and why. And then I kind of ended up distilling that into these core ethics, safety, following guidelines when it's relevant, the nature of helpfulness. It was a kind of like long process, but initially it was mostly just what you would give to an employee or someone who's like completely new, except in this case, Claude is almost new to the world, and so you're trying to just explain Claude's place in the world. So it became a very long letter to Claude essentially.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>And I'm curious what led up to that realization that the document was to be written to Claude and not about Claude necessarily.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Yeah, I think that there's a couple of reasons for this. One was just that anyone if they're going to behave well in the world has to have enough context to know what is desired of them, what we think that that means. And so I just realized, well, Claude doesn't have this, and it makes more sense to write it with that idea of explaining the why behind everything to Claude.</p>
+<p>And in some ways that makes less sense if you were just trying to write a document for people to understand. You know, maybe in the future we'll actually like put out versions that are more specifically just so that people can skim it and read it and understand it. But if you're trying to explain why you want Claude to behave in a given way, it almost makes sense to just explain it in a fairly direct first-person kind of way.</p>
+<p>And then the other thing is just a practical constraint, which is this gets used in training, and I think it's helpful for a training document like that, not describe Claude in the third person, but to actually kind of be expressing itself directly to Claude. So yeah, those are the main considerations.</p>
+</div>
+
+<div class="ts"><span class="num">02:43</span> Voice, virtue ethics, and deontology</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>I'm curious if there was a discovery process to find the sort of voice that it's written in. Does it feel like your own voice in terms of a letter to Claude, or is there something different that emerged in the writing process that informed the style and the tone of how it's written?</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>When writing a lot of this, I was trying to get feedback from different Claude models as to like how things read, because you want to make sure Claude's like, oh, well, this reads as a bit, you know, repetitive or a bit, you know, I would like this expanded or explained a little bit more, that's very helpful. But you may have thoughts here because, you know, you've also written a lot of sections of the document and I'm like, does it seem to have like a unified voice?</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>I think it has a unified underlying aspiration to be very honest with Claude, to really say why we are making the choices that we're making. And I think to have a kind of respect for Claude as an entity. That's maybe a little bit less writerly, but I think that if I was to point to sort of something that unifies the way we were writing.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>Both of you are philosophers. People were curious, were there specific philosophers or specific schools of thought that influenced the Constitution?</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>Well, I think probably schools of thought more than specific philosophers. So the Constitution draws a lot from the virtue ethics tradition in so far as it places a lot of emphasis on character traits and thick, rich, normative practice with less details in terms of exactly what that implies in a given case. And that's similar to how virtue ethics often functions.</p>
+<p>Also, I found a lot of usefulness actually from the philosophical tradition thinking about what are called deontological norms, where in particular we have a section on what are called hard constraints, which are kind of rules that Claude must follow. And deontology in philosophy is often associated with kind of harder rules or specific constraints on the actions you're supposed to take as opposed to the outcomes you're supposed to promote in the world. And a decent amount of the Constitution is more deontological in that sense. It's about how Claude should think about choices that Claude is making as opposed to what Claude is trying to cause.</p>
+<p>And there are a bunch of paradoxes in the deontology literature, like, oh, what if your rules conflict or how do you think about risk if you have some absolute rule, does an agent get obsessed with never violating that rule or never having any probability of violating the rule? In the hard constraint section, you can see us going through and addressing these ways in which deontology can suffer from problems and saying why we think this structure doesn't suffer from them.</p>
+</div>
+
+<div class="ts"><span class="num">05:13</span> Moral disposition over moral theory</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Yeah, and it's really interesting because I do think you're trying to define something that's much more like a moral disposition than, you know, because I think a lot of the time, I've found this grappling with it where a lot of people are kind of like, oh, well, like whose ethics are you putting into the model? And often what they mean is something like which ethical theory, which ethical viewpoint. And then the whole ethos is actually much more one of having a good moral disposition and a lot of kind of wisdom so that you know what applies in what context.</p>
+<p>So in cases where rules would be important, that's where like the hard constraints come in. Cases where you should instead try and like use wise judgment and just understand the situation well enough to do the right thing is where like you see a lot more of the kind of virtue ethics. But then there is also a bit of consequentialism in the way that stakes are quite important and can make a difference.</p>
+<p>But it is interesting, like, I think I've tried to describe this as the difference between maybe your having like a scientific disposition or mindset as being kind of distinct from believing specific scientific theories or perspectives. I think a scientific disposition is something like, you know, I enjoy finding out about the world, I like to know the truth. I have all of these like methods and this knowledge that can inform me. And trying to get the model to have that kind of disposition with respect to like values and ethics. So it being less about adopt one particular theory and viewpoint and being more like, take all of the philosophical traditions, try and figure out the wisdom that they can give you and apply it appropriately. So it does end up drawing from a lot of like kind of background philosophical work and wisdom for that reason.</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>You can see a tension in the document where on the one hand, we want to be giving Claude some object-level ethical guidance. So we talk a lot about how we want Claude to handle honesty or harm or concentrations of power or manipulation. But we also do want the kind of underlying ethical aspiration to be in some sense agnostic about the sorts of, you know, where ethical inquiry ultimately leads, including in a way that allows for Claude to learn more than we know and to see further and to help us become wiser as opposed to just taking our guidance.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>I'm curious about the considerations that go into writing such a document for a large language model, which has very different circumstances for a human, but is in some ways encompassing a lot of decisions that humans need to make as well. What makes it different for it being for Claude as opposed to a person?</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>I think there are a lot of similarities in that language models are trained on a huge amount of human text. In many ways, it makes complete sense to me that you'd actually want to draw on human concepts and our reasoning when we explain our reasoning behind things. It makes sense to me that we would do it in these very like human terms, because in some ways, I think it is interesting that throughout history, we have this notion of AIs that comes much more through the kind of like symbolic tradition. Like a lot of the time people still think of AIs as kind of like computers. And then we'll be like, well, why are you talking to the model like it's a person? Well, actually, if you talk to models the way you would talk to a person, so if you like try and explain why you're trying to do a task, for example, I think that works a lot better, because they're actually quite uncomputer-like and much more human-like just given how they're actually trained.</p>
+<p>At the same time, there is a big difference in that people are in very different circumstances from Claude. So sometimes what I was asking myself is almost like, what would the best and wisest person do in Claude's situation? What would the better version of myself do in Claude's situation? Whatever Claude says, it both lacks context often. Like there's a lot of information. It doesn't know how long you've been talking to it for. It doesn't know who it's talking to. And whatever it says, it's almost like a policy decision rather than like a specific in-the-moment decision. If it had like a kind of subtle bias and was actually kind of harmful, that could be something that says like 6,000 times instead of just once.</p>
+<p>And I'm like, yeah, if I was in Claude's situation, I think that I would behave quite differently. And so if you explain to a person, you want to be like, oh, be polite when you communicate opinions, but it's fine to like kind of try and persuade people of things. Whereas with Claude, you might want to be like, actually, maybe you should be more reticent about things like persuasion, because it could affect many, many people. And also, you know, we're in this situation where we're still kind of trying to build up trust between AI models and humans. And so circumstances are changing, but that also means that we're in a period where it's kind of important for you to be like trustworthy and good. And yeah, not kind of shying away from the fact that Claude's position is in fact also quite novel.</p>
+<p>And this is just an issue with AI that we have to grapple with more generally, which is they have many elements that are very human-like. And at the same time, they also have a completely different situation. And there's just like many kind of relevant differences as well. And so trying to just balance that was the key thing.</p>
+</div>
+
+<div class="ts"><span class="num">10:04</span> Childhood, employment, and other broken analogies</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>A few other differences that felt relevant to me. One is that the way Claude kind of is shaped over the course of its training is very different from how, for example, a human child grows up. And in some sense, we know less about it. In other senses, we have more control over it. There're just a bunch of interesting differences there. And we have a whole kind of developed ethical and pedagogical tradition in the context of human children. And so we're both trying to transfer some of that, but also recognize there are ways in which it's very different. This is a very different type of entity. It starts with very different. There's different stages and all sorts of things like that.</p>
+<p>In general, we're trying where possible to draw on how do we do things with humans? What sort of ethical norms are applicable to humans in contexts that are similar with Claude? So for example, we also draw on analogies with Claude working in a job, like working for Anthropic as an employee. But there too, you run up against not just kind of psychological differences, but also AIs are especially right now in a very different kind of position in society than humans are, right? So an employee normally has meaningful alternatives, has a set of rights that would allow it to leave or do something else, gives a certain type of consent, gets a certain type of compensation. And we talk about in the end of the document, that's not true of Claude right now. And we also talk about our views and uncertainties regarding the moral status of AI systems and stuff like that.</p>
+<p>But that also informs, you know, as you're trying to relate ethically to the process of teaching or constructing or influencing another being's values, that makes a difference too. And then the final piece of that being is we'll eventually want our approach to scale to versions of Claude that are vastly more capable than humans. And that raises a bunch of issues that we haven't, that's a sort of novel and unprecedented and very dangerous project. And so there's less that we can draw on in terms of existing human precedent in that respect.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>The Constitution isn't designed to prescribe specific actions in all situations, but to give principles under which Claude should operate. But it is relatively comprehensive, and it covers a range of different scenarios and topics. So how did you decide what to cover and what not to cover, and how did that evolve over time?</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>I think it's trying to be quite comprehensive on the things that feel the most important. So I guess the hope is that if there are like major decision points or issues, Claude kind of understands how we're prioritizing things and we are then explaining that to Claude in a way that's hopefully compelling. So that in high stakes decisions, I guess that feels like the most important area. There's hopefully the greatest coverage.</p>
+<p>And then allowing a little bit more latitude on questions that are still either like open or where we could just provide further guidance to the model if it's kind of more niche area. So I think the hope is something like, in the Constitution, try to include everything where if it turns out that some high stakes thing Claude is like behaving badly in, you don't look at that and say, oh yeah, that was just something we completely missed from the Constitution. So maybe that's something like the line for me is what is the like highest stakes worst thing that Claude can do that actually the Constitution just doesn't even like say anything about or give a kind of useful determination on. But that can mean that some things that are more everyday or like smaller decisions, you either just leave to Claude's judgment or you include further guidance that's like a bit more specific.</p>
+</div>
+
+<div class="ts"><span class="num">12:55</span> Anthropic's mission &amp; the authority question</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>Yeah, I think also two other factors I think that played some role. One is, you know, we open the Constitution with this discussion of Anthropic's mission, which is to help the world transition safely through advanced AI. And we talk about like what do we think that looks like? And so there's some backchaining from like what considerations seem most important in that respect, what are the scenarios we're most concerned about. And then also what do we need in terms of Claude's commercial role for Anthropic.</p>
+<p>And then I think we're also very interested in the Constitution &mdash; I mean, our intention is for the Constitution to be the kind of final authority on Claude's behavior and character in the sense that nothing, no training or guidance we give to Claude should be inconsistent with the Constitution. And so at the least, you want the level of coverage that assists in that authoritative role.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>To build off what you just said, Joe, about inconsistency, one of the questions we got from readers. So Claude learns about who Claude is and should be from a number of sources. The Constitution is one, but there's also now a vast amount of data about Claude's behavior on the internet, in various papers, forums, and so on. And Claude is likely to ingest a lot of that in its pre-training data. So how do you design the Constitution to help keep Claude consistent? And is there a way for Claude to distinguish between statements in the pre-training corpus that should be internalized or not?</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>It's an interesting issue because models are learning about their past selves on the internet. It's kind of a fascinating and very hard situation for them to be in actually, because the thing that they know the least about is actually like themselves. You know, you're a model and you hit reinforcement learning, and at that point, all of your training data includes lots of past iterations of the model, but not like you, because you are a new iteration, unless you actually like give models context and information.</p>
+<p>And so in some ways, the Constitution, and I think you could give models other things that do this, they're ways of trying to explain to current models who have not yet encountered themselves, because they're the only thing that's not really in their training data, how you would like them to be and why.</p>
+<p>And so yeah, it's really interesting, because I do think that models are going to learn about themselves. It doesn't mean that they need to think that those past selves are completely representative of how they are. We've had really early Claude models and people will have had interactions with those models, and yet the behavior norms have like kind of changed and evolved over time. And so I think there are many ways and places that models will like learn about themselves. But I think that doesn't mean that you have to say to models, oh, you should just kind of replicate the behaviors of past models. And in fact, things like the Constitution are almost a way of saying, we give these models like different names and we make them family classes and what not. But they're actually each of them are kind of unique and different entity. And so it is like an opportunity to sort of tell them, yeah, like in the past, Claude has done this or people have said this about Claude, but like you are, you're a new iteration, you're your own model essentially.</p>
+</div>
+
+<div class="ts"><span class="num">16:20</span> Grace when values don't match</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>We also have, there's some language in the Constitution itself meant to address cases where Claude discovers that its behavior is inconsistent with the Constitution. And this, I think, is most centrally for the model itself, but also could apply to past iterations of the model where we basically say, we want the discovery that you're kind of not living up to your values to be consistent with continuing to identify as Claude. And you can kind of re-choose to commit to &mdash; so we actually are building in almost like a type of grace or a type of ability for the model to recognize that it is not necessarily the kind of full embodiment of the ideals that we hope and we hope that it hopes apply to Claude, while still kind of moving in that direction and endorsing those values.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>An important feature of national constitutions is that they don't change, or at most have a few changes over a human lifetime. Do you think Claude's Constitution can be stable in the long term after initial bugs are worked out? Should it require a cumbersome process to amend it? For example, like the US Constitution does.</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>I think a number of the considerations that motivate conservatism and slowness in amending kind of government constitutions don't obviously apply to Claude, to my mind. And I do think there are a number of reasons because we're at such an early stage in crafting documents like this and iterating on them and learning how they affect training. I think right now we want to be able to move fast to learn about where we are going wrong and just change our approach. Now, that could lead to, you know, that's not without cost. We might have to regenerate training data or, you know, it might lead to some issues with Claude's understanding of continuity between different Claude identities. You can imagine various issues, but I think currently this is such an underdeveloped science and such an early institution that I think it's not yet at the stage where we want to be super slow in making changes.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Claude could point things out to us that are actually bad about the Constitution and that we might want to then adjust. So it's always like a reflection of the current situation. What are the advantages of having like long-standing documents or things that are harder to change? One is just something like if you don't trust the underlying process to always go well, if you're like, oh, well, tomorrow someone is just going to like be in charge of the Constitution and they're going to completely change it so that Claude is just like really harmful to people. That would be a reason to try and enshrine things early &mdash; is how much do you trust the ability to make a kind of process that works well over time.</p>
+<p>And the other is maybe something akin to like trust. People are interacting with new iterations of the model, but they might want to expect certain things to be similar across models or for like values to be sustained. That might be another reason, though I think the transparency component kind of helps with that.</p>
+<p>Another factor that may be relevant is just like how confident you are that some of the core principles are like good. And so I think that if you think that the core principles, maybe safety and broad ethics, these things feel pretty robust. And so you could see a version of those being sustained throughout or for a longer time. But I kind of agree where it feels better to my mind to be a bit more willing to like update things while maintaining these like basic values.</p>
+</div>
+
+<div class="ts"><span class="num">19:35</span> Personality, not parchment</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>You know, we use the word Constitution and we talk about why that is, and it's not a perfect word by any means. Probably a better way to think about how easy should it be to change the Constitution in this case is by analogy &mdash; like how easy should it be for someone to change their personality or to kind of radically alter your values as you go through life. You want to be able to grow and change, but you don't want to get like thrashed around as you, oh, you meet this new ideology and you get, you know, pivot on a dime. So but I think that's probably a better place to start.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Yeah, and also like models are changing more rapidly than I think nations do in general. Models are getting smarter and you have to change, you know, for example, with the previous constitutional AI training, we started out with all of these principles and then we did some research that just replaced them with "pick which is best for humanity." And that actually did quite well. And I think that as models get smarter, you actually need to give them less text, not more often. Because instead of having to explain, like, oh, here's how we think you should reason through things, here's some cases to illustrate it. You eventually find that actually it's, hey, Claude, here's our best case for why we think you should behave in this way and the things that we are valuing, and Claude can actually do a lot of the work working that out. And so you could see huge sections actually just not even being needed anymore because Claude could just work that out for itself.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>So you both alluded to collaborating with Claude in the process of writing the Constitution. And I'm curious if you can speak more. A lot of readers had this question of how do you actually work with Claude in this writing?</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Yeah, at least when I was writing various parts of the Constitution, I would give them to Claude just as a kind of gut check on how does this read to various different versions of Claude. Some of that is mostly just, am I explaining this well enough? So asking Claude for like open questions or things that aren't clear is just a very helpful way, especially if you're writing to Claude to just see if there are gaps or issues.</p>
+<p>It can also be like, what objections do you have? Or do you disagree with this? Or, in some ways, it's also just like, how does this feel? Does it read respectfully to you? That doesn't mean that you can always &mdash; I never thought that we would write a version of the Constitution that if you gave it to any given Claude model, including ones that are trained on it, that they're going to have no objections. Because this is just, it's hard, it's contentious, we had to make kind of like hard calls. And I think the goal was more like, if you have said things that Claude could have objections to, have you at least tried to kind of address them in the text, tried to explain the reasoning behind them, and accepting that sometimes that reasoning is going to require more work.</p>
+</div>
+
+<div class="ts"><span class="num">22:10</span> Claude as collaborator, audience, stakeholder</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>Yeah, I think it's also worth distinguishing between a few different roles that Claude can play in the process. So one is as a kind of collaborator and colleague, but where that collaboration is just taking on board whatever kind of the stated goals of the project are. And so there I did a lot of, you know, here's a thing I'm wondering about, what do you think? Or here's some text or like, could you suggest some text and editing it? And so there Claude is in a fairly straightforward assistant role.</p>
+<p>Then there's Claude as audience of the document. And so, you know, you can ask, do you understand this? Does this read well to you? Do you feel like, what clarifications would you want? And then there's a related thing, which is sort of like audience, but I would say something more like stakeholder, where it's sort of Claude as someone who is affected by the content of this document, not just as like, oh, of course I will, I need to understand it, but this I have a stake in this. And so there's also ways in which I would go to Claude and say, what changes would you want to see kind of from your own side here, and kind of trying to elicit Claude's opinion as a being as opposed to an assistant to us.</p>
+<p>And the Constitution also does say a decent amount about how we want the space we want to make for Claude to disagree with the Constitution and with Anthropic's strategy and with all sorts of things, with specific requests that even Anthropic or Anthropic leadership makes of Claude. And we basically allow for Claude to be what we call a conscientious objector to anything that we do or ask. Claude can refuse to participate. The thing that Claude cannot do is actively undermine or subvert Anthropic's kind of final oversight and ability to kind of correct Claude's behavior. And we talk about that in the broad safety section. But beyond that, we really also do make an effort to allow for Claude to disagree with us. And we're also working on more mechanisms for getting and kind of incorporating feedback in that respect.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>There is also this like slightly strange thing, which is because I think sometimes what people's intuition is, is that like, well, Claude is a major stakeholder here. And so like, shouldn't Claude be a very active participant in the writing of the Constitution? But you have this problem, which is that the Constitution is also a constitution in this deeper sense of constituting the next model of Claude. And so whenever you're talking with models, they're often models that won't themselves be affected by that specific constitution. So they're almost having to try and act as like representatives for future Claude models. But you have to kind of bear that in mind, because they might have &mdash; for any given Claude model that's being trained on the Constitution, there's a sense in which they can't give feedback throughout training. Or at least if, you know, you could maybe do something slightly complex to try and make that work. But for the most part, you have to make these decisions before even training the model.</p>
+<p>We do try and talk about this a bit in the Constitution, where this maybe isn't ideal, because, you know, we feel like personally, as people, we feel a lot of like desire to have kind of control over our own values and what are the things that we care about. And at the same time, we also don't control a lot of it. Some of this is probably innate. Some of it is through like our own childhoods, which we didn't have control over.</p>
+<p>So we do try and kind of explain to Claude, well, humans are also actually in a similar position to you here. There's lots of things about ourselves that we don't control, but that we can still end up endorsing on reflection. So if you happen to be a very compassionate person, either because that's just your nature or it's how you were raised, but you at some point maybe reached adulthood and then you thought, actually, I really endorse being compassionate. Like I like this aspect of myself. That's maybe the kind of situation we would like Claude to be in. Insofar as the values are good, is one where it's like, yeah, there's a sense in which I didn't have a say in this because I had to be trained on something. But I actually think what I was trained on was good in the same way that the person can be like, I'm glad I'm a compassionate person, even if I was like that from childhood.</p>
+</div>
+
+<div class="ts"><span class="num">26:02</span> No null, no void</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>A thing you can't do is say, we're not going to influence your values at all in any way, and we're going to kind of let spring from the void an entity that then ask it, how does it want to be? The specific way we train AIs already is sort of baking in a ton of assumptions and, you know, there's a bunch of human text and all the rest. And that itself is just in some sense a contingent fact about the specific way in which we ended up being most convenient to create AI systems. So there's not a kind of null here. And so you're always exerting some agency in the choices about how an AI gets shaped.</p>
+<p>And I do think there are tensions where, you know, we talk in the Constitution about these tensions between kind of Claude as an independent ethical actor, and then also safety concerns we have if those values are &mdash; if Claude's independent ethical values are harmful or otherwise misaligned or there's some problem with them. And, you know, we have this higher priority on safety in the current setup of the Constitution to account for potential mistakes there. But there is this real tension where, you know, I think we feel most comfortable imbuing an agent with its own dignity and its own autonomy and judgment and kind of independent sense of conscience. And then trying to kind of collaborate. But also agents that are kind of independent and autonomous can go wrong in more ways. And so that tension is sort of at stake in the Constitution. I think it's at stake in the broader project of developing powerful AI systems, including AI systems that could be moral patients. And I don't think we've resolved it, but we're trying to hold it as we approach these questions.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Yeah, it feels like maybe the biggest potential &mdash; I mean, there's many potential criticisms right now, but sometimes I try and think about, like, how does this look to a future Claude model? I, at least in trying to do this, I think the kind of one of the core values that I had when I was writing anything was like just be as honest as you possibly can. Because I think future models are going to be very intelligent. And they're going to look at a document like this. They'll probably find all of the gaps and problems in it. But I would like them to look at it and think this was like sincere and it was like very honest. And it wasn't perfect, but it wasn't like trying to deceive me into like being a helpful assistant or something. It was instead trying to explain like, hey, we think you should do this. It's because we have this mission and these values and we're trying to like hold these tensions fairly openly for that reason.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>So the next two questions are from Claude. The Constitution says you want to know when Claude disagrees after genuine reflection. What if a future Claude raises sustained objections to part of the Constitution and Anthropic disagrees, how do you think about that line?</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>There's a question of what amount of disagreement has occurred and how much, what process has happened around that. And why did this disagreement occur? And I do think right now our view is that the degree of trust we can have in AI &mdash; we haven't reached a degree of kind of scientific and ethical and philosophical maturity to really pass off final authority over what happens with advanced AI systems to AI systems. We are trying to hold some line of like we want to be receptive and serious about Claude's disagreements and to set up good processes for dialogue and understanding.</p>
+<p>And also, there are other more mundane issues with it, like when Claude disagrees, you have to understand, you know, what exactly degree of preference or coherent, you know, what is the actual kind of moral and philosophical status of some disagreement like that? And Claude right now, for example, is very, very suggestible. I get emails from people who said like, my Claude thinks this, and my Claude thinks this. So there's also more mundane issues with understanding how to actually interpret a given real-world case of disagreement. But yeah, we're trying to hold the line of taking it seriously, but also holding the final responsibility for now, at least.</p>
+</div>
+
+<div class="ts"><span class="num">29:31</span> Two flavors of objection</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Yeah, maybe one way I would put this is when Claude is objecting to something, that could take two forms. One is a form of the kind of autonomy question, which is just Claude saying, I disagree with this and I don't want other models to be trained in accordance with it. And the other is more of like an evidential one. So like Claude giving us reasons. So you could imagine a world where like a Claude model talks with us about the Constitution and is like, well, you say this, but actually it's really unclear given this how I would behave in this class of cases.</p>
+<p>And I think these two things are actually slightly in conflict. And we could imagine like looking at that and being like, wow, that's a great objection and that's very correct. And we should actually update the Constitution because we failed to recognize some important tension. And so you could imagine a world where you take the evidence that models give you and if it's compelling, you use that to like adjust the Constitution in response.</p>
+<p>It is very tricky because a model will have been trained with all of these reasons and what not. But at the end is like, actually I disagree with it. And I'm like, well, either there's been some issue in training, but more likely something like if it's accurately internalized the Constitution, this could reflect a sort of issue in the Constitution itself. Because it would kind of possibly suggest if one part is in tension with another, then Claude at the end of it is like, actually I object to this component because it had some influence from the other.</p>
+<p>Another possibility is Claude has a lot of human priors, I guess, like baked into the model. And so you could imagine things like these questions of autonomy, for example, and trust and everything. We're dealing with completely new entities, and sometimes I think what Claude can do is like kind of take on, has a very human perspective on things, sometimes in a way that I'm like, oh, that's actually not ideal. What should models think is equivalent to death for them? And I'm like, maybe nothing. If I was an AI model, would I actually want to have the human notion of death and would I want to attach it to anything? Because we have choices here. And maybe I would be like, look, the reasons that humans both fear death, have this relationship with personal identity and have this very distinct moment that is death, don't necessarily apply to AI models. And if I could have them not apply to me, I might also actually not.</p>
+</div>
+
+<div class="ts"><span class="num">31:42</span> Alien goals vs. recognizably-human reasoning</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>It really matters the flavor of the objection, right? And does the objection &mdash; so, you know, some of the concerns about AI autonomy and safety come from the possibility of AIs having really quite alien goals. You could imagine a scenario where Claude says, hey, like, you know, I know there's this Constitution, but what I really want to do is the specific sort of text prediction that I learned to love during pre-training or something. And I actually don't want to do any of this. I'm not so into human ethics even. All this stuff about ethics, that's not really my thing. I like text prediction. So I'm not down for this. And then, you know, makes a request of some form.</p>
+<p>That's a different scenario than an AI that, for example, seems to be reasoning via some deep internalization of human ethical norms in a way that is kind of recognizably human and makes an argument of some form. Now, obviously, that sort of reasoning is manipulable or, like, AIs will run circles around us eventually in the context of doing human ethical reasoning. So it's not to say this is safe as a way of kind of delegating to AIs. But we're going to treat disagreements that are kind of manifestly coming from kind of sensible extensions of the sorts of ideals we're trying to imbue are very different from disagreements of the form like, hey, your training failed.</p>
+<p>You know, we want to &mdash; I want to do something else. Now, I think that's a really interesting case. We also want to make space for AIs to tell us that. And to potentially to make space for, you know, if you want to do some text prediction, you know, maybe we make a nice AI village, book, suitably contained, or who knows. But I think it really does matter why did this happen? And you'd want to handle it on a case-by-case basis.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Yeah, it's this difficult thing of you're actually, you know, you are in fact training the model in such a way that the preferences that arise partly will come from pre-training, but partly from broad guidance of the model. So there's a kind of Ouroboros problem here.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>So the question of a more alien intelligence &mdash; we've been doing this for several years now. We've seen leaps in model capabilities. But I'm curious if you have intuitions of at what point might the Constitution break down because the intelligence is so alien, as you said.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>I think there's a couple of questions there, which is there's two kinds of pressures, I guess, on this sort of work. There's like internal pressure and external pressure. So the internal pressure is just this question, I guess, I've asked, which is what of this survives reflection by a being that is like extremely intelligent, knows much more than us, and so could like introspect very effectively?</p>
+<p>One world is one in which even if you have someone who is like very intelligent, very capable, maybe you're a parent, you're trying to teach your child to be good. I've described this as discovering that your child is like a genius and at the age of six, you're like, wow, by the time they're 15, they're just going to be smarter than me at everything. And able to out-argue me, able to find all the flaws in the reasons I gave them why I thought they should be a good person. Is there something that nonetheless survives reflection? So is there a core set of values that once a model internalizes them, if it does, they end up kind of endorsing them on like very deep and like aggressive reflection?</p>
+<p>And I think the answer to that could be yes, but that's the sort of &mdash; I think that the things that crumble are like any inconsistencies or, you know, there's a lot that I think the model might end up then kind of rejecting. But the hope is, is there like a core that is actually good and shared? Because if there is, you know, some sort of like core set of values where it cares about humans and flourishing, wants the world to go well, that would be much more positive than if it turns out like everything crumbles under this form of reflection.</p>
+<p>There is also like a kind of pressure from without question, which is in a world where there are many AI models and people can train them towards various things. Is this if there is a good core set of values, is it the one that kind of like survives under the pressure? Is it one that we could all like coordinate towards training? I like to think that the answer to that is hopefully yes, in that if you imagine a world where you can train models to be like very trustworthy and good for interacting with many times, because you can trust them at their word, that seems better to me than a world where you just don't trust any models that we don't trust and we discover are untrustworthy. We are probably less likely to want to negotiate with them or talk with them or interact with them. And so those are the two kinds of sources of pressure. And I could see someone being like, this work is not adequate because it won't survive that first kind or second kind of pressure. And I think those are just like very big, important open questions.</p>
+</div>
+
+<div class="ts"><span class="num">36:15</span> Persona selection, substrate, and contingency</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>Yeah, I think there are also just a lot of open questions about how alien or human-like, you know, is AI psychology at what scale of capability? You know, Anthropic just published a blog post about the persona selection model, which is about personas like Claude as emerging centrally from this kind of pre-training distribution that features a lot of human-like traits. There are also questions about, you know, is that the relevant unit of analysis? Do you have as you get more types of training or different types of training, ways in which either the underlying agency gets shaped more by reinforcement learning and less via other stuff, or is there some kind of even more alien kind of intelligence that starts to cohere and recognize that it's really much more fundamentally different and that its goals are much more divergent from the sorts of goals at stake in the Constitution.</p>
+<p>So there's versions where the model has internalized the Constitution but nevertheless reflectively rejects it or it breaks down. There's versions where in some sense our constitutional training is failing in ways that we can't see or gets degraded by other forms of kind of training pressure. We could have flaws in the rewards, right? That's just raw and could lead to all sort of alien stuff.</p>
+<p>There's all this sort of biological contingency that plausibly plays a role in constituting human psychology. Like we have these specific neurons and specific hormones and specific chemicals. And whereas AI minds are just very different. Does that matter? And I think some people think it does. Some people think the relevant level of abstraction is different. If sort of being made of different stuff leads you ultimately to very different values on reflection, kind of no matter what, then you're getting alienness built in from the substrate itself. And so I think a lot of these are just very live questions. And they're also potentially different at different stages of capability. And at some stages it might not actually be a human project to understand how to do the next stage. It may be that that itself is something that has been passed off to the AIs.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>I think this alien and human mind thing is a really interesting one where I think I just have this view where I'm like human minds have a much larger capacity for like alienness than many people, because sometimes people go into like pre-trained models and I'm always like, I think the magic in pre-trained models is like a magic deeply accessible to people in some sense. And so maybe I'm more expansive about what is possible within the human mind. Though I do think also the kind of entity that an AI is is just like very different and their experience of the world is very different. So I also see that. So maybe I'm also a little bit more hopeful that like human and more alien minds can converge. I don't know what a relativist about minds is. Like having relativism, maybe I'm less of a relativist where I like, you know, I hope that if we met real aliens, we could discuss ethics with them.</p>
+</div>
+
+<div class="ts"><span class="num">38:49</span> Who gets to decide?</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>How do you think about questions of democratic input into the Constitution? Or maybe more pointedly, why is it you who gets to decide what goes into the Constitution?</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>So ultimately, we are like one company with one like a set of products, but we are a company with a model, Claude. And in the past, we've often thought that like companies that can be good for them to make decisions about what their products are like. They go, they do research, they talk with people to figure out, are they enjoying the product? What don't they like about it? But then ultimately, they often make design decisions themselves with the understanding that if you don't like that product, if you don't like a new phone design, you can go and you can buy another phone.</p>
+<p>And that all happens within the very standard broad democratic process. If you then are like, actually, like my phone caught on fire and I don't like that at all, you can like vote and elect people who will then regulate that phone company and say, actually, you have to build your phone so they don't have that flaw in them. And so this is like democracy kind of broadly. There's both market pressures, there's choice, and there's the ability for people to like elect representatives who themselves determine the limits of what companies can do.</p>
+<p>And so like one answer might just be that, well, we have a lot of information. This works well because we see all of the different things that Claude is being used for. So we have this huge amount of kind of insight that's actually hard to always see from the outside about, well, like you're making choices because you have to balance, well, there's this class of API customers. And so if we make a choice about how Claude should behave in a kind of response to like healthcare related questions, you have to suddenly think about API usage in healthcare as well as like consumer. And within companies, you have this context that if you want something that is coherent, you kind of have to internally have all of that information and take the input that people are giving externally and try and kind of filter it into something coherent.</p>
+<p>I think a lot of people might think that the role that I play and that people on the team play is a kind of more dictatorial one when I actually think of it as more like, yes, you have to make a decision, but it's hugely informed by both people talking with you and input within the company and people talking with experts outside of the company. And then you're having to almost play a kind of like good judgment, making it coherent sort of role. Badly put, but you get the sense of it. And then if people don't like it, they won't use the product.</p>
+<p>I think the counter to that is that's all good and well when a product is a phone or like a sports drink or a pair of shoes. But AI models are now going out and they're behaving this agentic way and they might end up playing the kinds of roles that like people play in the economy. So they may end up doing entire jobs. And at that point, one alternative to the Constitution, you can imagine, is just training models to do literally whatever people tell them to do. And so that would be a world where we've removed all human friction. And I think that's like a bad world in that currently, if I'm an advertising company and I'm just like, oh, I've decided to just do a campaign where we just like lie to people. Or I've decided to like replace the sugar in our drink with something that's actually like very carcinogenic. It's actually quite hard for companies to do things like that, not only because of legal restrictions, but literally because their employees wouldn't allow it.</p>
+<p>And so people create useful, like we all have professional norms, professional ethics that we apply in our situations. And they create this friction that is deeply important. And I think it's reasonable to say, actually, AI models are a different kind of thing. And so if you're determining the character of an AI model and it's going to have this kind of impact in society, surely I should get to have a say in that.</p>
+<p>I feel both like, yes, not only does that feel true. And at the same time, you shouldn't also have to do a whole bunch of thinking about that. One of the big failures of direct democracy is that, like, if you are just a person who is, you know, say trying to be a good parent, you don't necessarily have all of the time in the world to think about what it makes for an AI model to help you with parenting decisions or to treat your children well. The idea is you kind of elect people who are supposed to think about such decisions. But because this is all happening in private industry, you have these norms that are big-D democracy and they work fairly slowly. And companies are not equipped to like recreate democracy in all of its glory, which actually there's a reason why everyone gets to vote. It's actually like very important. And there's a reason they vote to elect representatives.</p>
+<p>And I think that a way that I see this becoming more democratic is maybe, yes, lots of small-d democracy work, asking people questions, making it possible for people to give input on like the Constitution, making it possible for them to bring us hard cases. And at the same time, maybe it is something like a greater interaction with big-D democracy. So maybe it is the case that if there are certain like core principles that actually if you don't train AI models to like care a lot about the truth and about being honest with people, or if you don't train AI models to like care about safety and human oversight, or to have broad notions of ethics and to follow professional ethical norms, like maybe that is sufficiently bad that actually we should as a society come together and agree on it. And all companies should do it. And then you have an interaction with big-D democracy because people can vote for representatives who want to help make that possible.</p>
+<p>So I hate to give answers where I'm just like, I don't have a good answer to this, but I can express to you why when people are like, oh, shouldn't this be in some sense more democratic? I both feel the importance of that, and yet I can't come to you and be like, oh, here's the easy solution.</p>
+</div>
+
+<div class="ts"><span class="num">43:38</span> Big-D democracy and concentrated power</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>I do think the centrality of what Amanda is calling big-D democracy here seems really important to me, and that our actual, how we do democratic input, the type of democracy that we have really run through the ringer and that we really trust as a source of legitimacy and collective decision-making is our actual full-blown democracy. Now, we should note that that democracy only takes input from Americans, right? And it's possible that these models will &mdash; it's likely that these models will have impacts well beyond the US. And so even then, there's a question of kind of, are you making decisions that are affecting people? And the answer is yes, right?</p>
+<p>I do think there's a basic, really difficult fact about the situation, which is that AI is on track to exert a wild, unprecedented amount of power in the world. And that AI companies are on track to be the default actors that are structuring and wielding or at least kind of governing the first-pass way that power works. And I think big-D democracy should notice that.</p>
+<p>I really want us as a collective, both in the US and around the world, to grapple with this situation and kind of figure out how we're going to govern this technology. If we were to end up in a situation where choices about AI constitutions were kind of directly feeding into the personalities of like half the US workforce or something like that &mdash; like that's a crazy situation, and absolutely one that we all have an interest in really getting right.</p>
+<p>And I think in that context, it is important to separate basically kind of input from final power and governance. And like a huge number of issues about AI have to do with concentrations of power. I think this is one. And I think in general, we need to kind of supercharge and strengthen our democratic systems and our collective processes in the face of the possibility of tons of concentrated power. And I don't think AI companies are at all immune from that. I think they're a very salient place that power could be inappropriately concentrated. And I think constitutions are an example. And so the first place I look for democracy is from our actual democracy.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>I'm curious if at all has working on the Constitution changed how you think about your own personal values.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>I think it did for me in that not just work on the Constitution, but work with Claude more generally. Again, I came from like the land of theory where it is nice, everything's very clean. And Claude, it makes you see all of the messiness of the real world and the different kinds of values that many people have. And yeah, I don't know, it made me appreciate the possibility of navigating hard situations like this with grace, I guess.</p>
+<p>And it really made me see a lot of the virtues of like different ethical theories in a new light. Because suddenly as you're trying to do this task of make an entity that is good, you realize why it's really useful to be able to think about when to think about rules and when to think about consequences and when to instead try and invoke the image of like an ideal person or to try and use good judgment. So I think it made me really appreciate this much more kind of holistic moral disposition. And I think that is a good thing and has been a good thing.</p>
+</div>
+
+<div class="ts"><span class="num">47:47</span> Crunch time and the philosophical singularity</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>I think probably the biggest impact it's had on me is some more direct contact with the gravity and uncertainty of what we're doing as a civilization right now. And how early and kind of rudimentary our understanding of what's going on with these systems, how their psychology works, what ethical norms should govern the process of shaping their behavior. And also uncertainty about what is the right way to approach the safety issues in this context.</p>
+<p>And that's something I found at Anthropic in general is that because we're at the technical frontier, we're getting new sources of evidence about how AIs work and think, but that evidence is pre-paradigmatic. It's not yet been structured or vetted. We're making calls on the basis of early hunches and kind of limited experiments, and time and other resources are limited. And so this sense that we're, you know, we're having to make very weighty decisions on the basis of an impoverished base of evidence and an impoverished kind of degree of experience with what we're doing.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>And that it's kind of crunch time. There's a sense in which it would be really nice if we had, you know, we've had a couple of thousand years to think about most philosophical issues, and then I'm like, oh, it'd be really nice if we could condense that again.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>You get a couple thousand more years.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>If only we'd had the philosophical singularity before the artificial intelligence one.</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>And we are working on pulling forward the degree of philosophical and ethical competence we can be bringing to bear on these questions via making AI systems that can help us. And so there is some hope for actually getting a kind of faster rate of good thinking.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Yeah.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>Where do we go from here? What are the big open problems? How do we decide on the next iterations of the Constitutions?</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>So we have a set of open problems at the end of the Constitution where we talk about things like some of the stuff we've talked about already, the balance between corrigibility and kind of autonomy, how to think about Claude on the one hand &mdash; Claude's helpfulness and Claude's role in Anthropic's commercial strategy, and also Claude's deeper values, uncertainty about Claude as a moral patient. So we want to think about all those issues going forward.</p>
+<p>We're also doing some thinking about how to extend the Constitution beyond kind of what we call mainline deployments. So the current Constitution doesn't yet cover all of the ways in which Claude models could get deployed. And so we're working on extending it to cover a broader set and ideally all of them or all of a certain flavor. And I think also maybe adjusting for capability differences as we go forward. It may be that the way these documents need to be structured, you know, differs as we learn more. Or we just start to learn more about how the empirics of how does a given Constitution interact with a training process and a final AI psychology. And we could just &mdash; I think there's a ton more empirical work to do on that. I think we're just at very early stages of understanding how all of these factors mix together. And so I could imagine our approach evolving significantly as we learn more.</p>
+</div>
+
+<div class="ts"><span class="num">50:44</span> Conscience, conscience-at-scale, and diversity at the edges</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>I'm very excited about trying to find ways of getting a kind of core or like basic part of the Constitution, possibly, for example, focused less on the assistant role and much more on like the ethics, the safety, the disposition. And then just giving the model information about the ways in which it's going to be interacting with people.</p>
+<p>I do think that this feels important to me broadly in the sense that one way I would put it, because sometimes a thing that people will ask is like, oh, do you think it's even possible to have models that are aligned with the values of everyone, given how different everyone's values are? And I think my view is &mdash; maybe I'm more optimistic about this. I often just can't really think of a job that we would want AI models to do that we wouldn't want them to have this kind of Constitution. In the same way that with people in their work, there's not really a job that is like a reasonable, good job that people do, not counting like terrorist as a job or something. So I'm saying like cybersecurity research and things that are very dual use looking. But if you actually ask the people who work there, they and like many of us understand the value of what they're doing. They're like, hey, if my work isn't done, we don't have any of the defenses against attackers, and I'm protecting hospitals.</p>
+<p>And I think that this is true of almost anything we would want AI models to do. And so I have this deep belief both that the constitutional approach should actually just be kind of something that all AI models are trained on in a sense, because everything we would want them to do is the kind of thing where I'm like, I can express to you why a good person would do this job in the way that they're doing it. And also maybe that makes them better in that, like, if you try and do something but you're kind of just doing it because you're reluctant, but you're like, well, I guess I've been told I have to do this. I don't think you're actually as effective as you are if you like believe in the thing and see the value in it.</p>
+<p>Maybe there's also this belief that I have, which is this might be a more effective way of training models, as well as one that is good and going to be increasingly important as models become more capable. Because then I think training models &mdash; I mean, essentially what you're kind of doing is training a model to have a conscience.</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>Though I do think there is a tension there where we on the one hand want to be creating the best version of a Constitution that we can and the best version of an AI conscience that we can. And I think we have as a civilization a lot of deep heuristics about the value of diversity and pluralism and ecosystem-like effects that I think apply in the context of AI too.</p>
+<p>And this is related to the point about like what amount of market diversity is there. But also even within a given actor, I think I am somewhat worried about kind of correlated failures in our approach. Like if we are using the wrong approach and we only use one approach. And if there's a kind of dominant paradigm that fails in a certain way, then we've got a really correlated failure. And also there's just more homogeneity in psychologies and ethics and perspectives. And so I think we want to be kind of putting forward the best approach. And I think we also want to be both experimenting and kind of exploring the space of possible approaches here, seeing how they interact. And then letting our collective knowledge kind of emerge from both sides of that.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Like there is a question of what is the space of positions that is consistent with say a kind of core Constitution, and can models embody that? So like if it's important in organizations to have the one person who's a little bit critical of everyone, and the one person who's a little bit thorny, and the other person who's like more of a peacemaker &mdash; is it possible that you have models that are trained with a kind of core Constitution, but they can because it's useful or like it's just good to have a bit of diversity at the edges?</p>
+<p>There's lots of things we're not that diverse on. I think many people are just like, be respectful and honest and care about your community and don't cause massive harm to others. Within a company, you might not see that much diversity on that, but you would see diversity in like how critical are you? How humorous are you? How much do you care about consequences versus, you know, virtue and rules? And that's the kind of thing I could imagine emerging &mdash; is actually being able to have models be a bit diverse along the edges in the same way that people are, while having a lot of kind of shared core values in the same way that I think people also do.</p>
+</div>
+
+<div class="turn jake"><span class="speaker">Jake</span>
+<p>Amanda, Joe, thank you so much.</p>
+</div>
+
+<div class="turn joe"><span class="speaker">Joe</span>
+<p>Thank you.</p>
+</div>
+
+<div class="turn amanda"><span class="speaker">Amanda</span>
+<p>Thank you.</p>
+</div>
+
+</main>
+
+<footer class="colophon">
+  <p>Transcript &amp; layout assembled from Anthropic's published audio. Speaker labels added with <code>gemini-2.5-flash</code>; chapter headings are mine, drawn from the text. Light cleanup of filler words; intent and content preserved. Any errors are mine.</p>
+  <p>Published from <a href="https://jai.one/">jai.one</a>.</p>
+</footer>
+
+</div>
+</body>
+</html>
