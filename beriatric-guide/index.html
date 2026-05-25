@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Postoperative Vitamin &amp; Mineral Guide — Bariatric Surgery</title>
+<meta name="description" content="A printable patient guide to postoperative vitamins and minerals after bariatric surgery. Separate regimens for Sleeve/Roux-en-Y and SADI/Duodenal Switch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #0f1d2e;
+    --ink-soft:   #2a3a4f;
+    --muted:      #5b6b80;
+    --line:       #d9dee5;
+    --paper:      #fbfaf5;
+    --paper-warm: #f3efe3;
+    --accent:     #1f5e7a;          /* deep teal */
+    --accent-2:   #c2552c;          /* warm clay accent */
+    --gold:       #b89150;
+    --rule:       #1f5e7a;
+    --warn-bg:    #fdf2e7;
+    --warn-edge:  #c2552c;
+    --tip-bg:     #eef4f4;
+    --tip-edge:   #1f5e7a;
+    --soft-bg:    #f4ecd9;
+    --grid-bg:    #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #ebe7dc;
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 11pt;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .toolbar h1 {
+    margin: 0;
+    font-size: 13pt;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .toolbar a {
+    color: var(--paper);
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 10pt;
+    transition: all 0.15s;
+  }
+  .toolbar a:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: #fff;
+  }
+
+  .doc {
+    max-width: 8.5in;
+    margin: 24px auto;
+    background: var(--paper);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  }
+
+  .page {
+    padding: 0.55in 0.6in 0.5in;
+    page-break-before: always;
+    position: relative;
+    border-bottom: 1px dashed var(--line);
+  }
+  .page:first-child { page-break-before: auto; }
+  .page:last-child { border-bottom: none; }
+
+  /* ─── COVER ─────────────────────────────────────── */
+  .cover {
+    background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 100%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 10in;
+    padding: 0.5in 0.6in 0.4in;
+  }
+  .cover-top { padding-top: 0.5in; }
+  .cover-mark {
+    display: inline-block;
+    border: 1px solid var(--ink);
+    padding: 6px 18px;
+    font-size: 9pt;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .cover h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 44pt;
+    font-weight: 700;
+    line-height: 1.05;
+    margin: 0.6in 0 0.2in;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .cover .subtitle {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-style: italic;
+    font-size: 16pt;
+    color: var(--ink-soft);
+    font-weight: 400;
+    margin: 0;
+  }
+  .cover-rule {
+    width: 80px;
+    height: 2px;
+    background: var(--accent-2);
+    margin: 0.5in auto;
+  }
+  .cover-groups {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 0.4in;
+  }
+  .cover-group {
+    border: 1px solid var(--ink);
+    padding: 18px 22px;
+    width: 240px;
+    text-align: left;
+    background: rgba(255,255,255,0.4);
+  }
+  .cover-group .badge {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 8pt;
+    padding: 2px 8px;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  .cover-group h3 {
+    margin: 0 0 4px;
+    font-size: 11pt;
+    font-weight: 600;
+  }
+  .cover-group p {
+    margin: 0;
+    font-size: 9pt;
+    color: var(--muted);
+  }
+  .cover-bottom {
+    padding-bottom: 0.4in;
+  }
+  .cover-bottom .authors {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 13pt;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .cover-bottom .author-line {
+    font-size: 9pt;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .cover-bottom .edition {
+    margin-top: 28px;
+    font-size: 8pt;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ─── TYPOGRAPHY ─────────────────────────────────── */
+  h2.section {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 24pt;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 0.05in;
+    letter-spacing: -0.01em;
+    line-height: 1.08;
+  }
+  .section-num {
+    font-size: 9pt;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .section-rule {
+    width: 50px;
+    height: 2px;
+    background: var(--accent-2);
+    margin: 12px 0 18px;
+  }
+  .section-intro {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 12.5pt;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.42;
+    margin-bottom: 18px;
+    max-width: 6.2in;
+  }
+  h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 13pt;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 22px 0 8px;
+    letter-spacing: -0.005em;
+  }
+  h4 {
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin: 14px 0 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  p { margin: 0 0 10px; }
+
+  .lede {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 13pt;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .lede::first-letter {
+    font-size: 36pt;
+    font-weight: 700;
+    float: left;
+    line-height: 0.85;
+    margin: 4px 8px 0 0;
+    color: var(--accent-2);
+    font-family: 'Source Serif 4', serif;
+  }
+
+  ul, ol { margin: 0 0 12px; padding-left: 20px; }
+  ul li, ol li { margin-bottom: 4px; }
+
+  strong { color: var(--ink); font-weight: 700; }
+  em { color: var(--ink-soft); }
+
+  /* ─── PAGE HEADER ────────────────────────────────── */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 22px;
+    font-size: 8pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .page-header .left { font-weight: 600; color: var(--ink-soft); }
+
+  /* ─── CALLOUTS ───────────────────────────────────── */
+  .callout {
+    background: var(--tip-bg);
+    border-left: 4px solid var(--tip-edge);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout.warn {
+    background: var(--warn-bg);
+    border-left-color: var(--warn-edge);
+  }
+  .callout .label {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--tip-edge);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .callout.warn .label { color: var(--warn-edge); }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout .label .icon {
+    font-style: normal;
+    margin-right: 4px;
+  }
+
+  /* ─── TABLES ─────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 20px;
+    font-size: 9.5pt;
+  }
+  table th {
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+    text-align: left;
+    padding: 7px 11px;
+    letter-spacing: 0.02em;
+    font-size: 9pt;
+  }
+  table td {
+    padding: 6px 11px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.targets td { padding: 5px 11px; font-size: 9.5pt; }
+  table tr:nth-child(even) td { background: rgba(255,255,255,0.5); }
+  table .center { text-align: center; }
+  table .nutrient { font-weight: 600; color: var(--ink); }
+  table .note { font-size: 8pt; color: var(--muted); }
+
+  /* ─── REGIMEN CARDS ──────────────────────────────── */
+  .regimen-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0 16px;
+  }
+  .regimen {
+    border: 1.5px solid var(--ink);
+    padding: 0;
+    background: var(--grid-bg);
+    display: flex;
+    flex-direction: column;
+  }
+  .regimen-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 14px;
+  }
+  .regimen-header .tier {
+    font-size: 8pt;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .regimen-header h4 {
+    color: var(--paper);
+    margin: 2px 0 0;
+    font-size: 12pt;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 600;
+  }
+  .regimen-header .price {
+    font-size: 9pt;
+    margin-top: 4px;
+    opacity: 0.8;
+    font-style: italic;
+  }
+  .regimen-body {
+    padding: 12px 14px 14px;
+    font-size: 9.5pt;
+    flex: 1;
+  }
+  .regimen-body ul { padding-left: 18px; margin-bottom: 8px; }
+  .regimen-body li { margin-bottom: 4px; }
+  .regimen-body .label {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin-bottom: 4px;
+    display: block;
+  }
+  .regimen-body .brands {
+    font-size: 8.5pt;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-top: 4px;
+  }
+  .regimen.dx {
+    border-color: var(--accent-2);
+  }
+  .regimen.dx .regimen-header {
+    background: var(--accent-2);
+  }
+
+  /* ─── SCHEDULE ───────────────────────────────────── */
+  .schedule {
+    display: grid;
+    grid-template-columns: 0.8fr 2fr 1.2fr;
+    border: 1px solid var(--line);
+    background: var(--grid-bg);
+    margin: 10px 0 14px;
+  }
+  .schedule .cell {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 9.5pt;
+  }
+  .schedule .head {
+    background: var(--paper-warm);
+    font-weight: 700;
+    font-size: 8.5pt;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 2px solid var(--ink);
+  }
+  .schedule .time {
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .schedule .row-last { border-bottom: none; }
+
+  /* ─── QUICK REFERENCE CARD ───────────────────────── */
+  .quickref-page {
+    background: linear-gradient(180deg, var(--soft-bg) 0%, var(--paper-warm) 100%);
+  }
+  .qr-header {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .qr-header .eyebrow {
+    font-size: 9pt;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    font-weight: 600;
+  }
+  .qr-header h2 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 28pt;
+    margin: 6px 0;
+    color: var(--ink);
+  }
+  .qr-header .scissors {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 9pt;
+    letter-spacing: 0.3em;
+  }
+  .qr-card {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 22px 26px;
+    margin: 14px 0;
+    box-shadow: 0 2px 0 var(--ink);
+  }
+  .qr-card-head {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .qr-card-head h3 {
+    margin: 0;
+    font-size: 14pt;
+    font-family: 'Source Serif 4', serif;
+    font-weight: 700;
+  }
+  .qr-card-head .for {
+    font-size: 8.5pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .qr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .qr-block .qr-time {
+    font-weight: 700;
+    color: var(--accent-2);
+    font-size: 9pt;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .qr-block ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0 0 12px;
+    font-size: 9.5pt;
+  }
+  .qr-block li {
+    padding: 3px 0;
+    border-bottom: 1px dotted var(--line);
+  }
+  .qr-block li:last-child { border-bottom: none; }
+  .qr-rules {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 18px;
+    margin-top: 14px;
+    font-size: 9pt;
+  }
+  .qr-rules .label {
+    font-size: 8pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .qr-rules ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .qr-rules li { margin-bottom: 3px; }
+  .qr-rules strong { color: #fff; }
+  .qr-rules ul::marker { color: var(--gold); }
+  .qr-rules li::marker { color: var(--gold); }
+
+  /* ─── TWO-COL ────────────────────────────────────── */
+  .twocol {
+    column-count: 2;
+    column-gap: 28px;
+  }
+  .twocol p, .twocol ul { break-inside: avoid; }
+
+  /* ─── SECTION DIVIDER ─────────────────────────────── */
+  .divider {
+    text-align: center;
+    margin: 26px 0;
+    font-size: 9pt;
+    letter-spacing: 0.4em;
+    color: var(--muted);
+  }
+
+  /* ─── PAGE NUMBER / FOOTER ────────────────────────── */
+  .page-footer { display: none; }
+
+  /* ─── DEFICIENCY GRID ────────────────────────────── */
+  .def-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .def {
+    border-left: 3px solid var(--accent);
+    padding: 8px 14px;
+    background: var(--grid-bg);
+  }
+  .def strong {
+    display: block;
+    font-size: 10pt;
+    margin-bottom: 2px;
+  }
+  .def span {
+    font-size: 9pt;
+    color: var(--muted);
+  }
+  .def.severe {
+    border-left-color: var(--accent-2);
+    background: var(--warn-bg);
+  }
+
+  /* ─── PRINT ──────────────────────────────────────── */
+  @media print {
+    body { background: white; font-size: 10.5pt; }
+    .toolbar { display: none; }
+    .doc {
+      box-shadow: none;
+      margin: 0;
+      max-width: none;
+    }
+    .page {
+      padding: 0.5in 0.55in 0.5in;
+      border-bottom: none;
+    }
+    .cover { height: 10in; }
+    a { color: var(--ink); text-decoration: none; }
+    .callout { break-inside: avoid; }
+    .regimen, .qr-card, .schedule { break-inside: avoid; }
+    table { break-inside: avoid-page; }
+    .def-grid > .def { break-inside: avoid; }
+  }
+
+  @page {
+    size: letter;
+    margin: 0;
+  }
+
+  /* ─── MOBILE ─────────────────────────────────────── */
+  @media (max-width: 700px) {
+    .doc { margin: 0; }
+    .page { padding: 24px 18px; min-height: auto; }
+    .regimen-grid, .def-grid, .qr-grid { grid-template-columns: 1fr; }
+    .twocol { column-count: 1; }
+    .cover h1 { font-size: 32pt; }
+    .cover-groups { flex-direction: column; align-items: center; }
+    .schedule { grid-template-columns: 1fr; }
+    .schedule .head { display: none; }
+    .schedule .cell { border-bottom: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <h1>Postoperative Vitamin &amp; Mineral Guide</h1>
+  <a href="bariatric-vitamin-guide.pdf" download>↓ Download PDF</a>
+</div>
+
+<div class="doc">
+
+  <!-- ════ COVER ════════════════════════════════════════ -->
+  <section class="page cover">
+    <div class="cover-top">
+      <span class="cover-mark">Patient Handbook · Chapter 7</span>
+    </div>
+
+    <div>
+      <h1>Vitamins &amp; Minerals<br>After Bariatric Surgery</h1>
+      <p class="subtitle">A practical guide to lifelong supplementation</p>
+      <div class="cover-rule"></div>
+
+      <div class="cover-groups">
+        <div class="cover-group">
+          <span class="badge">GROUP A</span>
+          <h3>Sleeve Gastrectomy<br>&amp; Roux-en-Y Bypass</h3>
+          <p>Standard postoperative regimen</p>
+        </div>
+        <div class="cover-group">
+          <span class="badge">GROUP B</span>
+          <h3>SADI &amp; Duodenal<br>Switch (BPD/DS)</h3>
+          <p>Expanded malabsorptive regimen</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cover-bottom">
+      <div class="authors">Stephen Klepner, DO &nbsp;·&nbsp; Justin Dhyani, MD</div>
+      <div class="author-line">Bariatric Surgery Practice</div>
+      <div class="edition">Edition 2026.1 · For patient use</div>
+    </div>
+  </section>
+
+  <!-- ════ WHY ══════════════════════════════════════════ -->
+  <section class="page">
+    <div class="page-header">
+      <span class="left">Chapter 7 · Vitamins &amp; Minerals</span>
+      <span>Why You Need Supplements</span>
+    </div>
+
+    <div class="section-num">Section 01</div>
+    <h2 class="section">Why every patient<br>needs supplements.</h2>
+    <div class="section-rule"></div>
+
+    <p class="lede">After bariatric surgery, you will not be able to get enough vitamins and minerals from food alone. This is not a matter of will or diet quality — it is a permanent change to how your body absorbs nutrients. Supplements are for life.</p>
+
+    <h3>What changes after surgery</h3>
+    <p>All bariatric procedures reduce how much food you eat. Procedures that bypass parts of the small intestine — Roux-en-Y, SADI, and Duodenal Switch — also reduce how much your body absorbs from that food. The result is a real risk of deficiency, even in patients who eat well.</p>
+
+    <h3>The deficiencies we watch for</h3>
+    <div class="def-grid">
+      <div class="def severe">
+        <strong>Thiamine (B1)</strong>
+        <span>Can cause <em>permanent</em> neurological injury. Highest risk in the first 6 months and during any prolonged vomiting.</span>
+      </div>
+      <div class="def severe">
+        <strong>Iron, Folate, B12</strong>
+        <span>Cause anemia — fatigue, weakness, cold intolerance, brittle nails.</span>
+      </div>
+      <div class="def">
+        <strong>Calcium &amp; Vitamin D</strong>
+        <span>Bone loss, osteoporosis, fractures. Damage accumulates silently for years.</span>
+      </div>
+      <div class="def">
+        <strong>Zinc &amp; Copper</strong>
+        <span>Hair loss, skin and nail changes, altered taste, weakened immunity.</span>
+      </div>
+      <div class="def">
+        <strong>Vitamins A, E, K</strong>
+        <span>Higher risk after SADI and DS — fat-soluble vitamins depend on the section of intestine that is bypassed.</span>
+      </div>
+      <div class="def severe">
+        <strong>Folate — pregnancy</strong>
+        <span>Folate deficiency can cause neural-tube birth defects. Critical for any patient of childbearing potential.</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="label"><span class="icon">●</span> How this guide works</span>
+      <p style="margin:0;">Section 02 lists the daily nutrient targets your body actually needs. Sections 03 and 04 give you two ways to meet those targets — a single-product bariatric regimen and a budget-friendly mix-and-match. The final page is a tear-out reference for your fridge.</p>
+    </div>
+
+    <div class="page-footer"><span>Klepner &amp; Dhyani</span><span>02</span></div>
+  </section>
+
+  <!-- ════ DAILY TARGETS ════════════════════════════════ -->
+  <section class="page">
+    <div class="page-header">
+      <span class="left">Chapter 7 · Section 02</span>
+      <span>Daily Targets</span>
+    </div>
+
+    <div class="section-num">Section 02</div>
+    <h2 class="section">What your body needs,<br>every day, for life.</h2>
+    <div class="section-rule"></div>
+
+    <p class="section-intro">These targets are drawn from the American Society for Metabolic and Bariatric Surgery (ASMBS) nutritional guidelines. They are minimums, not ceilings. Your lab work guides any adjustments.</p>
+
+    <table class="targets">
+      <thead>
+        <tr>
+          <th style="width: 30%;">Nutrient</th>
+          <th style="width: 35%;">Sleeve / Roux-en-Y</th>
+          <th style="width: 35%;">SADI / Duodenal Switch</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="nutrient">Multivitamin w/ minerals</td>
+          <td>1–2 daily — with iron, folic acid, thiamine</td>
+          <td>2 daily — bariatric-specific recommended</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Thiamine (B1)</td>
+          <td>≥ 12 mg/day; 50–100 mg preferred</td>
+          <td>≥ 12 mg/day; 50–100 mg preferred</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Vitamin B12</td>
+          <td>350–500 µg/day oral · or 1,000 µg/month IM</td>
+          <td>350–500 µg/day oral · or 1,000 µg/month IM</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Folic acid</td>
+          <td>400–800 µg/day <span class="note">(800–1,000 µg if childbearing potential)</span></td>
+          <td>400–800 µg/day <span class="note">(800–1,000 µg if childbearing potential)</span></td>
+        </tr>
+        <tr>
+          <td class="nutrient">Elemental iron</td>
+          <td>18 mg/day · 45–60 mg if menstruating</td>
+          <td>45–60 mg/day standard</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Calcium citrate</td>
+          <td>1,200–1,500 mg/day, divided</td>
+          <td>1,800–2,400 mg/day, divided</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Vitamin D3</td>
+          <td>2,000–3,000 IU/day</td>
+          <td>3,000–5,000 IU/day (often more)</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Vitamin A</td>
+          <td>5,000–10,000 IU/day</td>
+          <td>10,000 IU/day (water-miscible form)</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Vitamin E</td>
+          <td>15 mg/day</td>
+          <td>15 mg/day</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Vitamin K</td>
+          <td>90–120 µg/day</td>
+          <td>300 µg/day</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Zinc</td>
+          <td>8–11 mg/day</td>
+          <td>16–22 mg/day · pair with copper</td>
+        </tr>
+        <tr>
+          <td class="nutrient">Copper</td>
+          <td>1 mg/day</td>
+          <td>2 mg/day</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      <span class="label"><span class="icon">!</span> Form matters</span>
+      <p style="margin:0;"><strong>Calcium must be citrate</strong>, not carbonate — you no longer make enough stomach acid to absorb the carbonate form. <strong>No gummy multivitamins</strong> — they lack minerals and some B vitamins. <strong>Do not crush enteric-coated pills.</strong></p>
+    </div>
+
+    <div class="page-footer"><span>Klepner &amp; Dhyani</span><span>03</span></div>
+  </section>
+
+  <!-- ════ GROUP A — SLEEVE / RYGB ══════════════════════ -->
+  <section class="page">
+    <div class="page-header">
+      <span class="left">Chapter 7 · Section 03 · Group A</span>
+      <span>Sleeve / Roux-en-Y Regimen</span>
+    </div>
+
+    <div class="section-num">Section 03 · Group A</div>
+    <h2 class="section">If you had a Sleeve<br>or Roux-en-Y Bypass.</h2>
+    <div class="section-rule"></div>
+
+    <p class="section-intro">Pick the option that fits your budget. Both options meet the daily targets in Section 02. The simpler option uses one bariatric-specific multivitamin; the budget option mixes drugstore products to reach the same totals.</p>
+
+    <div class="regimen-grid">
+      <div class="regimen">
+        <div class="regimen-header">
+          <div class="tier">Option 1 · Simpler</div>
+          <h4>Bariatric MVI + Calcium Citrate</h4>
+          <div class="price">~ $35–$50 per month</div>
+        </div>
+        <div class="regimen-body">
+          <span class="label">What to buy</span>
+          <ul>
+            <li><strong>1 bariatric chewable MVI</strong> with iron, twice daily <em>(or one dose if labeled "complete" for bariatric use)</em></li>
+            <li><strong>Calcium citrate + D3</strong>, 500–600 mg, twice daily</li>
+          </ul>
+          <span class="label">Recommended brands</span>
+          <p class="brands">Bariatric Advantage Ultra Solo with Iron · Celebrate Multi with Iron · ProCare Health Bariatric · BariMelts Complete</p>
+        </div>
+      </div>
+
+      <div class="regimen">
+        <div class="regimen-header">
+          <div class="tier">Option 2 · Budget</div>
+          <h4>Drugstore mix &amp; match</h4>
+          <div class="price">~ $15–$25 per month</div>
+        </div>
+        <div class="regimen-body">
+          <span class="label">What to buy</span>
+          <ul>
+            <li><strong>Centrum or Flintstones Complete</strong> chewable, <em>two</em> per day</li>
+            <li><strong>Calcium citrate + D3</strong>, 500–600 mg, twice daily (Citracal Maximum)</li>
+            <li><strong>Sublingual B12</strong>, 1,000 µg daily</li>
+            <li><strong>Iron 18 mg</strong> if you menstruate (or 45–60 mg ferrous sulfate)</li>
+          </ul>
+          <span class="label">Why two MVIs</span>
+          <p class="brands">A single drugstore MVI does not meet bariatric thiamine and folate targets. Two doses, spaced morning and evening, do.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="break-inside: avoid;">
+      <h3>Your daily schedule</h3>
+      <div class="schedule">
+        <div class="cell head">When</div>
+        <div class="cell head">Take</div>
+        <div class="cell head">With</div>
+
+        <div class="cell time">Morning</div>
+        <div class="cell">Multivitamin (dose 1) · Sublingual B12 (if separate)</div>
+        <div class="cell">Breakfast + small glass of water with vitamin C</div>
+
+        <div class="cell time">Midday</div>
+        <div class="cell">Calcium citrate · Iron (if needed)</div>
+        <div class="cell">Lunch — at least 2 hr after morning MVI</div>
+
+        <div class="cell time">Afternoon</div>
+        <div class="cell">Multivitamin (dose 2) — only if taking 2 separate MVIs</div>
+        <div class="cell">Snack</div>
+
+        <div class="cell time row-last">Evening</div>
+        <div class="cell row-last">Calcium citrate (dose 2)</div>
+        <div class="cell row-last">Dinner — at least 2 hr after iron</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ GROUP B — SADI / DS ══════════════════════════ -->
+  <section class="page">
+    <div class="page-header">
+      <span class="left">Chapter 7 · Section 04 · Group B</span>
+      <span>SADI / Duodenal Switch Regimen</span>
+    </div>
+
+    <div class="section-num">Section 04 · Group B</div>
+    <h2 class="section">If you had a SADI<br>or Duodenal Switch.</h2>
+    <div class="section-rule"></div>
+
+    <p class="section-intro">SADI and Duodenal Switch bypass more of the small intestine — including the section that absorbs fat-soluble vitamins (A, D, E, K). Your regimen is larger than Group A's, and a standard drugstore MVI is not enough on its own. Lifelong lab work every 6–12 months is non-negotiable.</p>
+
+    <div class="callout warn">
+      <span class="label"><span class="icon">!</span> Why this section is different</span>
+      <p style="margin:0;">After SADI/DS you malabsorb fat. Vitamins A, D, E, K are fat-soluble — without supplementation, deficiencies are not a risk, they are <em>expected</em>. Night blindness, bone disease, easy bruising, and clotting problems all trace back to skipping this regimen.</p>
+    </div>
+
+    <div class="regimen-grid">
+      <div class="regimen dx">
+        <div class="regimen-header">
+          <div class="tier">Option 1 · Simpler</div>
+          <h4>DS-Specific Bariatric MVI + Calcium</h4>
+          <div class="price">~ $55–$90 per month</div>
+        </div>
+        <div class="regimen-body">
+          <span class="label">What to buy</span>
+          <ul>
+            <li><strong>DS- or BPD-formulated chewable MVI</strong>, twice daily — contains higher iron, zinc, copper, and water-miscible A/D/E/K</li>
+            <li><strong>Calcium citrate + D3</strong>, 600 mg, three times daily (1,800 mg total)</li>
+            <li><strong>Sublingual B12</strong>, 1,000 µg daily</li>
+          </ul>
+          <span class="label">Recommended brands</span>
+          <p class="brands">Celebrate Bariatric Three Multi · Bariatric Advantage Advanced EA Multi · ProCare Health Bariatric (DS-formulated) · Bariatric Fusion BPD/DS</p>
+        </div>
+      </div>
+
+      <div class="regimen dx">
+        <div class="regimen-header">
+          <div class="tier">Option 2 · Budget</div>
+          <h4>Drugstore mix &amp; match</h4>
+          <div class="price">~ $30–$45 per month</div>
+        </div>
+        <div class="regimen-body">
+          <span class="label">What to buy</span>
+          <ul>
+            <li><strong>Centrum or Flintstones Complete</strong> chewable, <em>two</em> per day</li>
+            <li><strong>Calcium citrate + D3</strong>, 600 mg × 3 daily (Citracal Maximum)</li>
+            <li><strong>Vitamin D3</strong>, additional 2,000 IU daily</li>
+            <li><strong>Vitamin A (water-miscible)</strong>, 10,000 IU daily</li>
+            <li><strong>Vitamin K1</strong>, 300 µg daily</li>
+            <li><strong>Zinc 22 mg + Copper 2 mg</strong> daily <em>(or zinc-balanced complex)</em></li>
+            <li><strong>Iron 45–60 mg</strong> ferrous sulfate, daily</li>
+            <li><strong>Sublingual B12</strong>, 1,000 µg daily</li>
+          </ul>
+          <span class="label">Notes</span>
+          <p class="brands">The à-la-carte route works but takes more daily attention. For most DS patients we recommend Option 1 once it fits the budget — adherence is the single biggest predictor of long-term outcomes.</p>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size: 9pt; color: var(--muted); margin-top: 14px; font-style: italic;">Continued on next page → your daily schedule and lab-monitoring requirements.</p>
+
+    <div class="page-footer"><span>Group B · SADI / DS · Regimens</span><span>05a</span></div>
+  </section>
+
+  <section class="page">
+    <div class="page-header">
+      <span class="left">Chapter 7 · Section 04 · Group B</span>
+      <span>SADI / Duodenal Switch · Schedule</span>
+    </div>
+
+    <h3 style="margin-top: 0; font-size: 16pt; font-family: 'Source Serif 4', serif; font-weight: 600;">Your daily schedule</h3>
+    <p style="font-style: italic; color: var(--ink-soft); margin-bottom: 18px;">Spacing matters more here than for Group A — iron and calcium compete for the same absorption pathway, and you are taking more of both.</p>
+    <div class="schedule">
+      <div class="cell head">When</div>
+      <div class="cell head">Take</div>
+      <div class="cell head">With</div>
+
+      <div class="cell time">Morning</div>
+      <div class="cell">DS multivitamin (dose 1) · B12 sublingual · Iron + vitamin C</div>
+      <div class="cell">Breakfast</div>
+
+      <div class="cell time">Midday</div>
+      <div class="cell">Calcium citrate (dose 1) · Vitamin A (if separate) · Vitamin K (if separate)</div>
+      <div class="cell">Lunch — at least 2 hr after iron</div>
+
+      <div class="cell time">Afternoon</div>
+      <div class="cell">DS multivitamin (dose 2) · Calcium citrate (dose 2)</div>
+      <div class="cell">Snack — at least 2 hr after first calcium</div>
+
+      <div class="cell time row-last">Evening</div>
+      <div class="cell row-last">Calcium citrate (dose 3) · Vitamin D3 (if separate) · Zinc + copper</div>
+      <div class="cell row-last">Dinner</div>
+    </div>
+
+    <h3 style="margin-top: 24px;">Lab schedule for DS patients</h3>
+    <p>DS patients have the highest deficiency risk of any bariatric procedure. Lab work is not optional — it is how we catch problems before they become symptoms.</p>
+    <div class="callout warn">
+      <span class="label"><span class="icon">!</span> Required labs</span>
+      <p style="margin:0;"><strong>Frequency:</strong> Every 3 months for the first year, then every 6 months for life.<br><br><strong>Panel:</strong> CBC, iron panel, ferritin, B12, folate, 25-OH vitamin D, calcium + PTH, magnesium, zinc, copper, vitamin A, vitamin E, INR (as proxy for vitamin K), thiamine.</p>
+    </div>
+
+    <p style="font-size: 9.5pt; margin-top: 14px;">Bring this guide and your supplement bottles to every appointment. If a brand changes or you switch from one option to another, tell us — the doses are not always interchangeable.</p>
+
+    <div class="page-footer"><span>Group B · SADI / DS · Schedule</span><span>05b</span></div>
+  </section>
+
+  <!-- ════ ABSORPTION RULES ═════════════════════════════ -->
+  <section class="page">
+    <div class="page-header">
+      <span class="left">Chapter 7 · Section 05</span>
+      <span>Absorption Rules</span>
+    </div>
+
+    <div class="section-num">Section 05</div>
+    <h2 class="section">The rules that make<br>your supplements work.</h2>
+    <div class="section-rule"></div>
+
+    <p class="section-intro">Vitamins and minerals interact. Two pills you took correctly can still leave you deficient if you took them at the wrong time, with the wrong drink, or against the wrong food. These rules are short — memorize them.</p>
+
+    <div class="twocol rules-cols">
+      <h3>Timing</h3>
+      <ul>
+        <li><strong>Calcium and iron compete</strong> — never take them within 2 hours of each other.</li>
+        <li><strong>Calcium and thyroid compete</strong> — separate by 2 hr. <strong>Iron and thyroid:</strong> 4 hr.</li>
+        <li><strong>Wait 1 hour</strong> between any supplement and any prescription medication.</li>
+        <li><strong>Never more than 500–600 mg of calcium at one time</strong> — your body can't absorb more.</li>
+      </ul>
+
+      <h3>What to take it with</h3>
+      <ul>
+        <li><strong>Plain water</strong> only. Coffee, tea, and milk interfere with mineral absorption.</li>
+        <li><strong>Iron with vitamin C</strong> — small glass of OJ or a 250 mg tablet. Big absorption boost.</li>
+        <li><strong>Iron on an empty stomach</strong> if you tolerate it; otherwise a small protein snack.</li>
+        <li><strong>All other supplements with food</strong> — better absorption, less nausea.</li>
+      </ul>
+
+      <h3>Forms to avoid</h3>
+      <ul>
+        <li><strong>No gummy MVIs</strong> — they lack minerals and B vitamins.</li>
+        <li><strong>No calcium carbonate</strong> — citrate only. You no longer have the acid to absorb it.</li>
+        <li><strong>No crushing</strong> of time-release or enteric-coated tablets.</li>
+        <li><strong>No pills larger than your fingertip</strong> for the first month after surgery.</li>
+      </ul>
+
+      <h3>Habits to keep</h3>
+      <ul>
+        <li><strong>Take everything every day.</strong> A missed week of B12 is fine; a missed month of thiamine is not.</li>
+        <li><strong>Bloodwork on schedule</strong> — every 3 months year 1, then 6–12 months for life.</li>
+        <li><strong>Tell every provider</strong> you had bariatric surgery — especially before any new prescription.</li>
+        <li><strong>If you can't take it or afford it</strong> — call us. Don't just stop.</li>
+      </ul>
+    </div>
+
+    <div class="callout warn" style="margin-top: 14px;">
+      <span class="label"><span class="icon">!</span> Call your surgeon if</span>
+      <p style="margin:0;">Persistent vomiting, confusion, memory problems, numbness or tingling, vision changes, easy bruising, persistent diarrhea, or unexplained weight loss. These can be early signs of thiamine, B12, or fat-soluble vitamin deficiency.</p>
+    </div>
+
+    <div class="page-footer"><span>Klepner &amp; Dhyani</span><span>06</span></div>
+  </section>
+
+  <!-- ════ QUICK REFERENCE ═══════════════════════════════ -->
+  <section class="page quickref-page">
+    <div class="qr-header">
+      <div class="eyebrow">Tear out · Post on your fridge</div>
+      <h2>Quick Reference</h2>
+      <div class="scissors">✂ — — — — — — — — — — — — — — — — — — — — —</div>
+    </div>
+
+    <!-- GROUP A CARD -->
+    <div class="qr-card">
+      <div class="qr-card-head">
+        <h3>Sleeve / Roux-en-Y</h3>
+        <span class="for">Group A · Daily</span>
+      </div>
+      <div class="qr-grid">
+        <div class="qr-block">
+          <div class="qr-time">Morning · with breakfast</div>
+          <ul>
+            <li>Bariatric MVI with iron</li>
+            <li>B12 sublingual 1,000 µg</li>
+            <li>Vitamin C tablet <em>(helps iron)</em></li>
+          </ul>
+          <div class="qr-time">Midday · with lunch</div>
+          <ul>
+            <li>Calcium citrate 500–600 mg + D3</li>
+          </ul>
+        </div>
+        <div class="qr-block">
+          <div class="qr-time">Afternoon · second MVI dose</div>
+          <ul>
+            <li>Bariatric MVI (if taking 2/day)</li>
+          </ul>
+          <div class="qr-time">Evening · with dinner</div>
+          <ul>
+            <li>Calcium citrate 500–600 mg + D3</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROUP B CARD -->
+    <div class="qr-card">
+      <div class="qr-card-head">
+        <h3>SADI / Duodenal Switch</h3>
+        <span class="for">Group B · Daily</span>
+      </div>
+      <div class="qr-grid">
+        <div class="qr-block">
+          <div class="qr-time">Morning · with breakfast</div>
+          <ul>
+            <li>DS multivitamin (dose 1)</li>
+            <li>Iron 45–60 mg + vitamin C</li>
+            <li>B12 sublingual 1,000 µg</li>
+          </ul>
+          <div class="qr-time">Midday · with lunch</div>
+          <ul>
+            <li>Calcium citrate 600 mg + D3</li>
+            <li>Vitamin A &amp; K <em>(if separate)</em></li>
+          </ul>
+        </div>
+        <div class="qr-block">
+          <div class="qr-time">Afternoon · with snack</div>
+          <ul>
+            <li>DS multivitamin (dose 2)</li>
+            <li>Calcium citrate 600 mg + D3</li>
+          </ul>
+          <div class="qr-time">Evening · with dinner</div>
+          <ul>
+            <li>Calcium citrate 600 mg + D3</li>
+            <li>Extra Vitamin D3 + Zinc + Copper</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- RULES BOX -->
+    <div class="qr-rules">
+      <div class="label">Five rules that don't change</div>
+      <ul>
+        <li><strong>Separate calcium and iron by 2 hours.</strong> Separate either from thyroid hormone.</li>
+        <li><strong>Calcium must be citrate, never carbonate.</strong> No more than 600 mg per dose.</li>
+        <li><strong>Iron with vitamin C. All others with food. Plain water only.</strong></li>
+        <li><strong>No gummies. No carbonate. No straws or large pills for the first month.</strong></li>
+        <li><strong>Bloodwork on schedule, supplements every day, for life.</strong></li>
+      </ul>
+    </div>
+
+    <div style="text-align:center; margin-top: 18px; font-size: 8.5pt; color: var(--muted); letter-spacing: 0.15em;">
+      QUESTIONS? CALL THE OFFICE — DON'T GUESS.
+    </div>
+
+    <div class="page-footer"><span>Quick Reference · Both Groups</span><span>07</span></div>
+  </section>
+
+</div>
+
+</body>
+</html>
