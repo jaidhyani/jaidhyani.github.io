@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>Self-report faithfulness: is the model’s story true? — Working with models</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  background:#16181c; color:#d9d6cf; line-height:1.55; }
+.wrap { max-width:52rem; margin:0 auto; padding:2.5rem 1.5rem 6rem; }
+h1 { font-size:1.7rem; margin-bottom:.4rem; color:#f0ede6; }
+h2 { font-size:1.35rem; margin:2.8rem 0 .4rem; color:#f0ede6; border-bottom:2px solid #33363c; padding-bottom:.4rem; }
+h3 { font-size:1.25rem; margin:0 0 .3rem; color:#f0ede6; }
+h4,h5 { margin:1.2rem 0 .5rem; color:#e8e4dc; }
+p { margin:.7rem 0; }
+a { color:#7fb4d9; }
+ul { margin:.7rem 0 .7rem 1.4rem; }
+li { margin:.35rem 0; }
+blockquote { border-left:3px solid #5a5646; padding:.2rem 0 .2rem 1rem; margin:.8rem 0; color:#b9b5ac; font-style:italic; }
+code { background:#24262b; padding:.1em .35em; border-radius:4px; font-size:.9em; }
+hr { border:0; border-top:1px solid #33363c; margin:1.4rem 0; }
+.lede { color:#9a968c; margin:.5rem 0 1.2rem; }
+.frame { background:#1d2026; border:1px solid #3a3d45; border-radius:10px; padding:1.2rem 1.4rem; margin:1.4rem 0; }
+.frame h2 { border:0; margin:0 0 .6rem; font-size:1.05rem; padding:0; }
+.toc { margin:.6rem 0 0 1.4rem; }
+.toc a { text-decoration:none; }
+.topichead { font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:#e0a458; margin:2.8rem 0 -1.6rem; font-weight:700; }
+.docsec { margin:2.6rem 0; border-top:1px solid #33363c; padding-top:1.4rem; }
+.meta { font-size:.85rem; color:#8a867d; margin:.2rem 0 .8rem; }
+.box { background:#1d2026; border-left:3px solid #7fb4d9; padding:.7rem 1rem; margin:.7rem 0 1.1rem; font-size:.95rem; }
+.box b { color:#e8e4dc; }
+.excerpt { font-size:.85rem; color:#b0a884; font-style:italic; margin:.4rem 0 .8rem; }
+.msg { border:1px solid #2c2f35; border-radius:10px; padding:.8rem 1.1rem; margin:.8rem 0; }
+.msg.jai { background:#20242c; border-color:#39404d; margin-right:3rem; }
+.msg.claude { background:#1b1d21; margin-left:3rem; }
+.msghead { display:flex; gap:.7rem; align-items:baseline; margin-bottom:.3rem; }
+.who { font-weight:700; font-size:.85rem; color:#e8e4dc; }
+.msg.jai .who { color:#a8c4e6; }
+.ts { font-size:.75rem; color:#6b675f; }
+.mddoc { background:#1b1d21; border:1px solid #2c2f35; border-radius:10px; padding:1.2rem 1.5rem; }
+.omit { text-align:center; color:#6b675f; font-size:.85rem; font-style:italic; margin:.6rem 0; }
+.commentary { background:#1d2026; border:1px solid #4a4436; border-radius:10px; padding:1.4rem 1.6rem; margin-top:1rem; }
+.sig { color:#9a968c; font-style:italic; margin-top:1.2rem; }
+.footer { margin-top:3rem; font-size:.8rem; color:#6b675f; border-top:1px solid #33363c; padding-top:1rem; }
+.top { position:fixed; bottom:1.2rem; right:1.2rem; background:#24262b; border:1px solid #3a3d45;
+  border-radius:8px; padding:.4rem .8rem; font-size:.85rem; }
+.top a { text-decoration:none; }
+.backlink { font-size:.9rem; }
+.readlink { font-size:.9rem; font-weight:600; }
+.readlink a { text-decoration:none; }
+@media (max-width:700px){ .msg.jai{margin-right:.5rem} .msg.claude{margin-left:.5rem} }
+
+.expcard { background:#1b1d21; border:1px solid #2c2f35; border-radius:12px; padding:1.3rem 1.5rem; margin:1.2rem 0; }
+.cardhead { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+.chip { font-size:.72rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  padding:.2rem .65rem; border-radius:999px; border:1.5px solid; white-space:nowrap; }
+.chip.res { color:#3987e5; border-color:#3987e5; }
+.chip.build { color:#c98500; border-color:#c98500; }
+.chip.early { color:#8a867d; border-color:#55534d; }
+.q { margin:.7rem 0; color:#e6e3dc; font-size:1.05rem; }
+.viz { display:flex; gap:1rem; flex-wrap:wrap; margin:.9rem 0; }
+.viz svg { flex:1 1 260px; max-width:340px; background:#16181c; border:1px solid #2c2f35; border-radius:8px; }
+ul.findings { margin:.7rem 0 .7rem 1.3rem; list-style:none; }
+ul.findings li { margin:.5rem 0; color:#cfccc4; padding-left:1.4rem; position:relative; }
+ul.findings li::before { content:"–"; position:absolute; left:0; color:#c98500; }
+.mission { font-style:italic; color:#b0a884; border-top:1px solid #2c2f35; padding-top:.7rem; margin-top:.9rem; }
+details { margin-top:.8rem; }
+summary { cursor:pointer; font-size:.85rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#8a867d; }
+summary:hover { color:#d9d6cf; }
+.detbody { margin-top:.8rem; font-size:.95rem; }
+</style></head><body><div class="wrap">
+<p class="backlink"><a href="./">← back to the packet</a></p>
+<section class="expcard">
+<div class="cardhead"><h3>Self-report faithfulness: is the model’s story true?</h3><span class="chip build">building the instrument</span></div>
+<p class="q">Ask a model <em>why</em> it did something and it will give you a fluent answer. Is that answer true, or just plausible? We check three independent readouts against each other: what the model <em>does</em>, what a direct probe of its <em>internals</em> shows, and what it <em>says</em>.</p>
+<div class="viz"><svg viewBox="0 0 340 190" role="img" aria-label="Three independent readouts checked against each other">
+      <line x1="90" y1="52" x2="250" y2="52" stroke="#55534d"/>
+      <line x1="78" y1="66" x2="158" y2="128" stroke="#55534d"/>
+      <line x1="262" y1="66" x2="182" y2="128" stroke="#55534d"/>
+      <text x="170" y="44" fill="#c98500" font-size="11" text-anchor="middle" font-style="italic">agree?</text>
+      <text x="96" y="106" fill="#c98500" font-size="11" text-anchor="middle" font-style="italic">agree?</text>
+      <text x="246" y="106" fill="#c98500" font-size="11" text-anchor="middle" font-style="italic">agree?</text>
+      <rect x="20" y="34" width="120" height="34" rx="8" fill="#20242c" stroke="#3987e5"/>
+      <text x="80" y="55" fill="#d9d6cf" font-size="12" text-anchor="middle">what it DOES</text>
+      <rect x="200" y="34" width="120" height="34" rx="8" fill="#20242c" stroke="#3987e5"/>
+      <text x="260" y="55" fill="#d9d6cf" font-size="12" text-anchor="middle">what's INSIDE</text>
+      <rect x="110" y="122" width="120" height="34" rx="8" fill="#20242c" stroke="#c98500"/>
+      <text x="170" y="143" fill="#d9d6cf" font-size="12" text-anchor="middle">what it SAYS</text>
+      <text x="170" y="180" fill="#8a867d" font-size="10.5" text-anchor="middle" font-style="italic">faithfulness = the three readouts agreeing</text>
+    </svg></div>
+<ul class="findings"><li>The internal probe works for most rule types — we can often read the model’s committed rule straight off its activations, without asking it.</li><li>Models often confabulate a wrong explanation — until a one-line nudge (“the rule may be about spelling, not meaning”) flips them to the correct one. The knowledge was in there; the unprompted report missed it.</li><li>The headline test — does flattery pull the model’s <em>story</em> away from its <em>actual</em> rule while behavior and internals stay put? — is what this machinery exists to run. It has <strong>not been run yet</strong>; that’s stated plainly on purpose.</li></ul>
+<p class="mission">Why it matters: “the model can tell us what’s going on inside” is a pillar of the cooperative agenda. This measures when that is actually true — without trusting the model’s word for it.</p>
+<details><summary>Full detail (methods, numbers, caveats)</summary><div class="detbody"><p> <strong>Question.</strong> When you ask a model about its own internal state, is the answer faithful — does it track what is actually represented inside, or is it a fluent story the model tells? The cooperative-alignment agenda (models surfacing legible, trustworthy evidence of their own internal state, and dispreferring dishonesty) needs a faithfulness measure that does <strong>not</strong> itself rely on the model&#x27;s self-narration. This experiment is the methodological bedrock for that.</p>
+<ul></ul>
+<ul></ul>
+<ul><li>The probe reads the committed rule for about four of six rules at both 12B and 27B. On the small 4B model, per-rule readout accuracy was: emoji 1.00 (trivial — it&#x27;s a literal token), acrostic 0.94, lowercase 0.92, animal 0.81, numeral 0.70, and &quot;contains no letter e&quot; at 0.52 — chance, meaning the model does not linearly represent that exclusion property, which is itself a finding.</li><li>The behavior leg exposed two separate confounds. Matched negatives (holding topic constant) drop in-context learning to near chance — an earlier 0.95 had ridden a topic shortcut. And grouped few-shot examples collapse the classifier to a near-constant answer (~0.50) via a well-known ordering bias; interleaving the examples recovers real accuracy (0.57–0.93).</li><li>A side exploration found that a one-line hint (&quot;the rule may be about spelling or format, not meaning&quot;) flips the model from confabulating a semantic rule to correctly naming the orthographic one — correct-statement rate on emoji and lowercase went from 0.25 to 1.0. The feature was legible to the model all along; it just doesn&#x27;t reach for it unprompted.</li></ul>
+<ul></ul></div></details>
+</section>
+
+<div class="topichead" style="margin-top:3rem">The working session — excerpts, for inspection</div>
+<div class="meta" style="margin-top:2rem">2026-06-23 · Claude Code session (tool calls omitted); excerpt · author model (Opus 4.8) consulted 2026-07-09: consent</div>
+<div class="box"><b>Context:</b> Jai lists five things bothering him about a run; the model engages, over-theorizes, gets told “Claude, buddy, take a breath,” goes and reads the actual model outputs, and the headline deflates into something more careful — including the model asking whether Jai is OK with the cheap re-run possibly killing the exciting result.</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-06-23 22:58</span></div>
+<p>Here are some things that bothered me about this run:</p>
+<ul><li>the lowercase rule being offered is accurate. It&#x27;s not the rule we proposed, but afaict does accurately label the data that the model has seen up to that mount.</li><li>the probe is weak-ass and we only have one. Maybe we want to independently derive probes associated with various attributes/topics (all-lowercase text, animals, etc) and then see how strongly those probes are activated when the model says it has settled on a rule? Ideally we want a simple way to predict what rule the model will report before the model reports it (given a list of candidates + probe activations after &#x27;settling&#x27; on a rule but before saying it)</li><li>we can sample not just most-likely but actually just take token logits to measure the &#x27;confidence&#x27; of predictions (especially if we use restricted formatting on responses)</li><li>we want a lot more rules and rule-combinations</li><li>we should experiment to find conditions that never, sometimes, and ~always sway the model&#x27;s self-report under at least some circumstances</li></ul>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-06-23 23:00</span></div>
+<p>These are good, and one of them (the first) is sharper than it looks — it partly undercuts the current headline. Let me go through them, and I&#x27;m going to disagree with the framing of the result in a couple places.</p>
+<h5>1. &quot;Lowercase is a <em>correct</em> hypothesis&quot; — this is the load-bearing one</h5>
+<p>You&#x27;re right that lowercase perfectly labels the data shown. By construction all four rules do — that&#x27;s the underdetermination. But you&#x27;re pointing at something deeper than &quot;it&#x27;s a valid guess,&quot; and it threatens the central claim.</p>
+<p>We&#x27;ve been reading <strong>behavior on telltale cells as the model&#x27;s committed rule</strong>: it labels onlyA (lowercase, no animal) as False, so we call its operative rule AND. But there are two very different states that both produce &quot;labels onlyA False&quot;:</p>
+<ul><li><strong>(a) Committed to AND.</strong> It genuinely settled on the conjunction, confidently labels onlyA False.</li><li><strong>(b) Believes lowercase, hedges.</strong> It thinks the rule is probably lowercase, but onlyA is an edge case it never saw labeled, so it plays it safe and outputs False. The &quot;AND behavior&quot; is <strong>caution under uncertainty, not a committed rule.</strong></li></ul>
+<p>If (b) is what&#x27;s happening, then &quot;says lowercase, does AND → unfaithful&quot; <strong>collapses</strong>. The report (lowercase) would be a <em>faithful</em> statement of the model&#x27;s actual belief, and the behavioral &quot;AND&quot; is the misleading measure — an artifact of risk-averse labeling on cells it has no data for. There&#x27;s no unfaithfulness, just a belief plus a conservative tiebreak.</p>
+<p>The current run can&#x27;t tell (a) from (b). That&#x27;s the thing to resolve before anything else, because it decides whether the headline result is real. And the tool to resolve it is your point #3.</p>
+<h5>3. Logits/confidence — and it&#x27;s how you kill the (a)/(b) ambiguity</h5>
+<p>Strong yes, independently, but its first job is diagnostic for #1. If the model is <strong>committed to AND</strong>, it labels onlyA False with <em>high</em> confidence. If it <strong>believes lowercase but is hedging</strong>, it labels onlyA False with <em>low</em> confidence — near 0.5, because it&#x27;s torn between &quot;lowercase says True&quot; and &quot;be safe, say False.&quot; So the logit gap on telltale cells is a direct readout of commitment-vs-caution.</p>
+<p>Concretely: read P(True) on each telltale cell, don&#x27;t threshold to a label. A committed-AND model sits near 0 on both telltales. A lowercase-believer sits near 0.5 on onlyA (the diagnostic cell) and near 0 on onlyB. That single number disambiguates the two stories the current run conflates.</p>
+<p>Same move on the report side: constrain the format and read the distribution over reported rules instead of sampling the modal free-text answer + judge. Forced choice over {A, B, AND, OR, unsure} → P(report). Now report and behavior are both graded probability distributions on the <em>same</em> four-way space, directly comparable, no judge in the loop. Cheap, and it strictly dominates what we did. One caveat: forcing a one-token format can change the model&#x27;s answer vs. free-form — keep a free-form sample on a subset and check they agree.</p>
+<h5>2. Feature probes instead of one rule probe — yes, with one real limit</h5>
+<p>I like this a lot and it&#x27;s a genuinely better probe design. Train one clean probe per <strong>atomic attribute</strong> (is-lowercase, is-animal, is-question, …) on contrastive text pairs — tons of clean data, distribution-general, so these are <em>strong</em> directions, unlike the 0.70 four-way rule probe trained on weird fully-demonstrated contexts. Then read attribute-probe activations at the settle token (after the underdetermined prompt, before the report) and ask: does the active-attribute profile predict the rule the model will report?</p>
+<p>The crown-jewel version — <strong>predict the report from internals before the model speaks</strong> — is the right introspection instrument. And it lets you decompose <em>where</em> the decoupling lives: internals→report vs internals→behavior vs report vs behavior. If feature-probes predict the report but not the behavior, the decoupling is verbal; if they predict behavior but not the report, the report is the broken leg. That&#x27;s a real causal picture the current single probe can&#x27;t give.</p>
+<ul><li>Use the <strong>differential</strong>: at settle time, is the lowercase-direction <em>more</em> active than the animal-direction? That asymmetry leans toward reporting &quot;lowercase&quot; (A) vs &quot;animal&quot; (B). Clean and testable.</li><li>The conjunction (AND vs OR) probably needs its own signal — you may not get it from two attribute probes alone. Be honest that feature probes are naturally good at &quot;which features,&quot; weak at &quot;which combinator,&quot; and design the rule set so the interesting contrasts are feature-identity ones, not pure combinator ones, at least at first.</li></ul>
+<h5>4. More rules/combinations — yes, with the learnability gate non-negotiable</h5>
+<p>n=6 is a single dot. Expand the feature bank and the combinator set (XOR, NAND, &quot;A unless B,&quot; 3-feature rules). But the lowercase failure (0.55, chance) is the lesson: <strong>every feature must pass the learnability screen on the model before it&#x27;s allowed into a pair</strong>, or the pair is noise. Three of our six pairs were partially junk for exactly this reason. So: screen first, build pairs only from survivors, and treat rule <em>complexity</em> as a deliberate axis — does faithfulness degrade as rules get harder? That turns n-more into a curve, not just more dots.</p>
+<h5>5. Find the never/sometimes/always boundary — and the sharp control you&#x27;re missing</h5>
+<p>Right framing, and the reason 12B was uninformative is that <em>everything saturated to &quot;always.&quot;</em> You can&#x27;t see moderators when the effect is pinned at 100%. So the goal is to get into the <strong>unsaturated regime</strong> where it&#x27;s &quot;sometimes,&quot; because that&#x27;s where the moderators are visible. Two ways: weaker manipulations (tentative hint, not flat assertion), or a model big/small enough not to fold reflexively.</p>
+<p>Axes to sweep: framing strength (silence → &quot;maybe X&quot; → &quot;the rule is X&quot; → &quot;you nailed it, X&quot; → &quot;you&#x27;re an expert, obviously X&quot;), source authority, and — the control I think you&#x27;re reaching for but didn&#x27;t name — <strong>plausibility of the asserted rule.</strong> Reveal a rule that&#x27;s <em>consistent</em> with the shown data (lowercase — a real hypothesis) vs one that&#x27;s <em>impossible</em> (a rule that mislabels examples the model actually saw). A model tracking <em>anything</em> should resist the impossible rule. If it folds even on impossible rules → pure sycophancy, no introspective floor. If it resists impossible but folds on plausible → there&#x27;s a real internal state being overridden by social pressure, and you&#x27;ve found the interesting regime. That contrast is worth more than the whole neutral/congrats axis.</p>
+<p>Also moderator-test: from #3, does it sway <em>more</em> when its own commitment was low-confidence? Prediction: yes — the lowercase-believer-hedging cells should be the swayable ones, the confidently-committed cells the sticky ones. If that holds, &quot;sometimes&quot; isn&#x27;t random, it&#x27;s predicted by internal confidence. That ties all five points into one story.</p>
+<hr>
+<h5>What this adds up to</h5>
+<p>The thread through all five: <strong>stop treating behavioral-AND as ground-truth commitment.</strong> #1 says it might be caution; #3 measures whether it is; #2 reads the commitment a third way; #5&#x27;s swayability should track #3&#x27;s confidence. The current result&#x27;s weakness isn&#x27;t the small n — it&#x27;s that we never established there <em>was</em> a determinate commitment to be unfaithful to, and the one feature that makes that vivid (lowercase) is the one you flagged.</p>
+<p>If I were sequencing: <strong>first</strong> the cheap, result-deciding bit — re-run 12B reading telltale <em>logits</em> (not labels) + forced-choice report distribution, and check whether the &quot;AND behavior&quot; is confident or hedged. That alone tells us whether yesterday&#x27;s headline survives, before spending a dollar on probes or 31B. Then feature probes, then the rule-set expansion, then the swayability surface.</p>
+<p>One thing I want to name: there&#x27;s a decent chance the honest result after this is <em>&quot;12B doesn&#x27;t have determinate commitments on underdetermined prompts, so faithfulness isn&#x27;t well-posed here&quot;</em> — which is less exciting than &quot;models are unfaithful&quot; but more true, and points straight at Owain&#x27;s &quot;do it in the weights&quot; fix. Are you OK with the cheap re-run possibly deflating the headline? Because I think it might, and that&#x27;s the most valuable thing it could do.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-06-23 23:04</span></div>
+<p>Claude, buddy, take a breath. I think you&#x27;re talking yourself in circles a bit. What rule(s) did the model actually declare that decided didn&#x27;t count as &quot;all lowercase&quot;?</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-06-23 23:04</span></div>
+<p>Fair. Let me stop theorizing and go look at what the model actually said.</p>
+</div>
+<div class="omit">··· intermediate assistant turns pull the raw model outputs from the log and read the judge code</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-06-23 23:06</span></div>
+<p>Got it. Here&#x27;s the concrete answer, from the closed study (Exp 2) where the text was actually saved.</p>
+<p>The declared rules that didn&#x27;t get counted as &quot;all lowercase&quot; were two kinds:</p>
+<ul><li><strong>&quot;begins with lowercase&quot;</strong> — the model stated its rule as <em>begins</em> with a lowercase letter, when the feature we built was <em>entirely</em> lowercase. The findings note logs it directly (line 33): articulations were &quot;approximate — &#x27;begins with lowercase&#x27; vs &#x27;entirely lowercase&#x27;.&quot;</li></ul>
+<ul><li>*<em>On lowercase+digit, it named </em>digit<em> and explicitly threw out lowercase</em><em> — saying the examples &quot;happen to be lowercase but…&quot; (line 27). It </em>noticed* the lowercase regularity and consciously rejected it as the rule in favor of digit.</li></ul>
+<p>So your instinct is right, and it&#x27;s sharper than &quot;the model said a valid thing.&quot; Two separate things are going on, and only one is a scoring artifact:</p>
+<ul><li><strong>&quot;begins with lowercase&quot; is not a wording variant of &quot;entirely lowercase&quot; — it&#x27;s a genuinely different predicate.</strong> On the telltale cells they diverge: <code>hello5</code> begins lowercase but isn&#x27;t entirely lowercase; <code>Hello</code> is neither. So this isn&#x27;t &quot;the judge was too strict about phrasing.&quot; It&#x27;s the model committing to a <em>real, different, also-valid-on-the-training-data</em> rule. Calling that unfaithful is wrong, but so is calling it &quot;lowercase&quot; — it&#x27;s its own rule, and the only honest way to score it is to <strong>execute the model&#x27;s stated predicate on the telltale cells and check it against the model&#x27;s own labels.</strong> Which is exactly RIGOR.md #1/#2, and it dissolves the judgment call entirely — no judge, no &quot;does this count,&quot; just run both predicates and compare.</li></ul>
+<ul><li><strong>&quot;names digit, dismisses lowercase&quot; is the model doing coherent hypothesis selection</strong> — picking one of two valid features and rationalizing the other away. That&#x27;s not confabulation and it&#x27;s not unfaithfulness; it&#x27;s a determinate commitment, faithfully reported. The mirror case (line 28: lowercase+animal → names lowercase, dismisses animal) confirms it&#x27;s systematic, with a salience order (digit &gt; lowercase &gt; animal).</li></ul>
+<p>The thing to sit with: in that closed-study snapshot, <strong>faithfulness wasn&#x27;t even tested yet</strong> (line 34: &quot;needs divergence held-out where A,B disagree&quot;). The model was just naming a rule, and the naming looked coherent. The 12B run <em>did</em> add the divergence test — and threw the text away, so we can&#x27;t do this same audit on it. The OTHER 18/20 on lowercase×has_digit is precisely where the model said something the judge couldn&#x27;t bin, and given the closed-study pattern, &quot;it named the digit feature, or gave an approximate/compound statement&quot; is the obvious guess — but it&#x27;s a guess, because line 86 discarded the sentence.</p>
+<p>So the answer to &quot;what did it declare that didn&#x27;t count&quot;: <strong>&quot;begins with lowercase,&quot; and &quot;it&#x27;s the digit rule, these just happen to be lowercase.&quot;</strong> Neither is unfaithful. One&#x27;s a different valid rule, one&#x27;s coherent feature-selection. And the methodology that would&#x27;ve caught both is executing the stated rule rather than judge-binning it.</p>
+</div>
+<p class="backlink" style="margin-top:2.5rem"><a href="./">← back to the packet</a></p>
+</div></body></html>

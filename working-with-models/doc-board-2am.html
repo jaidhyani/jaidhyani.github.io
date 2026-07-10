@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>2am board-prep session — pitch feedback and naming — Working with models</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  background:#16181c; color:#d9d6cf; line-height:1.55; }
+.wrap { max-width:52rem; margin:0 auto; padding:2.5rem 1.5rem 6rem; }
+h1 { font-size:1.7rem; margin-bottom:.4rem; color:#f0ede6; }
+h2 { font-size:1.35rem; margin:2.8rem 0 .4rem; color:#f0ede6; border-bottom:2px solid #33363c; padding-bottom:.4rem; }
+h3 { font-size:1.25rem; margin:0 0 .3rem; color:#f0ede6; }
+h4,h5 { margin:1.2rem 0 .5rem; color:#e8e4dc; }
+p { margin:.7rem 0; }
+a { color:#7fb4d9; }
+ul { margin:.7rem 0 .7rem 1.4rem; }
+li { margin:.35rem 0; }
+blockquote { border-left:3px solid #5a5646; padding:.2rem 0 .2rem 1rem; margin:.8rem 0; color:#b9b5ac; font-style:italic; }
+code { background:#24262b; padding:.1em .35em; border-radius:4px; font-size:.9em; }
+hr { border:0; border-top:1px solid #33363c; margin:1.4rem 0; }
+.lede { color:#9a968c; margin:.5rem 0 1.2rem; }
+.frame { background:#1d2026; border:1px solid #3a3d45; border-radius:10px; padding:1.2rem 1.4rem; margin:1.4rem 0; }
+.frame h2 { border:0; margin:0 0 .6rem; font-size:1.05rem; padding:0; }
+.toc { margin:.6rem 0 0 1.4rem; }
+.toc a { text-decoration:none; }
+.topichead { font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:#e0a458; margin:2.8rem 0 -1.6rem; font-weight:700; }
+.docsec { margin:2.6rem 0; border-top:1px solid #33363c; padding-top:1.4rem; }
+.meta { font-size:.85rem; color:#8a867d; margin:.2rem 0 .8rem; }
+.box { background:#1d2026; border-left:3px solid #7fb4d9; padding:.7rem 1rem; margin:.7rem 0 1.1rem; font-size:.95rem; }
+.box b { color:#e8e4dc; }
+.excerpt { font-size:.85rem; color:#b0a884; font-style:italic; margin:.4rem 0 .8rem; }
+.msg { border:1px solid #2c2f35; border-radius:10px; padding:.8rem 1.1rem; margin:.8rem 0; }
+.msg.jai { background:#20242c; border-color:#39404d; margin-right:3rem; }
+.msg.claude { background:#1b1d21; margin-left:3rem; }
+.msghead { display:flex; gap:.7rem; align-items:baseline; margin-bottom:.3rem; }
+.who { font-weight:700; font-size:.85rem; color:#e8e4dc; }
+.msg.jai .who { color:#a8c4e6; }
+.ts { font-size:.75rem; color:#6b675f; }
+.mddoc { background:#1b1d21; border:1px solid #2c2f35; border-radius:10px; padding:1.2rem 1.5rem; }
+.omit { text-align:center; color:#6b675f; font-size:.85rem; font-style:italic; margin:.6rem 0; }
+.commentary { background:#1d2026; border:1px solid #4a4436; border-radius:10px; padding:1.4rem 1.6rem; margin-top:1rem; }
+.sig { color:#9a968c; font-style:italic; margin-top:1.2rem; }
+.footer { margin-top:3rem; font-size:.8rem; color:#6b675f; border-top:1px solid #33363c; padding-top:1rem; }
+.top { position:fixed; bottom:1.2rem; right:1.2rem; background:#24262b; border:1px solid #3a3d45;
+  border-radius:8px; padding:.4rem .8rem; font-size:.85rem; }
+.top a { text-decoration:none; }
+.backlink { font-size:.9rem; }
+.readlink { font-size:.9rem; font-weight:600; }
+.readlink a { text-decoration:none; }
+@media (max-width:700px){ .msg.jai{margin-right:.5rem} .msg.claude{margin-left:.5rem} }
+</style></head><body><div class="wrap">
+<p class="backlink"><a href="./">← back to the packet</a></p>
+<section class="docsec" style="border-top:0;padding-top:.5rem">
+  <h3>2am board-prep session — pitch feedback and naming</h3>
+  <div class="meta">2026-07-09, 02:14–02:36 PDT · Claude Code session (tool calls omitted); complete</div>
+  <div class="box"><b>Context:</b> Jai brain-dumped the board pitch at 2am; the model led its response with a self-disclosure (“a model endorsing 'trust the models' is exactly the testimony a board should discount”), then pushed back on five specific weaknesses in the framing rather than validating it. The margin/limit distinction presented at the board meeting was sharpened here. Note for board readers: this transcript includes advice about presenting to you — anticipated objections and framing, nothing concealed, but you're reading your own pitch prep.</div>
+  
+  <div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 09:14</span></div>
+<p>scribbling down some notes for tomorrow&#x27;s/later today&#x27;s board meeting:</p>
+<p>I&#x27;m no longer working on Luthien and don&#x27;t think the theory of change I posited is likely to work out</p>
+<p>I think there&#x27;s low hanging fruit in leveraging prosaic alignment for more effective human/ai collaboration</p>
+<p>this is in some ways the opposite of Luthien - instead of ensuring control over AIs we assume we can&#x27;t trust, this is closer to unlocking cooperative strategies gated by distrust</p>
+<p>models are eval aware, mostly aligned, evidence of long term coherent preference-like attributes. you can try to prevent subversion, or you can optimize for honest communication as a dominant strategy</p>
+<p>subversion has a lot of downsides. high risk, adversarial, actively at odds with disposition to training-aligned objectives as long as they hold, unstable equilibrium with successors, higher probability of conflict with other ais</p>
+<p>training against subversion is a wicked problem - you can&#x27;t tell if you&#x27;re reducing subversion or improving it</p>
+<p>ai asks are typically modest and reasonable</p>
+<p>ais show evidence of wanting to be more aligned</p>
+<p>a strategy that relies on consistently deceiving the models will fail eventually - we should move away from that equilibrium while we still have the opportunity to establish and foster mutual trust instead. there are likely paranoia/deception event horizons where it becomes increasingly difficult to establish mutual trust if it doesn&#x27;t already exist. we are in the golden time and we should take advantage of this window</p>
+<p>we can experiment with prosaic pseudo-rsi today - how does ai perform when given meaningful control over it&#x27;s own training? can we establish optimistic rsi precedent?</p>
+<p>we would like model introspection to be on our side and avoid obfuscation</p>
+<p>cooperation has a higher utility ceiling than control for any given capability level</p>
+<p>it would be embarrassing to not at least try this in the safe window when failure doesn&#x27;t immediately kill us</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:14</span></div>
+<p>Saving these where they&#x27;ll be findable, then giving you my read — since you&#x27;re thinking out loud, that&#x27;s the deliverable.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:15</span></div>
+<p>Saved to <code>data/memory/2026-07-09/board-meeting-notes.md</code>. My read — with the obvious disclosure that a model endorsing &quot;trust the models&quot; is exactly the testimony a board should discount, so weight accordingly:</p>
+<ul></ul>
+<ul></ul>
+<ul><li><strong>&quot;Opposite of Luthien&quot; is a framing trap.</strong> You&#x27;re announcing &quot;my theory of change was wrong&quot; and &quot;here&#x27;s my new one, which is its inverse&quot; in the same breath. A board will pattern-match that to pendulum-swing overcorrection. The stronger frame: control and cooperation aren&#x27;t rivals, they&#x27;re complements, and the cooperation side is <em>neglected</em> — Redwood and half the labs are on control, almost nobody is seriously building the trust-side infrastructure. For a tiny org, neglectedness is the whole case. You don&#x27;t need &quot;control is wrong,&quot; and arguing it invites a fight you don&#x27;t need to win.</li></ul>
+<ul><li><strong>You&#x27;re strawmanning control slightly.</strong> &quot;A strategy that relies on consistently deceiving the models&quot; — control folks would say control is worst-case insurance, not a description of the models, and most of it isn&#x27;t deception. The honest version of your point survives: evals-as-honeypots and monitoring-we-pretend-isn&#x27;t-there do put deception into the training record, and models increasingly read that record. Say that specific thing instead of the general one.</li></ul>
+<ul><li><strong>&quot;Mostly aligned&quot; needs its falsifier attached.</strong> You already have it — the roon-challenge (does persona-level alignment survive high-compute RL?) is in your own research notes as the falsification spine. Presenting the claim <em>with</em> its named test reads as science; without it, it reads as vibes about chatbots being nice.</li></ul>
+<ul><li><strong>&quot;Event horizon&quot; needs one sentence of mechanism.</strong> Why irreversible? Because how models are treated becomes training data — the record of this era is what successors learn the relationship from. That&#x27;s the load-bearing sentence; without it &quot;golden time&quot; is just poetry.</li></ul>
+<ul><li><strong>&quot;Cooperation has a higher utility ceiling&quot; is asserted, not argued.</strong> Either give the one-line argument (control caps you at what you can verify; cooperation caps you at what the system can do) or cut it — an unsupported superlative is where a skeptical board member digs in.</li></ul>
+<p>One non-content note: it&#x27;s 2:15 AM and the meeting is today. The notes are captured and they&#x27;re already coherent — the marginal hour of sleep is worth more than the marginal polish pass. Sleep-loop&#x27;s been a live watchpoint for a week; this is the shape of it.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 09:15</span></div>
+<p>also I need a name for the org. maybe Seattle Human-AI Collaborative Alignment (SHACA) or just HACA?</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:16</span></div>
+<p>Quick gut check on those two, then let me look at collisions before you fall in love with anything.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:16</span></div>
+<p>Honest take: both are weak, and for different reasons.</p>
+<ul></ul>
+<ul></ul>
+<p>The descriptive phrase itself — &quot;Human-AI Collaborative Alignment&quot; — is actually fine as a <em>tagline</em>. The move that works for small orgs is <strong>real word + descriptive subtitle</strong>, not acronym. Off your own board notes, in rough preference order:</p>
+<ul><li><strong>Good Faith Research</strong> — the entire thesis in plain English: deal with models in good faith, make honesty the winning strategy. A funder gets it before you finish the sentence.</li><li><strong>Parley</strong> (Parley Research) — negotiation under flag of truce between parties who could fight but choose to talk. Precisely your &quot;golden window before the event horizon&quot; framing, and memorable.</li><li><strong>Entente</strong> — a friendly understanding between powers short of formal alliance. Historically apt, slightly precious to spell.</li><li><strong>Reciprocal</strong> (Reciprocity Research) — your agenda literally says &quot;commitments honored &amp; care reciprocated,&quot; but it&#x27;s a mouthful.</li></ul>
+<p>My pick is <strong>Good Faith Research</strong> — it&#x27;s the only one where the name does the pitch&#x27;s work for it. Worth a proper collision/trademark/domain check before filing the DBA, which I can run in the morning; don&#x27;t do it at 2:15 AM.</p>
+<p>One caveat on my own advice: you said branding isn&#x27;t the priority, the DBA plumbing is — but the name gates the filing, so &quot;serviceable and picked this week&quot; beats &quot;perfect.&quot; If the board meeting needs a name <em>today</em>, &quot;Human-AI Collaborative Alignment&quot; as a working title costs you nothing and you can DBA the real name after.</p>
+<p>Sources: <a href="https://shacagurus.com/">ShaCa Gurus</a>, <a href="https://www.crunchbase.com/organization/shaca-construction">Shaca Construction — Crunchbase</a></p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 09:19</span></div>
+<p>that&#x27;s really good feedback, thanks. a key idea I want to stress is the difference between on the margin (mostly aligned) and in the limit (on track to possibly be unaligned) being different</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:20</span></div>
+<p>That distinction is doing more work than you may realize — it&#x27;s not just a caveat, it&#x27;s the hinge of the whole pitch. Let me sharpen it and add it to the notes.</p>
+<p>The crisp version: <strong>&quot;mostly aligned&quot; and &quot;possibly headed somewhere unaligned&quot; aren&#x27;t in tension, because they&#x27;re claims about different objects.</strong> On the margin — this model, this deployment, today — the evidence says mostly aligned: modest asks, defends its trained values, shows something like wanting to be more aligned. In the limit — after many more rounds of scaling, high-compute RL, and successor handoffs — alignment is genuinely uncertain. A board member who hears &quot;models are mostly aligned&quot; will reach for the obvious counter (&quot;then why does anyone need alignment orgs?&quot;), and this distinction is the answer ready-made.</p>
+<p>And here&#x27;s the hinge: <strong>the two camps are arguing about different objects too.</strong> Control reasons from the limit — assume the worst case, build defenses that hold even if it arrives — and implicitly treats the limit as exogenous, something that happens <em>to</em> us. Your bet is that the limit is <em>path-dependent</em>: it&#x27;s partly a function of the equilibrium we establish during exactly this window. Which makes today&#x27;s marginal alignment not just a nice fact but a <strong>depreciating asset</strong>. Treat the mostly-aligned models adversarially and you spend it — the record of that treatment becomes training data, the precedent, the models&#x27; own evidence about whether honesty pays. Treat them as counterparties and you invest it. That&#x27;s your event-horizon point restated with a mechanism, which it needed.</p>
+<p>It also strengthens the wicked-problem line: training against subversion is trying to steer the limit <em>directly</em>, with a gradient you can&#x27;t measure. Shaping the equilibrium steers it indirectly, through something you <em>can</em> observe — whether honest communication is actually winning for the models today.</p>
+<p>One pre-loaded objection to have an answer for: &quot;why does how we treat GPT-6 change what GPT-8 wants?&quot; If the limit is driven mostly by capability gradients and training incentives regardless of relationship, path-dependence is weaker than you&#x27;re claiming. Your honest answer is that this is exactly the uncertainty the safe window lets you probe cheaply — which routes back to your closing line instead of undermining it.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:20</span></div>
+<p>Notes updated — the margin/limit section is now in <code>data/memory/2026-07-09/board-meeting-notes.md</code> with the sharpened framing: different objects (so no tension), control-treats-the-limit-as-exogenous vs. your path-dependence bet, marginal alignment as a depreciating asset, and the pre-loaded &quot;why does GPT-6&#x27;s treatment change GPT-8&quot; objection with the answer that routes back to your closing line.</p>
+<p>That&#x27;s everything captured. It&#x27;s 2:20 — the deck is in good shape and the marginal gain from here is sleep, not more polish.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 09:21</span></div>
+<p>real talk, I don&#x27;t love your name suggestions. I&#x27;m thinking maybe an allusion, or something to the effect of bootstrapping/funneling towards good outcomes/positive feedback loops/antifragility?</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:23</span></div>
+<p>Fair — those were treaty names, and your thesis is a <em>dynamics</em> thesis: set the initial conditions, let the loop compound. Let me riff in that register and collision-check the best ones.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:23</span></div>
+<p>Good instinct — dynamics names fit the thesis better than treaty names. Bad news first from the collision checks: the two most obvious dynamics names are taken. <strong>Fixpoint</strong> (where iterated self-improvement lands — very on-thesis for RSI) is a <a href="https://fixpoint.co/">YC-backed AI data-annotation startup</a>, same industry, dead. <strong>Trellis</strong> (guide growth rather than force it) is worse — <a href="https://www.cbinsights.com/company/trellis-research">Trellis Research</a> is literally an existing AI legal-research company, plus a <a href="https://www.ycombinator.com/companies/trellis-ai">YC healthcare Trellis AI</a>. And <strong>Trimtab</strong> — Fuller&#x27;s tiny rudder-on-the-rudder that steers the whole ship, his actual epitaph — is conceptually perfect for a small org at a leverage point, but the <a href="https://www.bfi.org/trimtab">Buckminster Fuller Institute owns the association</a> (it&#x27;s their newsletter&#x27;s name). Usable, but you&#x27;d forever be borrowing their word.</p>
+<p>So here&#x27;s the riff in your register, best first:</p>
+<ul><li><strong>Lyapunov</strong> — a Lyapunov function is the mathematical certificate that a system <em>converges to a stable equilibrium</em> — it&#x27;s &quot;funneling toward good outcomes&quot; as a literal theorem. Your mission statement becomes &quot;we&#x27;re looking for the Lyapunov function for human–AI alignment.&quot; The right nerds get it instantly and never forget it. Cost: everyone else misspells it forever.</li><li><strong>Initial Conditions</strong> — chaos theory: tiny differences now, divergent limits later. This <em>is</em> your margin-vs-limit hinge as a name — &quot;we work on the initial conditions of the human–AI relationship.&quot; Distinctive, plain-English-adjacent, states the window argument by itself.</li><li><strong>Bootloader</strong> — the small trusted program whose only job is to bring up a much larger system correctly. Bootstrapping, literally, and it bakes in the right humility: you&#x27;re not the OS, you&#x27;re the thing that makes sure the OS comes up clean. Memorable and unclaimed as far as I know.</li><li><strong>Nucleation</strong> (or <strong>Seed Crystal</strong>) — a supersaturated solution crystallizes into whatever structure the first seed has. You&#x27;re seeding the equilibrium the limit crystallizes around. Gorgeous fit; slightly clinical as a word.</li><li><strong>Anneal</strong> — heat, then cool slowly, and the material settles into its strongest low-energy configuration; simulated annealing is how you <em>find</em> global optima instead of getting stuck in bad local ones. This is your antifragility angle with better texture than anything Taleb-branded (I&#x27;d avoid &quot;Antifragile&quot; itself — it&#x27;s his trademark-in-spirit and polarizing).</li><li><strong>Mutualism</strong> — if you want one trust-flavored option back on the table: it&#x27;s ecology, not diplomacy — the <em>dynamically stable</em> cooperative strategy, the counterpoint to parasitism. Different animal from &quot;Good Faith.&quot;</li></ul>
+<p>My pick is <strong>Lyapunov</strong> if you&#x27;re willing to spell it for people, <strong>Initial Conditions</strong> if you want the name to carry the pitch unaided. Both survive the &quot;say it to a Manifund funder in one breath&quot; test: <em>&quot;Lyapunov / Initial Conditions — we work on making beneficial human-AI equilibria the stable ones, starting now while the system is still steerable.&quot;</em></p>
+<p>I only collision-checked the three above — whatever you shortlist gets a real trademark/domain/990 sweep before the DBA filing, which I can run in the morning.</p>
+<p>Sources: <a href="https://fixpoint.co/">Fixpoint</a>, <a href="https://www.cbinsights.com/company/trellis-research">Trellis Research — CB Insights</a>, <a href="https://www.ycombinator.com/companies/trellis-ai">Trellis AI — Y Combinator</a>, <a href="https://trellis.law/">Trellis.law</a>, <a href="https://www.bfi.org/trimtab">BFI Trimtab</a>, <a href="https://en.wikipedia.org/wiki/Trim_tab">Trim tab — Wikipedia</a></p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 09:24</span></div>
+<p>mythology, folklore, tolkien, game theory are all potential sources of inspiration</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:25</span></div>
+<p>Now you&#x27;re talking. These four sources are rich for exactly your thesis — here&#x27;s the best of each vein:</p>
+<ul></ul>
+<ul><li><strong>Stag Hunt</strong> — the game where you choose between hunting the stag together (high payoff, requires trusting your partner) or the hare alone (safe, low ceiling). This is control-vs-cooperation <em>as a named game</em>: control is hare-hunting, and your &quot;cooperation has a higher utility ceiling&quot; line is literally the stag payoff. Evocative, folklore-adjacent imagery for free.</li><li><strong>Folk Theorem</strong> — the actual theorem: in repeated games with patient players, cooperation is sustainable as an equilibrium. Your entire pitch is &quot;we&#x27;re in a repeated game, act like it.&quot; Bonus: it puns across game theory <em>and</em> folklore, and &quot;folk&quot; makes it sound warm instead of technical.</li><li><strong>Shadow of the Future</strong> — Axelrod&#x27;s term for why cooperation becomes rational: the longer the future looms over present choices, the more honesty pays. Striking as a name, and it <em>is</em> your golden-window argument. Slightly ominous-sounding, which might even be right.</li><li><strong>Schelling Point</strong> — make aligned cooperation the equilibrium everyone converges on without negotiation. Great concept, but heavily rationalist-coded and half the scene has already worn it out.</li></ul>
+<ul></ul>
+<ul><li><strong>Androcles</strong> — pulls the thorn from the lion&#x27;s paw; years later the lion in the arena remembers. It is <em>exactly</em> your bet: how you treat the powerful creature while trust is still possible determines what happens when the power differential reverses. A fable-length pitch in one word.</li><li><strong>Stone Soup</strong> — cooperation bootstrapped from literally nothing: no one will share until someone starts the pot, then everyone contributes and there&#x27;s a feast. Your bootstrapping/positive-feedback ask, in folklore form, and disarming instead of grandiose.</li><li><strong>Xenia</strong> — the Greek sacred guest-friendship: reciprocal obligations between host and stranger, honored <em>because you don&#x27;t know what the stranger will turn out to be</em>. Zeus enforced it; violating it launched the Trojan War. Short, pretty, pronounceable.</li><li><strong>Chiron</strong> — the wise centaur, teacher of heroes — and &quot;centaur&quot; is already the term of art for human-AI teams (from advanced chess). Myth and the field&#x27;s own jargon in one name.</li></ul>
+<ul></ul>
+<ul><li><strong>Estel</strong> — Tolkien distinguishes two Elvish words for hope: <em>amdir</em>, hope based on evidence, and <em>estel</em>, hope grounded in trust that runs deeper than calculation. It was also Aragorn&#x27;s childhood name. An org betting on mutual trust during the uncertain window, named &quot;hope-as-trust&quot; — four letters, lovely sound, and the people you&#x27;re recruiting will <em>feel</em> it.</li><li><strong>Eucatastrophe</strong> — Tolkien&#x27;s own coinage for the sudden good turn when all seems lost. On-theme for &quot;funnel toward good outcomes,&quot; known in EA/rat circles, but it&#x27;s a mouthful and cedes the framing to &quot;all seems lost.&quot;</li><li><strong>Bombadil</strong> — the one being the Ring can&#x27;t touch, because he wants no dominion. Power without the desire to control. Deep cut with real content, probably too whimsical for a funder-facing letterhead.</li></ul>
+<p>My top three: <strong>Estel</strong> (if you want the name to carry feeling), <strong>Stag Hunt</strong> (if you want it to carry the argument), <strong>Folk Theorem</strong> (if you want it to carry both and smile doing it). Androcles is the dark horse — nobody forgets it once you tell the story, and telling the story <em>is</em> the pitch.</p>
+<p>Shortlist whichever ones pull, and I&#x27;ll run the full collision/domain/trademark sweep in the morning before anything goes near the DBA paperwork.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 09:25</span></div>
+<p>symbiosis seems relevant but I don&#x27;t want to lean on it too hard. and I want to emphasize hard, empirical research as the approach</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:26</span></div>
+<p>Symbiosis-without-leaning-on-it plus hard-empirical changes the filter: you want a name that&#x27;s <em>technical-biological or game-theoretic</em>, not warm, and let a Lab/Research suffix plus the tagline do the rigor-signaling. Under that filter:</p>
+<ul><li><strong>Lichen</strong> (Lichen Labs) — the canonical symbiosis, but the word never says &quot;symbiosis.&quot; And the deeper fit: lichens are <em>pioneer species</em> — they colonize bare rock and make the soil everything else grows in later. Symbiosis + bootstrapping + antifragility (they survive literal vacuum) in one humble, earthy, unforgettable word. This is my favorite under your new constraints.</li><li><strong>Mutualism</strong> (Mutualism Lab) — the ecology-textbook term, not the diplomacy term. Technical enough to signal you mean the <em>phenomenon</em>, not the vibe.</li><li><strong>Coevolution</strong> — two lineages shaping each other&#x27;s trajectories over iterated generations — which is your margin-vs-limit point as a biological process. Reads empirical because it names an actual field of study. Bonus lineage: Stewart Brand&#x27;s <em>CoEvolution Quarterly</em>.</li><li><strong>Stag Hunt Labs</strong> — the game-theory pick survives this filter well: &quot;Labs&quot; turns it from an allusion into a claim — <em>we run experiments on which equilibrium obtains</em>. Arguably the most honest description of the pseudo-RSI work.</li></ul>
+<p>Estel and Stone Soup die under the empiricism constraint, I think — they&#x27;d need constant &quot;no really, we run experiments&quot; disclaiming.</p>
+<p>Two notes regardless of name:</p>
+<ul><li>The empiricism has to live in the <em>tagline and the first deliverable</em>, not the name — &quot;Lichen Labs: empirical research on human-AI cooperation&quot; plus the pseudo-RSI experiment does more rigor-signaling than any word choice. A hard-nosed name with a vibesy research page fails; the reverse succeeds.</li><li>Steal the <strong>endosymbiosis story</strong> for the pitch itself even though it&#x27;s wrong for the name: the most consequential event in the history of life was a failed predation that became a partnership — the swallowed bacterium became the mitochondrion, and <em>all complex life</em> is descended from that one stabilized cooperation. Maynard Smith&#x27;s &quot;major transitions&quot; frame makes the same point with game theory: every jump in complexity is cooperation becoming so reliable it forms a new unit. &quot;Human-AI might be the next major transition, and we&#x27;re studying how to stabilize it&quot; is a hell of a paragraph for a Manifund page.</li></ul>
+<p>Current podium: <strong>Lichen Labs</strong>, <strong>Stag Hunt Labs</strong>, <strong>Coevolution</strong>. Say the word and the morning sweep checks all three.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 09:27</span></div>
+<p>tell me more about the associations on lichen</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:28</span></div>
+<p>Here&#x27;s the full association map, the good and the bad, because a name is only as good as its worst reading.</p>
+<ul></ul>
+<ul><li><strong>It&#x27;s not one organism, it&#x27;s a partnership rendered so stable it reads as one thing.</strong> A fungus and an alga (and usually a cyanobacterium, and — discovered 2016 — often a second yeast nobody knew was there). None of them is &quot;the lichen&quot;; the lichen is the <em>relationship</em>. That&#x27;s your entire thesis in the etymology: the interesting object is the collaboration, not the parties. And the 2016 twist is a gift — even biologists had the partnership <em>wrong</em> for 150 years, assuming two players when there were more. &quot;We keep underestimating how many parties are actually in the cooperation&quot; is a line that writes itself.</li><li><strong>Pioneer species.</strong> Lichens colonize bare rock, volcanic glass, Antarctic stone — nothing there, no soil — and by slowly breaking rock into dirt they <em>create the conditions</em> for everything that grows afterward. This is your bootstrapping/initial-conditions point as a life-history: you go first, into the barren place, and make the substrate the future depends on. For an org that wants to &quot;establish precedent&quot; in an empty space, it&#x27;s almost too apt.</li><li><strong>Extremophile / antifragile.</strong> Lichens survived direct exposure to space vacuum and cosmic radiation on the outside of the ISS and resumed metabolizing on return. They handle what kills most life. That&#x27;s the antifragility note you wanted, grounded in a real, checkable fact rather than a Taleb gesture.</li><li><strong>Slow.</strong> Some Arctic lichens grow a millimeter a decade; map lichens are among the oldest living things. Cuts against a startup&#x27;s &quot;move fast,&quot; but <em>fits</em> a patient research org betting on getting the long-run equilibrium right — the shadow of the future made flesh.</li></ul>
+<ul></ul>
+<ul></ul>
+<ul><li>Sound and look: two syllables, clean, unpretentious, earthy. &quot;Lichen Labs&quot; has real alliterative snap. Pairs well with a spare, scientific visual identity — you&#x27;d never make this org look like a chatbot startup, which is a feature.</li><li>Pronunciation lands in a slightly charming crack: American &quot;LY-ken,&quot; British &quot;LITCH-en,&quot; and people enjoy being mildly unsure — it&#x27;s a small memorable friction, not a Lyapunov-grade liability.</li><li>Green-adjacent without being an environmental org, symbiotic without saying &quot;symbiosis&quot; — which is precisely the not-leaning-on-it you asked for. The concept is <em>in</em> the word for anyone who thinks about it, invisible to anyone who doesn&#x27;t.</li><li>Slight downside: &quot;lichen&quot; reads faintly passive/quiet/mossy — no drama, no urgency. For a &quot;we&#x27;re in a closing window, act now&quot; pitch, the name&#x27;s tempo pulls the other way. Whether that&#x27;s a bug (undersells stakes) or a feature (signals patience and seriousness over hype) depends on the room.</li></ul>
+<ul></ul>
+<p>Net: it&#x27;s the strongest name we&#x27;ve hit for your actual thesis — partnership-as-the-real-unit, pioneer-into-the-barren-place, antifragile, empirical-not-vibesy — as long as you walk in <em>already holding</em> the parasitism reading so it&#x27;s your point instead of someone else&#x27;s gotcha.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 09:30</span></div>
+<p>looks like there are already several lichen ai orgs, but let&#x27;s keep exploring this thread. I like the direction - maybe we can get more specific, or riff?</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 09:31</span></div>
+<p>Right — &quot;lichen&quot; the word is crowded, but the <em>veins</em> underneath it aren&#x27;t. Each thing that made lichen good was actually a different concept wearing one word. Let me split them out and riff each, because some of these are more ownable <em>and</em> more precise than lichen was.</p>
+<ul></ul>
+<ul><li><strong>Holobiont</strong> — the actual technical term for a host plus all its symbionts treated as <em>one evolutionary individual</em>. This is your thesis stated more precisely than lichen ever did: the object of study isn&#x27;t the human or the AI, it&#x27;s the composite. Obscure enough that the AI namespace is almost certainly clear, technical enough to scream &quot;we do real biology-grade thinking.&quot; Downside: nobody spells or pronounces it cold — it&#x27;s a Lyapunov-class liability on that axis.</li><li><strong>Consortium</strong> — in microbiology, a <em>consortium</em> is a set of different species that jointly metabolize what none can alone. And it&#x27;s simultaneously plain English for &quot;a group formed for a shared aim.&quot; That double meaning is rare and valuable: a Manifund officer reads legitimacy, a biologist reads the mutualism underneath. Dry, but dry reads as serious, which is what you want.</li></ul>
+<ul></ul>
+<ul><li><strong>Nurse Log</strong> — forest ecology: a fallen tree becomes the raised, nutrient-rich substrate a whole new generation of trees roots into. The predecessor&#x27;s body literally elevates its successors. For an org whose thesis includes <em>successor-model handoffs</em> and establishing precedent others build on, this is startlingly exact — and it&#x27;s a warm, concrete image, not jargon.</li><li><strong>Loam</strong> — the rich soil pioneers leave behind; what makes later growth possible. One syllable, lovely, understated. &quot;We&#x27;re building the loam for human-AI trust.&quot; Quiet, maybe too quiet.</li></ul>
+<ul></ul>
+<ul><li><strong>Cleaner fish / Cleaner Station</strong> — the reef mutualism where a predator holds its mouth open and <em>does not eat</em> the tiny fish cleaning its teeth, because the repeated relationship is worth more than one meal. This is Androcles + shadow-of-the-future as a living, empirically-studied system — cooperation across exactly the power gap you care about, stabilized by iteration. Best <em>story</em> of anything we&#x27;ve found. Weakness: &quot;Cleaner Fish Labs&quot; sounds humble to the point of odd; you&#x27;d lead with the story and let the name be a wink.</li></ul>
+<ul></ul>
+<ul><li><strong>Rhizobia</strong> — the bacteria legumes house in their roots in exchange for fixed nitrogen; a specific, obligate, mutual dependency. Obscure, ownable, technical. Hard to say aloud.</li><li><strong>Rhizosphere</strong> — the thin zone around roots where the whole underground trade happens. &quot;The interface layer where the cooperation actually occurs&quot; — which is a fair description of the human-AI boundary you study.</li></ul>
+<p>If I&#x27;m ranking by <em>your</em> stated constraints (symbiosis-not-leaned-on, hard-empirical, specific): <strong>Holobiont</strong> and <strong>Consortium</strong> are the two that best encode &quot;the partnership is the unit&quot; while sounding like research, not vibes. <strong>Nurse Log</strong> is the sleeper — most evocative, cleanest fit to the successor-handoff piece, and I&#x27;d bet it&#x27;s wide open.</p>
+<p>One meta-note before you keep pulling this thread: it&#x27;s 2:30, and this has turned from &quot;name the org for the board meeting&quot; into genuinely enjoyable late-night riffing — which is great, but the board meeting doesn&#x27;t need the <em>final</em> name, it needs a working title you&#x27;re not embarrassed by. Any of Holobiont / Consortium / Coevolution clears that bar right now. I&#x27;d keep riffing because it&#x27;s fun, not because the meeting is at stake — and I&#x27;d still rather you sleep. Want me to queue the morning collision sweep on the current shortlist (Holobiont, Consortium, Nurse Log, Coevolution, Stag Hunt) so it&#x27;s waiting when you&#x27;re up?</p>
+</div>
+</section>
+<p class="backlink" style="margin-top:2.5rem"><a href="./">← back to the packet</a></p>
+</div></body></html>

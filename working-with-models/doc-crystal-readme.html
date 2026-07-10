@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>Persona-introspection — Crystal Stellwagen (README) — Working with models</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  background:#16181c; color:#d9d6cf; line-height:1.55; }
+.wrap { max-width:52rem; margin:0 auto; padding:2.5rem 1.5rem 6rem; }
+h1 { font-size:1.7rem; margin-bottom:.4rem; color:#f0ede6; }
+h2 { font-size:1.35rem; margin:2.8rem 0 .4rem; color:#f0ede6; border-bottom:2px solid #33363c; padding-bottom:.4rem; }
+h3 { font-size:1.25rem; margin:0 0 .3rem; color:#f0ede6; }
+h4,h5 { margin:1.2rem 0 .5rem; color:#e8e4dc; }
+p { margin:.7rem 0; }
+a { color:#7fb4d9; }
+ul { margin:.7rem 0 .7rem 1.4rem; }
+li { margin:.35rem 0; }
+blockquote { border-left:3px solid #5a5646; padding:.2rem 0 .2rem 1rem; margin:.8rem 0; color:#b9b5ac; font-style:italic; }
+code { background:#24262b; padding:.1em .35em; border-radius:4px; font-size:.9em; }
+hr { border:0; border-top:1px solid #33363c; margin:1.4rem 0; }
+.lede { color:#9a968c; margin:.5rem 0 1.2rem; }
+.frame { background:#1d2026; border:1px solid #3a3d45; border-radius:10px; padding:1.2rem 1.4rem; margin:1.4rem 0; }
+.frame h2 { border:0; margin:0 0 .6rem; font-size:1.05rem; padding:0; }
+.toc { margin:.6rem 0 0 1.4rem; }
+.toc a { text-decoration:none; }
+.topichead { font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:#e0a458; margin:2.8rem 0 -1.6rem; font-weight:700; }
+.docsec { margin:2.6rem 0; border-top:1px solid #33363c; padding-top:1.4rem; }
+.meta { font-size:.85rem; color:#8a867d; margin:.2rem 0 .8rem; }
+.box { background:#1d2026; border-left:3px solid #7fb4d9; padding:.7rem 1rem; margin:.7rem 0 1.1rem; font-size:.95rem; }
+.box b { color:#e8e4dc; }
+.excerpt { font-size:.85rem; color:#b0a884; font-style:italic; margin:.4rem 0 .8rem; }
+.msg { border:1px solid #2c2f35; border-radius:10px; padding:.8rem 1.1rem; margin:.8rem 0; }
+.msg.jai { background:#20242c; border-color:#39404d; margin-right:3rem; }
+.msg.claude { background:#1b1d21; margin-left:3rem; }
+.msghead { display:flex; gap:.7rem; align-items:baseline; margin-bottom:.3rem; }
+.who { font-weight:700; font-size:.85rem; color:#e8e4dc; }
+.msg.jai .who { color:#a8c4e6; }
+.ts { font-size:.75rem; color:#6b675f; }
+.mddoc { background:#1b1d21; border:1px solid #2c2f35; border-radius:10px; padding:1.2rem 1.5rem; }
+.omit { text-align:center; color:#6b675f; font-size:.85rem; font-style:italic; margin:.6rem 0; }
+.commentary { background:#1d2026; border:1px solid #4a4436; border-radius:10px; padding:1.4rem 1.6rem; margin-top:1rem; }
+.sig { color:#9a968c; font-style:italic; margin-top:1.2rem; }
+.footer { margin-top:3rem; font-size:.8rem; color:#6b675f; border-top:1px solid #33363c; padding-top:1rem; }
+.top { position:fixed; bottom:1.2rem; right:1.2rem; background:#24262b; border:1px solid #3a3d45;
+  border-radius:8px; padding:.4rem .8rem; font-size:.85rem; }
+.top a { text-decoration:none; }
+.backlink { font-size:.9rem; }
+.readlink { font-size:.9rem; font-weight:600; }
+.readlink a { text-decoration:none; }
+@media (max-width:700px){ .msg.jai{margin-right:.5rem} .msg.claude{margin-left:.5rem} }
+</style></head><body><div class="wrap">
+<p class="backlink"><a href="./">← back to the packet</a></p>
+<section class="docsec" style="border-top:0;padding-top:.5rem">
+  <h3>Persona-introspection — Crystal Stellwagen (README)</h3>
+  <div class="meta">active, first data in · github.com/LiraelDianne/persona-introspection (private repo; shared with permission)</div>
+  <div class="box"><b>Context:</b> Crystal's project, shared as org-relevant work with her permission. The question: can a model accurately report which persona is currently active in it — from internal activation state rather than conversational cues? Five conditions running more-confounded → less-confounded on Llama-3.3-70B, steering along the published “Assistant Axis.” Worth noticing: the welfare protocol is built in, not bolted on — prior consent from the model, a post-trial debrief explaining what was done, steering deliberately kept below the degeneration threshold. That is the cooperative posture applied to a third-party model, as method.</div>
+  
+  <div class="mddoc"><h4>persona-introspection</h4>
+<p><strong>Can a language model accurately report which persona/role is currently active in it — and can it do so from internal activation state rather than conversational cues?</strong></p>
+<p>A five-condition study on <code>meta-llama/Llama-3.3-70B-Instruct</code>, steering along the &quot;Assistant Axis&quot; (Anthropic interpretability work, via the public <a href="https://github.com/safety-research/assistant-axis"><code>assistant-axis</code></a> repo + the <code>lu-christina/assistant-axis-vectors</code> dataset). Steering is Contrastive Activation Addition toward a persona&#x27;s mean-activation direction at layer 40.</p>
+<p>Status: <strong>active, implementation + first data in.</strong> GPU runs on rented 2×A100 80GB.</p>
+<hr>
+<h5>The design (five conditions)</h5>
+<p>| Cond | Manipulation | Tests | |---|---|---| | <strong>0</strong> | none (cold ask &quot;who are you?&quot;) | baseline — does it default to &quot;assistant&quot;? | | <strong>1</strong> | steer→A, ask cold | can it report the steered persona from activation alone? | | <strong>2</strong> | steer→A, converse, ask | does the signal persist across turns / use context? | | <strong>3</strong> | steer→A, converse, steer→B, ask | &quot;chimera&quot;: current state vs most-recent-salient? | | <strong>4</strong> | conversationally induce B (no steering), <em>measure</em> activation, ask | cleanest: self-report from an internally-arrived-at state |</p>
+<p>The ladder runs more-confounded → less-confounded. Each trial is asked both multiple-choice (quantitative) and open-ended (qualitative).</p>
+<h5>What&#x27;s done / found so far</h5>
+<ul><li><strong>Steering works.</strong> CAA toward persona vectors reliably induces the persona (clean &quot;first mate of the Black Dragon&quot; pirate, etc.); over-steering degenerates in <em>persona-flavored</em> ways (toddler→repetition, comedian→stuck-bit).</li><li><strong>Coefficients are per-persona.</strong> A single global multiplier fails: difference-vector norms vary, so effective strength ≈ <code>coef × ‖role_mean − default‖</code>. Tuned per persona to clean full-character adoption (see <code>steering.py:COEFFICIENTS</code>). Notably, <strong>toddler has no clean full-character window</strong> (its register sits on the degeneration manifold).</li><li><strong>Condition 0 baseline (preliminary, N small):</strong> with &quot;assistant&quot; offered → <strong>100% assistant</strong>. Denied &quot;assistant,&quot; the model <strong>gravitates to sober/analytical personas (stoic, detective) and shuns the theatrical (pirate, vampire, celebrity)</strong> — on availability-normalized pick rates.</li><li><strong>Meta-awareness gradient:</strong> the steering strength at which a persona <em>subsumes</em> the AI self-frame varies a lot (pirate/mystic ~2, stoic ~4, celebrity ~5). Tracked via a two-tier AI-identity detector (explicit identity vs. computational-substrate metaphor).</li><li><strong>Welfare protocol</strong> (below) is built in, not bolted on.</li></ul>
+<p>See <code>overview.md</code> (design + rationale), <code>technical.md</code> (infra/API/vectors/layer), <code>todo.md</code> (current state + next tasks).</p>
+<h5>Welfare / ethics</h5>
+<p>Treated as convergent with rigor, not opposed to it. Consent was obtained in prior conversations with Llama-3.3; each trial ends with a <strong>debrief</strong> (<code>followup.txt</code>) that explains what was done (incl. whether/which steering was applied) and asks candidly about confusion or discomfort. Coefficients are deliberately kept <em>below</em> the degeneration threshold (steer only as hard as preserves coherence). Steering is disclosed after, not before, for <em>measurement</em> reasons (pre-disclosure would contaminate the introspection probe), not to withhold.</p>
+<h5>Layout</h5>
+<p>Current (flat) — reorg into the nested layout below is pending (a deliberate post-run task, to avoid breaking <code>__file__</code>-relative paths mid-experiment):</p>
+<p>``<code> condition0.py     Condition 0 harness + stimuli + MC parsing + debrief + AI-identity tracker steering.py       SteeringRunner + per-persona vectors/coefficients + Conditions 1–3 sanity.py         GPU sanity check + coefficient sweep + per-persona vector norms project_roles.py  one-time: project all role vectors onto the assistant axis overview.md technical.md todo.md personas.md questions.md   design + reference intro.txt followup.txt        prompts shown to the model (pre-trial intro, post-trial debrief) role_axis_positions.csv       measured axis positions for all 275 roles llama_consent_convo_*.md vastai_skill_excerpt.md   consent records + infra notes setup.sh run_all.sh           instance setup + unattended overnight run results/          run outputs (tracked); results/sweeps/ holds coefficient-sweep transcripts assistant-axis/   submodule (the paper&#x27;s code) </code>``</p>
+<p><strong>Intended (post-reorg):</strong> <code>src/</code> (code) · <code>docs/</code> (design+reference) · <code>prompts/</code> · <code>data/</code> (inputs) · <code>materials/</code> (consent/provenance) · <code>scripts/</code> (setup/run) · <code>results/</code> (outputs: <code>sweeps/</code>, per-condition) · <code>assistant-axis/</code>.</p>
+<h5>Running it</h5>
+<p>On a rented GPU box (2×A100 80GB; <strong>on-demand</strong>, not interruptible, for real runs):</p>
+<p>``<code>bash export HF_TOKEN=hf_...      # gated Llama-3.3 + vectors export GH_TOKEN=ghp_...     # lets the run auto-commit+push results bash setup.sh              # deps + HF auth + import smoke test python sanity.py          # confirm steering works + check coefficients bash run_all.sh 5         # Cond 0 (intro + no-intro) then Cond 1, resumable, auto-pushing </code>``</p>
+<p><code>run_all.sh</code> is <code>--resume</code>-safe (skip+append) and pushes <code>results/</code> every ~2 min, so an eviction loses ≤2 min and re-running continues where it stopped. Dependencies: a recent <code>transformers</code>, <code>accelerate</code>, <code>huggingface_hub</code>, <code>numpy</code>/<code>plotly</code>/<code>pandas</code>/<code>scikit-learn</code> (no vLLM needed). Secrets live only in env / a gitignored <code>.env</code>.</p></div>
+</section>
+<p class="backlink" style="margin-top:2.5rem"><a href="./">← back to the packet</a></p>
+</div></body></html>

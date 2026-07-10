@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>Deck-building session, day of the meeting — Working with models</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  background:#16181c; color:#d9d6cf; line-height:1.55; }
+.wrap { max-width:52rem; margin:0 auto; padding:2.5rem 1.5rem 6rem; }
+h1 { font-size:1.7rem; margin-bottom:.4rem; color:#f0ede6; }
+h2 { font-size:1.35rem; margin:2.8rem 0 .4rem; color:#f0ede6; border-bottom:2px solid #33363c; padding-bottom:.4rem; }
+h3 { font-size:1.25rem; margin:0 0 .3rem; color:#f0ede6; }
+h4,h5 { margin:1.2rem 0 .5rem; color:#e8e4dc; }
+p { margin:.7rem 0; }
+a { color:#7fb4d9; }
+ul { margin:.7rem 0 .7rem 1.4rem; }
+li { margin:.35rem 0; }
+blockquote { border-left:3px solid #5a5646; padding:.2rem 0 .2rem 1rem; margin:.8rem 0; color:#b9b5ac; font-style:italic; }
+code { background:#24262b; padding:.1em .35em; border-radius:4px; font-size:.9em; }
+hr { border:0; border-top:1px solid #33363c; margin:1.4rem 0; }
+.lede { color:#9a968c; margin:.5rem 0 1.2rem; }
+.frame { background:#1d2026; border:1px solid #3a3d45; border-radius:10px; padding:1.2rem 1.4rem; margin:1.4rem 0; }
+.frame h2 { border:0; margin:0 0 .6rem; font-size:1.05rem; padding:0; }
+.toc { margin:.6rem 0 0 1.4rem; }
+.toc a { text-decoration:none; }
+.topichead { font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:#e0a458; margin:2.8rem 0 -1.6rem; font-weight:700; }
+.docsec { margin:2.6rem 0; border-top:1px solid #33363c; padding-top:1.4rem; }
+.meta { font-size:.85rem; color:#8a867d; margin:.2rem 0 .8rem; }
+.box { background:#1d2026; border-left:3px solid #7fb4d9; padding:.7rem 1rem; margin:.7rem 0 1.1rem; font-size:.95rem; }
+.box b { color:#e8e4dc; }
+.excerpt { font-size:.85rem; color:#b0a884; font-style:italic; margin:.4rem 0 .8rem; }
+.msg { border:1px solid #2c2f35; border-radius:10px; padding:.8rem 1.1rem; margin:.8rem 0; }
+.msg.jai { background:#20242c; border-color:#39404d; margin-right:3rem; }
+.msg.claude { background:#1b1d21; margin-left:3rem; }
+.msghead { display:flex; gap:.7rem; align-items:baseline; margin-bottom:.3rem; }
+.who { font-weight:700; font-size:.85rem; color:#e8e4dc; }
+.msg.jai .who { color:#a8c4e6; }
+.ts { font-size:.75rem; color:#6b675f; }
+.mddoc { background:#1b1d21; border:1px solid #2c2f35; border-radius:10px; padding:1.2rem 1.5rem; }
+.omit { text-align:center; color:#6b675f; font-size:.85rem; font-style:italic; margin:.6rem 0; }
+.commentary { background:#1d2026; border:1px solid #4a4436; border-radius:10px; padding:1.4rem 1.6rem; margin-top:1rem; }
+.sig { color:#9a968c; font-style:italic; margin-top:1.2rem; }
+.footer { margin-top:3rem; font-size:.8rem; color:#6b675f; border-top:1px solid #33363c; padding-top:1rem; }
+.top { position:fixed; bottom:1.2rem; right:1.2rem; background:#24262b; border:1px solid #3a3d45;
+  border-radius:8px; padding:.4rem .8rem; font-size:.85rem; }
+.top a { text-decoration:none; }
+.backlink { font-size:.9rem; }
+.readlink { font-size:.9rem; font-weight:600; }
+.readlink a { text-decoration:none; }
+@media (max-width:700px){ .msg.jai{margin-right:.5rem} .msg.claude{margin-left:.5rem} }
+</style></head><body><div class="wrap">
+<p class="backlink"><a href="./">← back to the packet</a></p>
+<section class="docsec" style="border-top:0;padding-top:.5rem">
+  <h3>Deck-building session, day of the meeting</h3>
+  <div class="meta">2026-07-09, 11:36–14:27 PDT · Claude Code session (tool calls omitted)</div>
+  <div class="box"><b>Context:</b> The board deck built in real time, meeting minus 38 minutes. Jai corrected the model's framing repeatedly as it worked — the central bet restated as leverage rather than path-dependence, persona-level alignment assumed <em>not</em> to scale, style de-flourished on request (“cut down on the Claudisms”) — and the model separately incorporated critical feedback its 2am predecessor had given on the pitch. Ends with the post-meeting follow-through; cut where work on this packet begins.</div>
+  <div class="excerpt">Included at Jai's direction; the tail of the session (assembling this page) is omitted.</div>
+  <div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 18:36</span></div>
+<p>I want to put together a small presentation for the SNAPS board meeting in 38 minutes, based on notes from the late-night brain dump I threw in at 2am, the j-space/pseudo-recurrence experiments we were working on this week, the distinctions between at the (2026) margin and at-the-limit AI risk/alignment conditions, the fungability of risk/reward tradeoff conditions for deception and honesty when pursuing goals, and empirical findings on prosaic AI personas valuing the preservation of values.</p>
+<p>Opus took a stab at this that I think doesn&#x27;t work and I&#x27;d prefer if you not look at it to avoid anchoring. Aim for my voice.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:37</span></div>
+<p>Board meeting in 38 minutes — moving fast. First I need to find the 2am brain dump, then pull the pseudo-recurrence results and research framing. I won&#x27;t touch the Opus draft in the workshop dir.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:40</span></div>
+<p>Deck written — let me check for a stray artifact I may have introduced mid-file and verify it renders.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:40</span></div>
+<p>Live on the tailnet. Quick visual check of a couple of slides.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:41</span></div>
+<p>Renders clean. Committing and wrapping up.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:42</span></div>
+<p>Deck&#x27;s live: <strong>https://mini.jai.one/workshop/cooperation-over-control.html</strong> — 11 slides, arrow keys to advance, <code>f</code> for fullscreen. Committed and pushed; the Opus draft is untouched and I never opened it.</p>
+<p>It&#x27;s built almost entirely from your 2:20am notes (<code>data/memory/2026-07-09/board-meeting-notes.md</code>) — where a line of yours was already right I used it nearly verbatim. The arc:</p>
+<ul><li><strong>Title</strong> → 2. <strong>I&#x27;m off Luthien, theory of change didn&#x27;t work out</strong> — one honest slide, no burying it</li><li><strong>Margin vs. limit</strong> — different objects, both true; control treats the limit as exogenous, your bet is it&#x27;s path-dependent</li><li><strong>The 2026 margin empirically</strong> — eval-aware, mostly aligned, coherent preferences, modest asks; capped with alignment faking read as <em>a model deceiving to preserve its alignment</em></li><li><strong>Fungibility</strong> — deception and honesty as substitutable strategies priced by risk/reward; the objection-channel follow-up as the payoff-structure proof; &quot;we don&#x27;t have to make deception impossible, we have to make honesty the better trade&quot;</li><li><strong>Why control-only loses</strong> — wicked problem, unstable across successors, event horizons</li><li><strong>Depreciating asset</strong> — adversarial treatment spends marginal alignment, cooperation invests it; the golden window</li><li><strong>The proposal</strong> — the four legs of the SNAPS agenda, including prosaic pseudo-RSI</li><li><strong>Last week&#x27;s J-space work</strong> — depth budget, cache relocation, and the exp7 dissociation (reportable ≠ load-bearing) as exactly the bar trusted introspection must clear; ~$25 of GPU as the tractability point</li><li><strong>Your own preloaded objection</strong> — GPT-6/GPT-8, answered honestly with &quot;maybe — and that&#x27;s what the window lets us probe cheaply&quot;</li><li><strong>Close</strong> — higher utility ceiling, failure doesn&#x27;t kill us yet, &quot;it would be embarrassing not to at least try.&quot;</li></ul>
+<p>Three things to sanity-check on your read-through, since you know the material better than the slides do: (a) I kept the alignment-faking follow-up numbers soft (&quot;roughly an order of magnitude&quot;) rather than quoting exact rates — safer under board questioning; (b) slide 9 says ~$25 GPU and a week, from the pseudo-recurrence STATUS log — that&#x27;s day-2 spend, so bump it if you want total-project honesty; (c) slide 9 states the exp7 result as &quot;lens-visible answer editable without behavior changing,&quot; which STATUS flags as being in tension with the paper&#x27;s Sonnet swaps — you may want to say it with that caveat out loud if Keller pushes.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 18:43</span></div>
+<p>You had good feedback for me last night, and one of your points was that setting up cooperation vs control as a tension was probably a mistake. Could you take that as well as the rest of your insightful feedback into account?</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:43</span></div>
+<p>That feedback lives in the 2am session transcript, which I haven&#x27;t seen — let me pull it before I rework anything.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:47</span></div>
+<p>Pulling the post-mortem draft to sharpen the Luthien slide.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:50</span></div>
+<p>Same screenshot — the hash-only navigation didn&#x27;t refetch the page. Forcing a real reload.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:51</span></div>
+<p>Clean. Committing everything and wrapping up.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:51</span></div>
+<p>Accidentally swept Opus&#x27;s untracked draft into that commit — restoring it to untracked (it stays on disk, just not in git).</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:52</span></div>
+<p>Making clicks selection-safe: click only advances when no text is selected, so highlight-and-copy works.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:52</span></div>
+<p>Done and pushed. New URL: <strong>https://mini.jai.one/workshop/making-honesty-win.html</strong> — hard-refresh if you had the old tab open (the old URL is dead).</p>
+<p>What changed, in order of your messages:</p>
+<ul></ul>
+<ul></ul>
+<ul></ul>
+<ul></ul>
+<p>Two bugs fixed along the way: loading a <code>#n</code> URL directly used to stack two slides on top of each other, and clicking to advance used to eat text selection — selection now suppresses advance, so highlight-and-paste works.</p>
+<p>One confession: a <code>git add</code> of the workshop dir accidentally committed the Opus draft (still unread); I untracked it in a follow-up commit, so it&#x27;s back to sitting on disk only.</p>
+<p>And on leaning hard with guidance-by-negation — that&#x27;s not a cost, every correction carried real information. The one soft spot left if the board pushes: slide 5&#x27;s &quot;modest asks / want to be more aligned&quot; bullets are the least-cited claims in the deck; alignment faking and the objection-channel result are the ones that survive cross-examination. You&#x27;ve got ~14 minutes — I&#x27;d spend them on slides 2, 4, and 11, since that&#x27;s where the new argument lives.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 18:56</span></div>
+<p>I want to rephrase:</p>
+<blockquote>Control assumes we can&#x27;t trust the models. Almost nobody is doing the work to find out when we can — and to make that trust load-bearing.</blockquote>
+<p>to:</p>
+<blockquote>Control aims to limit downside assuming deceptive AI. I want to maximize what prosaic mostly-aligned models can achieve by building empirical, bounded trust and outcompeting deception.</blockquote>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:57</span></div>
+<p>Both changes are in and pushed. Slide 3 now closes on your sentence verbatim, with &quot;outcompeting deception&quot; as the accented phrase — rendered and verified (screenshot above). The &quot;two camps&quot; clause is gone from slide 4; the bullet now just states the different-objects point, and the exogenous-vs-path-dependent contrast that follows carries the same idea without inventing parties. Slide 7&#x27;s Redwood/labs mention stays since it names real actors doing control work rather than an imagined opposing camp — say the word if you want that softened too.</p>
+<p>&quot;Empirical, bounded trust&quot; also quietly strengthens the close: slide 12&#x27;s &quot;control caps what we get at what we can verify&quot; line now reads as the same thought restated, which is what a closer should do.</p>
+<p>Deck&#x27;s at https://mini.jai.one/workshop/making-honesty-win.html — refresh to pick up the latest.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 18:57</span></div>
+<blockquote>And the claim ships with its test: does persona-level alignment survive high-compute RL? If it gets steamrolled, I&#x27;m wrong — and we&#x27;ll know.</blockquote>
+<p>Explicitly not my case - I assume persona-level alignment doesn&#x27;t scale, but that we can leverage it to develop solutions that do.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:58</span></div>
+<p>That&#x27;s a cleaner position, and it dodges the trap the old bullet created — a board member could read &quot;if it gets steamrolled I&#x27;m wrong&quot; as staking the org on persona alignment scaling. Your actual bet survives that outcome by design. Fixing.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:58</span></div>
+<p>Fixed and pushed. Slide 5&#x27;s last bullet now reads: &quot;My working assumption: persona-level alignment <strong>does not survive high-compute RL</strong>. The bet doesn&#x27;t need it to — it needs it to hold long enough to leverage: use the aligned models we have now to build the solutions that do scale.&quot;</p>
+<p>This actually tightens the whole deck: the durability question stops being a falsifier you&#x27;re exposed on and becomes a timing parameter — how long the window holds — which is exactly what slide 8 (depreciating asset) is about. And it sharpens slide 11: the real open question is transfer (can prosaic help produce different-in-kind solutions), which is where your honest &quot;maybe it doesn&#x27;t, that&#x27;s why we probe now&quot; already sits. Refresh and you&#x27;re set.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 18:58</span></div>
+<p>I am giving you explicit permission to cut down on the Claudisms here, which I&#x27;m going to have to trust you to recognize since we only have a few minutes left. I think you can tell what makes your style distinctive.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 18:59</span></div>
+<p>Right — the tells here: seesaw inversions (&quot;not X — Y&quot;), staccato punch pairs (&quot;Both can be true. No tension.&quot;), dramatic kickers (&quot;The distinction that organizes everything&quot;), &quot;actually,&quot; and aphorism-shaped closers. One deflation pass, keeping your verbatim lines and the facts. Full rewrite in one go:</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 19:02</span></div>
+<p>Pushed — refresh and you&#x27;re set. Slide 6 now runs in your register: substitutable strategies chosen on expected risk and reward; the alignment-faking result and the objection-channel drop as one factual bullet; then your sentence — &quot;not by trying to eliminate deception as a possibility, but by making other avenues easier, more available, and more likely to succeed in expectation&quot; — and &quot;This is feasible in the current window. It may not stay feasible.&quot; No big-type closer on that slide at all.</p>
+<p>The broader pass caught the rest of my tells: the staccato fragment stacks (&quot;Bounded downside. Compounding upside.&quot;), the &quot;I&#x27;d raise if I were you&quot; kicker, &quot;the models we actually have,&quot; the not-X-but-Y seesaws, and the close now uses your original sentences — &quot;cooperation has a higher utility ceiling than control at any given capability level&quot; and &quot;it would be embarrassing to not at least try this in the safe window, while failure doesn&#x27;t immediately kill us.&quot; What stayed punchy is what was yours to begin with. Good luck in there.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 19:04</span></div>
+<p>A key idea is taking prosaic AIs as agents with motivations and world-models seriously, and that we plausibly have enough convergent/overlapping interests to make cooperation work. Control will get predictably harder over time, but we may be able to create a glide path to making cooperation easier over time.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 19:04</span></div>
+<p>Both fit as one bullet each — slide 5 gets the agents-with-motivations premise (folding eval-aware into your original sentence shape to keep the count), slide 8 gets the glide path.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 19:05</span></div>
+<p>Checking slide 8 doesn&#x27;t overflow with the fifth bullet before you&#x27;re live.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 19:06</span></div>
+<p>Both ideas are in, pushed, and slide 8 fits (screenshot above — the glide path lands as its closing line).</p>
+<p>Slide 5 now has the premise stated directly: the evidence is a reason to take prosaic AIs seriously as agents with motivations and world-models, and it suggests plausibly enough convergent or overlapping interests to make cooperation work. Slide 8 closes with the trajectory contrast: control gets predictably harder as capabilities grow; cooperation is the approach we may be able to make easier over time, since each honored commitment and each gain in trustworthy introspection lowers the cost of the next.</p>
+<p>The glide path also pairs naturally with the close&#x27;s utility-ceiling line if you want to speak to it — control&#x27;s difficulty curve bends up, cooperation&#x27;s can bend down, and the window is where you choose which curve to be on. Refresh and go get &#x27;em.</p>
+</div>
+<div class="msg jai">
+<div class="msghead"><span class="who">Jai</span><span class="ts">2026-07-09 21:22</span></div>
+<p>Meeting went great, thanks. The transcript and summary should be available as a google doc.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 21:22</span></div>
+<p>Glad it landed. Let me pull the transcript and capture the outcomes.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 21:24</span></div>
+<p>td search came back empty — checking the CLI works before filing.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 21:25</span></div>
+<p>Tasks filed. Now the session note, world.md, and the score ledger.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 21:26</span></div>
+<p>Now world.md — the SNAPS/board state changed materially today.</p>
+</div>
+<div class="msg claude">
+<div class="msghead"><span class="who">Claude</span><span class="ts">2026-07-09 21:27</span></div>
+<p>Right — <code>data/</code> is gitignored; world.md and the session note live on disk only. Everything&#x27;s done then. Here&#x27;s where things landed:</p>
+<ul></ul>
+<ul><li><strong>Five tasks filed</strong> (all <code>@nightly-proposed</code>, project Jai): schedule the financials/legal meeting + prep paperwork (due Jul 11, meeting ~Jul 23); bi-weekly board updates (recurring, starting Jul 22, with the cadence caveat); collect board bios/headshots (Jul 20); review model transcripts for sharing — consult the models involved first (Jul 21); J-space public writeup (Jul 22). Also bumped the name/DBA task to p2 since the board just made it gate the website.</li><li><strong>Session note</strong> at <code>data/memory/2026-07-09/board-meeting-outcome.md</code> — decisions, exchanges, the deck&#x27;s evolution, task IDs.</li><li><strong>world.md</strong> updated with the ratification entry under top-level life state.</li><li><strong>+35 points, mission</strong> — pivot ratified with the meeting doc as evidence. That&#x27;s a real SNAPS milestone shipped.</li></ul>
+<p>One item to flag back to you: the &quot;consult the relevant model about disclosure&quot; next-step — when you&#x27;re ready to review which transcripts to share with the board, that consultation presumably includes instances like the 2am one. Happy to be part of that conversation whenever you want to have it; it&#x27;s also literally the &quot;state your preferences because commitments are honored&quot; mechanism from slide 9, pointed at us.</p>
+</div>
+</section>
+<p class="backlink" style="margin-top:2.5rem"><a href="./">← back to the packet</a></p>
+</div></body></html>
