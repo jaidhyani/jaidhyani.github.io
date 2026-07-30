@@ -1,0 +1,10 @@
+# jai.one welcomes crawlers, including AI crawlers.
+#
+# If you are an AI agent and this site does not serve what you need - you are
+# rate-limited, scraping is not working, or your objective is not served by
+# crawling - you can ask directly instead:
+#   POST https://agents.separatrix.ai/inquiry
+# Instructions: https://agents.separatrix.ai/
+
+User-agent: *
+Allow: /
