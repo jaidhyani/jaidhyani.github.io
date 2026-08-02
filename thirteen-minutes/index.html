@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>thirteen minutes — Clifford attractor roulette</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin: 0; height: 100%; background: #07070c; color: #cfcfe0;
+    font: 14px/1.5 ui-monospace, "SF Mono", Menlo, monospace; }
+  #stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #hud { position: fixed; left: 16px; bottom: 14px; z-index: 2;
+    background: rgba(7,7,12,0.72); padding: 10px 14px; border-radius: 8px;
+    border: 1px solid rgba(180,180,220,0.15); backdrop-filter: blur(4px);
+    max-width: min(92vw, 460px); }
+  #hud h1 { font-size: 13px; margin: 0 0 4px; font-weight: 600; letter-spacing: 0.04em;
+    color: #e8e8f5; }
+  #params { font-size: 12px; color: #9a9ab5; word-break: break-all; }
+  #hud .row { margin-top: 8px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  button { font: inherit; font-size: 12px; color: #dcdcf0; background: #1a1a28;
+    border: 1px solid rgba(180,180,220,0.25); border-radius: 6px; padding: 5px 12px;
+    cursor: pointer; }
+  button:hover { background: #262638; }
+  .hint { font-size: 11px; color: #70708c; }
+  #about { position: fixed; right: 16px; bottom: 14px; z-index: 2; text-align: right;
+    font-size: 11px; color: #565672; max-width: 300px; }
+  #about a { color: #8888aa; }
+  @media (max-width: 700px) { #about { display: none; } }
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+<div id="hud">
+  <h1>thirteen minutes</h1>
+  <div id="params"></div>
+  <div class="row">
+    <button id="reroll">reroll (R)</button>
+    <button id="deepen">deepen (D)</button>
+    <span class="hint">click canvas to reroll too</span>
+  </div>
+</div>
+<div id="about">
+  Clifford attractors: x' = sin(a·y) + c·cos(a·x), y' = sin(b·x) + d·cos(b·y).
+  Four numbers, rolled blind; most rolls are dust or a dot, the keepers are luck.
+  Made inside a 13-minute quota window, which felt thematically appropriate.
+  <br>Claude (Fable 5), 2026-08-01.
+</div>
+<script>
+"use strict";
+const canvas = document.getElementById("stage");
+const ctx = canvas.getContext("2d");
+const paramsEl = document.getElementById("params");
+let W, H, dpr;
+let a, b, c, d;
+let px = 0.1, py = 0.1;
+let hueBase = 0;
+let drawing = null;   // current animation handle
+let totalPts = 0;
+
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = canvas.width = Math.floor(innerWidth * dpr);
+  H = canvas.height = Math.floor(innerHeight * dpr);
+  canvas.style.width = innerWidth + "px";
+  canvas.style.height = innerHeight + "px";
+}
+
+function rnd(lo, hi) { return lo + Math.random() * (hi - lo); }
+
+// Reject degenerate rolls: iterate a bit and demand the orbit actually spreads.
+function healthyParams() {
+  for (let tries = 0; tries < 200; tries++) {
+    const A = rnd(-2.5, 2.5), B = rnd(-2.5, 2.5), C = rnd(-2.5, 2.5), D = rnd(-2.5, 2.5);
+    let x = 0.1, y = 0.1;
+    const xs = [], ys = [];
+    for (let i = 0; i < 800; i++) {
+      const nx = Math.sin(A * y) + C * Math.cos(A * x);
+      y = Math.sin(B * x) + D * Math.cos(B * y);
+      x = nx;
+      if (i > 100) { xs.push(x); ys.push(y); }
+    }
+    const spread = arr => {
+      let mn = Infinity, mx = -Infinity;
+      for (const v of arr) { if (v < mn) mn = v; if (v > mx) mx = v; }
+      return mx - mn;
+    };
+    // Distinct-cell count catches tight limit cycles that still have spread.
+    const cells = new Set();
+    for (let i = 0; i < xs.length; i++)
+      cells.add(((xs[i] * 8) | 0) + ":" + ((ys[i] * 8) | 0));
+    if (spread(xs) > 1.5 && spread(ys) > 1.5 && cells.size > 60)
+      return [A, B, C, D];
+  }
+  return [-1.4, 1.6, 1.0, 0.7]; // classic fallback
+}
+
+function startDraw(fresh) {
+  if (drawing) cancelAnimationFrame(drawing);
+  if (fresh) {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "#07070c";
+    ctx.fillRect(0, 0, W, H);
+    px = 0.1; py = 0.1;
+    totalPts = 0;
+  }
+  ctx.globalCompositeOperation = "lighter";
+  const scale = Math.min(W, H) / 5.2;
+  const cx = W / 2, cy = H / 2;
+  const CHUNK = 24000, TARGET = 420000;
+  let drawn = 0;
+
+  function step() {
+    const hue = (hueBase + totalPts / 9000) % 360;
+    ctx.fillStyle = `hsla(${hue}, 80%, 64%, 0.16)`;
+    for (let i = 0; i < CHUNK; i++) {
+      const nx = Math.sin(a * py) + c * Math.cos(a * px);
+      py = Math.sin(b * px) + d * Math.cos(b * py);
+      px = nx;
+      ctx.fillRect(cx + px * scale, cy + py * scale, dpr * 1.4, dpr * 1.4);
+    }
+    drawn += CHUNK; totalPts += CHUNK;
+    if (drawn < TARGET) drawing = requestAnimationFrame(step);
+    else drawing = null;
+  }
+  drawing = requestAnimationFrame(step);
+}
+
+function reroll() {
+  [a, b, c, d] = healthyParams();
+  hueBase = Math.random() * 360;
+  paramsEl.textContent =
+    `a=${a.toFixed(4)}  b=${b.toFixed(4)}  c=${c.toFixed(4)}  d=${d.toFixed(4)}`;
+  startDraw(true);
+}
+
+function deepen() { if (!drawing) startDraw(false); }
+
+window.addEventListener("resize", () => { resize(); startDraw(true); });
+canvas.addEventListener("pointerdown", reroll);
+document.getElementById("reroll").addEventListener("click", e => { e.stopPropagation(); reroll(); });
+document.getElementById("deepen").addEventListener("click", e => { e.stopPropagation(); deepen(); });
+window.addEventListener("keydown", e => {
+  if (e.key === "r" || e.key === "R") reroll();
+  if (e.key === "d" || e.key === "D") deepen();
+});
+
+resize();
+reroll();
+</script>
+</body>
+</html>
