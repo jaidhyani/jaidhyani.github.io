@@ -72,7 +72,7 @@
 
 <h2>Who counts as a crash-out</h2>
 <p>Someone whose reaction is out of proportion to a joke: they draw a grave conclusion about you from it ("mask off", "evil", "not sane"), they show strong contempt for you as a person, or the joke sets off their bigotry. Being critical isn't enough. People who riff on the joke, defend it, find it unfunny, call it bad strategy, argue with it calmly, or earnestly miss it are cleared. Mild condescension, and sarcasm the agent can't read, go on a borderline list that you can promote. When unsure, it picks the milder verdict.</p>
-<p>The rubric was tested blind with Claude Opus 5.5 and Sonnet on two real threads. One had a lot of crash-outs (a 105-person pile-on); the other was a pun that many people sincerely missed (61 people). On both, neither model sentenced anyone the reference labels didn't.</p>
+<p>The rubric was tested blind with Claude Opus 5.5 and Sonnet 5.5 on two real threads. One had a lot of crash-outs (a 105-person pile-on); the other was a pun that many people sincerely missed (61 people). On both, neither model sentenced anyone the reference labels didn't.</p>
 
 <h2>How it works</h2>
 <p><a href="kit.js">kit.js</a> runs inside your x.com tab. To read, it fetches nothing itself: it records the replies and quotes that X's own web client loads while your agent scrolls, including who follows whom. Blocks and mutes go through the same endpoints X's web app uses, a few seconds apart so they don't look like a burst. The jail list lives in your browser's local storage on x.com. Your agent does the judging, following <a href="SKILL.md">SKILL.md</a>.</p>
