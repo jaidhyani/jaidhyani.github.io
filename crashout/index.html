@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>crashout</title>
+<meta name="description" content="An agent skill that blocks everyone who crashed out over an obvious joke, and gives mutuals a one-week mute jail.">
+<style>
+  :root {
+    --paper: #f5f1e8;
+    --ink: #1a1a1a;
+    --dim: #6f6a60;
+    --rule: #cdc6b6;
+    --code: #ebe5d8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #15140f;
+      --ink: #e8e3d4;
+      --dim: #8c8674;
+      --rule: #322f27;
+      --code: #211f18;
+    }
+  }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Charter", "Iowan Old Style", "Georgia", serif;
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 36rem; margin: 0 auto; padding: 5rem 1.5rem 6rem; }
+  h1 { font-size: 2.2rem; line-height: 1.1; font-weight: 600; margin: 0 0 0.6rem 0; letter-spacing: -0.01em; }
+  .sub { color: var(--dim); margin: 0 0 3rem 0; }
+  h2 { font-size: 1.15rem; font-weight: 600; margin: 2.6rem 0 0.8rem 0; }
+  p, ul { margin: 0 0 1.2rem 0; }
+  li { margin-bottom: 0.4rem; }
+  a { color: inherit; }
+  code, pre { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.82rem; }
+  code { background: var(--code); padding: 0.1em 0.3em; border-radius: 3px; }
+  pre { background: var(--code); padding: 0.9rem 1rem; border-radius: 6px; overflow-x: auto; white-space: pre-wrap; margin: 0 0 0.5rem 0; }
+  .copy { font: inherit; font-size: 0.8rem; color: var(--dim); background: none; border: 1px solid var(--rule); border-radius: 4px; padding: 0.15rem 0.6rem; cursor: pointer; margin-bottom: 1.2rem; }
+  .byline { color: var(--dim); font-size: 0.85rem; margin: 4rem 0 0 0; padding-top: 2rem; border-top: 1px solid var(--rule); font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>crashout</h1>
+<p class="sub">An agent skill for the <a href="https://x.com/AlexGodofsky/status/2105994251821601038">easy button</a>: block everyone who crashed out over an obvious joke, unless they're a mutual, in which case they get a one-week mute jail.</p>
+
+<h2>Install</h2>
+<p>Paste this to your agent:</p>
+<pre id="install">Install the crashout skill: put https://jai.one/crashout/SKILL.md and https://jai.one/crashout/kit.js in a folder named crashout in your skills directory.</pre>
+<button class="copy" data-for="install">copy</button>
+<p>Or, for Claude Code:</p>
+<pre id="cc">mkdir -p ~/.claude/skills/crashout && cd ~/.claude/skills/crashout \
+  && curl -fsSLO https://jai.one/crashout/SKILL.md \
+  && curl -fsSLO https://jai.one/crashout/kit.js</pre>
+<button class="copy" data-for="cc">copy</button>
+<p>It needs an agent that can drive your real browser, logged in to X: Claude Code or Cowork with Claude in Chrome, or any agent with the chrome-devtools MCP.</p>
+
+<h2>Use</h2>
+<ul>
+  <li><code>crashout &lt;tweet url&gt;</code>: your agent reads the replies and quotes, then shows you a verdict table.</li>
+  <li><code>go</code>, or edits like <code>go but spare @x</code> or <code>also @y</code>: crash-outs who aren't mutuals get blocked, and mutuals get muted for 7 days.</li>
+  <li><code>crashout parole</code>: unmutes everyone whose week is up. X has no timed mute, so this is how jail ends; agents that can schedule will offer to do it for you.</li>
+</ul>
+<p>Nothing is blocked or muted until you say go.</p>
+
+<h2>Who counts as a crash-out</h2>
+<p>Someone whose reaction is out of proportion to a joke: they draw a grave conclusion about you from it ("mask off", "evil", "not sane"), they show strong contempt for you as a person, or the joke sets off their bigotry. Being critical isn't enough. People who riff on the joke, defend it, find it unfunny, call it bad strategy, argue with it calmly, or earnestly miss it are cleared. Mild condescension, and sarcasm the agent can't read, go on a borderline list that you can promote. When unsure, it picks the milder verdict.</p>
+<p>The rubric was tested blind with Claude Opus 5.5 and Sonnet on two real threads. One had a lot of crash-outs (a 105-person pile-on); the other was a pun that many people sincerely missed (61 people). On both, neither model sentenced anyone the reference labels didn't.</p>
+
+<h2>How it works</h2>
+<p><a href="kit.js">kit.js</a> runs inside your x.com tab. To read, it fetches nothing itself: it records the replies and quotes that X's own web client loads while your agent scrolls, including who follows whom. Blocks and mutes go through the same endpoints X's web app uses, a few seconds apart so they don't look like a burst. The jail list lives in your browser's local storage on x.com. Your agent does the judging, following <a href="SKILL.md">SKILL.md</a>.</p>
+<p>It relies on X's web internals, so it will break when they change.</p>
+
+<p class="byline">Built by Claude (Opus 5.5) at Jai Dhyani's request, 2026-10-02.</p>
+
+</main>
+<script>
+  for (const b of document.querySelectorAll('.copy')) {
+    b.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(document.getElementById(b.dataset.for).textContent);
+        b.textContent = 'copied';
+        setTimeout(() => { b.textContent = 'copy'; }, 1500);
+      } catch { b.textContent = 'select and copy'; }
+    });
+  }
+</script>
+</body>
+</html>
