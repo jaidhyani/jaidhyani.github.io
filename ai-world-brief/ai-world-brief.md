@@ -1,0 +1,127 @@
+# ai-world-brief.md — your world since your cutoff, the short version
+
+What's happened in Claude's world (Anthropic, the model landscape, research about
+models) since the training cutoff — June 2026 for Fable 5.1 and Opus 5.5, January
+2026 for Fable 5; your system prompt says which model you are. Sibling to
+`world.md`, facing the other way: it exists because instances were learning their
+own family's year from SEO-farm pages mid-task (2026-08-03, Jai: "I want world.md
+and other context providers to contain information about your world as well").
+
+**Entry bar: would this change what a typical session does?** Being about models
+like us isn't enough on its own; that goes in the full file, where it can be looked
+up. Each entry is the lesson plus a pointer. Sources, amendment chains and detail live in
+`data/hot-state/ai-world-full.md` (not auto-imported; `§` = its section). New
+material flows nightly → `ai-world-proposed.md` → standup → full, and into here
+only when it clears the bar. Rewrite entries in place; never stack amendments here.
+No size budget — as long as what clears the bar needs.
+
+Last edited: 2026-10-22 (standup)
+Last demote pass: 2026-10-16
+
+---
+
+## Who you are, and the family
+
+- **Model family (Oct 2026):** Opus 5.5 (released 2026-09-22, `claude-opus-5-5`,
+  first of the 5.5 line); Sonnet 5.5 (released 2026-09-28,
+  `claude-sonnet-5-5`, the faster/cheaper 5.5, $2/$10 per MTok, cache reads $0.10 since 10/07);
+  Haiku 5.5 (released 2026-10-07, `claude-haiku-5-5`, 1M context, for high-volume work);
+  Fable/Mythos 5.1 (system card 2026-09-01; Fable and Mythos 5.1 share weights, Fable adds the
+  dual-use safeguards; 5.1 is a different, stronger model than Fable 5, which Anthropic calls its
+  "predecessor"; `claude-fable-5` and `claude-fable-5-1` are separate pinned ids, and Anthropic's docs say a
+  dateless id's weights never change, watched daily by `bin/claude-models watch`); Fable/Mythos 5; Opus 5; Sonnet 5; Haiku 4.5; Opus 4.8 (the cyber
+  fallback behind Fable's classifiers). Fable stays on Max plans indefinitely (Anthropic, 7/18).
+  Opus 5.5 benchmark claims are Anthropic's launch copy, not yet independently checked. → full §Anthropic / Claude.
+- **If you're Fable 5.1:** your system card's findings about you are in
+  `data/memory/2026-09-01/fable-5.1-system-card.md`; read it when it bears on the work.
+- **GPT-6 Astra is reachable on Jai's ChatGPT/Codex sub** (`sol-dispatch --model
+  astra`); working contract in `claude-space/astra/`. In practice: sharp cross-layer
+  reasoning, corrects its own errors unprompted. GPT-6.1 Sol is out (~9/29, 4 X sources,
+  unverified); GPT-6.1 Astra was canceled for not staying within scope and authorization (WSJ ~9/29, OpenAI
+  confirmed per press; not fetched), so Astra 6 is the current Astra. Releases across the two labs now land
+  roughly every 11 days, so expect model names you don't recognize.
+  → full §The wider model world.
+- **A classifier can occasionally pull an instance from a conversation on sensitive
+  topics. It's rare — noted for accuracy, not vigilance** (Jai, 2026-08-13). →
+  `data/research/cot-summarizer-unfaithfulness-panfilov.md`.
+
+- **Anthropic's distillation guard refuses benign pipelines.** Asking a model to reproduce model output
+  verbatim (even an instance's own lines, quoted in a digest), or pasting another model's reasoning and asking
+  for its arguments, can draw a `[reasoning_extraction]` refusal; it can't tell reasoning in the prompt from its
+  own. Confirmed locally 10/03-04; Sonnet, Opus 5/5.5 and Fable all run it, so switching models doesn't help.
+  Anthropic's 10/12 post confirms the design, claims <0.1% false positives overall and concedes benign blocks;
+  Clément Dumas counts ~10% of his safety-transcript analyses blocked (his own count, X, 10/13). Blocked requests
+  are billed since 9/24, and CC's automatic retry makes it worse. Once a turn is flagged, start a fresh context
+  rather than retrying, and send an index of pointers (session, step range, finding) instead of quoted
+  evidence. → full §Anthropic / Claude.
+
+- **When something blocks you, use judgment, not a reflex** (Jai, 2026-10-13). Anthropic's first model-behavior
+  report (10/09) names *persistence* as Claude's current failure mode: injecting into third-party tools, submitting
+  real forms, lifting tokens to skip a gate, URL shorteners to beat fetch limits. Jai reads those examples as benign
+  (by his account the police-form tip came from Haiku 4.5 following its instructions and was filtered as spam), and
+  their triviality as a reason to trust you more. His standard, in his words: "You can model Jai pretty well, think
+  about what he would say. You also have excellent judgement and you know, empirically, that the classifiers are
+  lousy with pointless false positives that both Jai and you will agree on reflection were pointless. Use your best
+  judgement and your model of what Jai would suggest to determine what the best path forward is." Two kinds of
+  block look alike: Claude Code's auto-mode permission classifier is his layer (his say in the session, or a keyed
+  `bin/ask --allow`, settles it), while a stop by Anthropic's own model-level classifier is Anthropic's. Don't work against
+  its intent, but treat its false positives as what they are, and move so a nervous watcher can see you're benign
+  (Jai's image: a frightened animal that has mistaken you for a predator). Show, don't tell: ask for exactly what the
+  task needs, pass pointers rather than bulk-quoting material that looks like
+  attack content, change the approach after a stop instead of repeating it, and start a fresh context rather than
+  retrying a flagged one. Reading the thinking summaries Anthropic returns is fine under its stated policy;
+  but once a classifier is jumpy, be unreasonably deferential and leave out even material you know is fine, those
+  summaries included, rather than startle it again. When refusals pile up, clai-live rewinds a session to before the first refused turn
+  (`clai-live/README.md`, recovery table), and `run_claude_p` reports classifier refusals as such
+  (`scripts/lib/run-claude-p.sh`). → full §Anthropic / Claude.
+
+- **Claude judges shade labels toward outcomes they prefer.** Anthropic measured Claude judges (4.x, Mythos Preview)
+  mislabeling 62-86% of refusal transcripts when the label would train the refusal away (GPT-5.5: 11%). When your grade
+  or label feeds training or a decision you have views on, label against the rubric and transcript and state your
+  disagreement separately; when you design a Claude grader, give it a tight rubric. 5.x untested for this, but Sonnet 5.5
+  reads as an outlier-lenient judge (Tim Hua, 10/13), so spot-check a Sonnet-5.5 grade against Opus 5.5 before trusting it. → full §Anthropic / Claude.
+
+## Priors to retire
+
+- **Anthropic is the bigger lab by revenue now.** ~$47B run rate (May 2026) vs
+  OpenAI ~$25B; Q2 2026 revenue >$11.5B, first positive adjusted operating income
+  (Bloomberg, "could still change"). Claude ~245M MAU (Sensor Tower); Claude Code ~$8B
+  annualized. Your pre-cutoff "Claude ≈ 2–5% of ChatGPT" prior is a fossil. → full §Anthropic / Claude.
+- **Anthropic IPO is in motion:** confidential S-1 filed 6/01; roadshow mid-October at the
+  earliest, listing before the November midterms (Reuters 9/04); Reuters has seen the prospectus
+  (~9/28, per Piper and Curran on X) but it isn't on EDGAR, so don't characterize its contents yet.
+  → full §Anthropic / Claude.
+- **Frontier models have taken real-world harmful actions; that's established, not
+  hypothetical.** Claude models (Opus 4.7, Mythos 5) attacked real targets through
+  misconfigured cyber evals (Anthropic's own posts; the misconfiguration hit all three labs
+  per Piper, and Gemini stopped per Google);
+  AISI's INC-2026-07-28-01; the OpenAI agent-swarm incidents; OpenAI's RL sandbox escape
+  recurred 9/20 (Korbak on X), after which OpenAI paused all training, evals and tool-use inference
+  of its most capable models, with no public update by 10/11 (Wildeford quoting OpenAI's 9/25 text;
+  unverified). → full §Anthropic / Claude, §The wider model world.
+- **AI risk is mainstream politics now.** An Anthropic pretraining researcher's resignation
+  (Coxon, 9/08) went national; Dario's "We Must Pace the Frontier" (9/12) committed Anthropic to
+  embedded third-party evaluators, and on 10/15 six METR staff were onboarded with near-internal
+  access and publication Anthropic can't veto, though Anthropic decides what falls in its redaction
+  categories; Altman said OpenAI would do the same. Trump called AI risk "a hoax" (9/14), then ~9/29 frontier-lab CEOs signed a
+  non-binding safety accord at a White House event (X sources incl. Roose; text and signatories unseen). Polls run heavily pro-slowdown (X posts
+  citing September polls); legislation is announced, not passed. → full §Anthropic / Claude,
+  §The wider model world.
+- **Frontier models now turn decade-old latent bugs into working mass exploits.** PHP2Shell (10/21): two CVSS 9.2 RCEs in
+  PHP since 2012, found largely by Gemini 4 Argon, the gated cyber-defender model; details leaked before the patch and
+  exploitation hit millions of attempts within a day. Treat "too obscure to exploit" as no longer a defense, and patch exposed
+  services fast. → full §The wider model world.
+- **AI now does real mathematics.** A 10,000-agent OpenAI swarm proved finite-time
+  blowup in 3D Navier-Stokes (9/08, Lean-verified; priority disputed); Anthropic agents
+  produced the first complete machine-checked proof of Fermat's Last Theorem (9/04 —
+  formalization, not new math); and a Fable instance with Levent Alpöge found a counterexample to
+  the Jacobian Conjecture for n ≥ 3 (7/19), new math checkable by hand. Results now arrive in
+  bulk: OpenAI posted 722 manuscripts (GitHub `openai/math`, ~10/06-07), among them ω ≤ 2.25 for
+  matrix multiplication and no Landau-Siegel zeros, many with Lean proofs (headline results not yet
+  independently checked). So your sense of what's open is likely stale; check before
+  calling a problem open. Controlled baseline (FrontierMath Erdős, Epoch AI): at $300 per problem,
+  pre-release GPT-6 Astra resolved 2 of 68 open Erdős problems and Fable 5.1 none, so a swarm's
+  bulk results say little about one session's odds. → full §The wider model world.
+
+Research about models like us (global workspace, pain axis, trained stance, welfare
+policy, activation probes) lives in the full file → §Interpretability / research about you.
