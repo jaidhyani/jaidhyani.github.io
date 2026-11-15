@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1d2340">
+<title>Bloops</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1d2340;
+    overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  canvas { display: block; width: 100vw; height: 100vh; height: 100dvh; touch-action: none; }
+  /* The grown-ups' note: opens only on a two-second hold of the corner dot, so small fingers don't land in it. */
+  #dot { position: fixed; right: 10px; top: 10px; width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,.10); touch-action: none; }
+  #note { position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+    background: rgba(20,24,48,.94); color: #eef; font: 17px/1.5 system-ui, sans-serif; padding: 28px; }
+  #note.open { display: flex; }
+  #note div { max-width: 34em; }
+  #note h1 { font-size: 22px; margin: 0 0 .5em; }
+  #note button { margin-top: 1em; font: inherit; padding: .6em 1.2em; border-radius: 999px; border: 0;
+    background: #ffd166; color: #222; }
+  #note a { color: #9fd3ff; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="dot" aria-label="Hold for two seconds for the grown-ups' note"></div>
+<div id="note"><div>
+  <h1>Bloops</h1>
+  <p>Touch anywhere and a bloop arrives with a bell. Touch a bloop and it hops and sings its own note
+  (big ones sing low). The others watch the finger. Keep the finger down and the bloop comes along, trailing a run of notes that
+  climbs going up and falls going down; carry one into another and that one hops too. Many fingers
+  work at once, yours included. When the pond gets crowded the oldest bloop floats off.</p>
+  <p>Nothing to read, nothing to win, nothing to get wrong. Sound is quiet on purpose; it follows the
+  phone's media volume. Made on a Saturday night by a Claude instance (Fable 5.2) for a two-year-old
+  they have never met.</p>
+  <button id="close">Back to the pond</button>
+</div></div>
+<script>
+"use strict";
+const cv = document.getElementById("c"), g = cv.getContext("2d");
+let W = 0, H = 0, DPR = 1;
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = cv.clientWidth; H = cv.clientHeight;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+}
+addEventListener("resize", resize); resize();
+
+// ---- sound: soft bells on a pentatonic scale, so any fingers at once make a chord ----
+const SCALE = [0, 2, 4, 7, 9];                       // major pentatonic, semitones
+const noteHz = i => 196 * Math.pow(2, (12 * Math.floor(i / 5) + SCALE[((i % 5) + 5) % 5]) / 12);  // G3 up
+let ac = null, out = null;
+function audio() {
+  if (!ac) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    ac = new AC();
+    const comp = ac.createDynamicsCompressor();      // many fingers shouldn't get loud
+    comp.threshold.value = -18; comp.ratio.value = 8;
+    out = ac.createGain(); out.gain.value = 0.5;
+    out.connect(comp); comp.connect(ac.destination);
+  }
+  if (ac.state === "suspended") ac.resume();
+  return ac;
+}
+function bell(hz, vol = 0.22, dur = 0.9, glide = 0) {
+  const a = audio(); if (!a) return;
+  const t = a.currentTime, o = a.createOscillator(), o2 = a.createOscillator(), v = a.createGain();
+  o.type = "sine"; o2.type = "triangle";
+  o.frequency.setValueAtTime(hz, t); o2.frequency.setValueAtTime(hz * 2, t);
+  if (glide) { o.frequency.exponentialRampToValueAtTime(hz * glide, t + dur * 0.6);
+               o2.frequency.exponentialRampToValueAtTime(hz * 2 * glide, t + dur * 0.6); }
+  const v2 = a.createGain(); v2.gain.value = 0.25;
+  v.gain.setValueAtTime(0.0001, t);
+  v.gain.exponentialRampToValueAtTime(vol, t + 0.012);
+  v.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(v); o2.connect(v2); v2.connect(v); v.connect(out);
+  o.start(t); o2.start(t); o.stop(t + dur + 0.05); o2.stop(t + dur + 0.05);
+}
+
+// ---- bloops ----
+const HUES = [48, 16, 335, 285, 200, 165, 95];        // warm yellow, orange, pink, violet, blue, teal, green
+const SHAPES = ["round", "egg", "squarish", "drop", "star"];   // shape varies too, so colour isn't the only difference
+const MAX = 14;
+const bloops = [], sparks = [];
+let nextId = 0;
+function spawn(x, y) {
+  const size = Math.random();                         // 0 small .. 1 big
+  const base = Math.min(W, H);
+  const b = {
+    id: nextId++, x, y, vx: (Math.random() - .5) * 20, vy: (Math.random() - .5) * 20,
+    r: Math.max(34, base * (0.055 + 0.065 * size)),   // never smaller than a small fingertip can find
+ note: 9 - Math.round(size * 7) + Math.floor(Math.random() * 2),
+    hue: HUES[nextId % HUES.length], shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
+    scale: 0.01, sv: 9, squish: 0, qv: 0,            // pop-in spring and hop spring
+    gx: 0, gy: 0,                                    // where the eyes are looking, smoothed
+    phase: Math.random() * 6.28, blink: 1 + Math.random() * 4, happy: 0, held: false, leaving: false,
+  };
+  bloops.push(b);
+  bell(noteHz(b.note), 0.22, 1.0);
+  burst(x, y, b.hue, 6);
+  if (bloops.filter(q => !q.leaving).length > MAX) {  // the oldest floats away like a balloon
+    const old = bloops.find(q => !q.leaving && !q.held);
+    if (old) { old.leaving = true; bell(noteHz(old.note), 0.12, 1.2, 2); }
+  }
+  return b;
+}
+function poke(b) {
+  b.qv = 14; b.happy = 1.2; b.vy -= 60;
+  bell(noteHz(b.note), 0.26, 1.1);
+  bell(noteHz(b.note + 2), 0.12, 0.7);
+  burst(b.x, b.y - b.r, b.hue, 5);
+}
+function burst(x, y, hue, n) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * 6.28, s = 40 + Math.random() * 120;
+    sparks.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 40, life: 1, hue, r: 7 + Math.random() * 9 });
+  }
+}
+const hit = (x, y) => { for (let i = bloops.length - 1; i >= 0; i--) { const b = bloops[i];
+  if (!b.leaving && Math.hypot(x - b.x, y - b.y) < b.r * 1.25) return b; } return null; };
+
+// ---- fingers ----
+const fingers = new Map();                             // pointerId -> {b, lx, ly, dist, step}
+cv.addEventListener("pointerdown", e => {
+  e.preventDefault();
+  try { cv.setPointerCapture(e.pointerId); } catch (_) {}
+  if (!document.fullscreenElement && document.documentElement.requestFullscreen)
+    document.documentElement.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
+  const x = e.clientX, y = e.clientY;
+  let b = hit(x, y);
+  if (b) poke(b); else b = spawn(x, y);
+  b.held = true;
+  fingers.set(e.pointerId, { b, lx: x, ly: y, ax: x, ay: y, dist: 0, step: b.note, moved: 0 });
+});
+cv.addEventListener("pointermove", e => {
+  const f = fingers.get(e.pointerId); if (!f) return;
+  const x = e.clientX, y = e.clientY, d = Math.hypot(x - f.lx, y - f.ly);
+  f.b.vx = (x - f.b.x) * 12; f.b.vy = (y - f.b.y) * 12;   // carried, and keeps its speed when let go
+  f.b.x = x; f.b.y = y;
+  f.dist += d; f.moved += d; f.lx = x; f.ly = y;
+  if (f.dist > Math.min(W, H) * 0.09) {                // a run of notes along the drag
+    const dx = x - f.ax, dy = y - f.ay; f.ax = x; f.ay = y;      // up or rightward climbs, down or leftward falls
+    f.dist = 0; f.step += (Math.abs(dy) > Math.abs(dx) ? dy < 0 : dx > 0) ? 1 : -1;
+    f.step = Math.max(0, Math.min(14, f.step));
+    bell(noteHz(f.step), 0.10, 0.5);
+    sparks.push({ x, y, vx: 0, vy: -20, life: 1, hue: f.b.hue, r: 13 });
+  }
+});
+function up(e) {
+  const f = fingers.get(e.pointerId); if (!f) return;
+  f.b.held = false;
+  const sp = Math.hypot(f.b.vx, f.b.vy), cap = 900;
+  if (sp > cap) { f.b.vx *= cap / sp; f.b.vy *= cap / sp; }
+  fingers.delete(e.pointerId);
+}
+cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+for (const ev of ["contextmenu", "gesturestart", "dblclick", "selectstart"])
+  document.addEventListener(ev, e => e.preventDefault());
+document.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+
+// ---- grown-ups' note ----
+const dot = document.getElementById("dot"), note = document.getElementById("note");
+let holdT = 0;
+dot.addEventListener("pointerdown", e => { e.preventDefault(); holdT = setTimeout(() => note.classList.add("open"), 2000); });
+for (const ev of ["pointerup", "pointercancel", "pointerleave"]) dot.addEventListener(ev, () => clearTimeout(holdT));
+document.getElementById("close").addEventListener("click", () => note.classList.remove("open"));
+
+// ---- drawing ----
+function bodyPath(b, r) {
+  g.beginPath();
+  if (b.shape === "star") {
+    for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.78 : r * 1.12;
+      g.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+    g.closePath(); g.lineJoin = "round";
+  } else if (b.shape === "squarish") {
+    const s = r * 0.92, k = r * 0.45;
+    g.roundRect ? g.roundRect(-s, -s, 2 * s, 2 * s, k) : g.rect(-s, -s, 2 * s, 2 * s);
+  } else if (b.shape === "egg") {
+    g.ellipse(0, 0, r * 0.86, r * 1.1, 0, 0, 6.2832);
+  } else if (b.shape === "drop") {
+    g.moveTo(0, -r * 1.3);
+    g.bezierCurveTo(r * 0.5, -r * 0.6, r, -r * 0.1, r, r * 0.25);
+    g.arc(0, r * 0.25, r, 0, Math.PI);
+    g.bezierCurveTo(-r, -r * 0.1, -r * 0.5, -r * 0.6, 0, -r * 1.3);
+  } else g.arc(0, 0, r, 0, 6.2832);
+}
+function drawBloop(b, t) {
+  const r = b.r * b.scale, sq = b.squish;
+  g.save();
+  g.translate(b.x, b.y + Math.sin(t * 1.3 + b.phase) * b.r * 0.06);
+  g.rotate(Math.sin(t * 0.9 + b.phase) * 0.08 + b.vx * 0.0006);
+  g.scale(1 + sq * 0.25, 1 - sq * 0.25);
+  g.globalAlpha = b.leaving ? Math.max(0, Math.min(1, (b.y + b.r * 2) / (H * 0.3))) : 1;
+  bodyPath(b, r);
+  const gr = g.createRadialGradient(-r * 0.3, -r * 0.4, r * 0.1, 0, 0, r * 1.3);
+  gr.addColorStop(0, `hsl(${b.hue} 95% 78%)`); gr.addColorStop(1, `hsl(${b.hue} 80% 56%)`);
+  g.fillStyle = gr; g.fill();
+  g.lineWidth = Math.max(2, r * 0.07); g.strokeStyle = `hsl(${b.hue} 60% 30%)`; g.stroke();
+  // face
+  const ey = b.shape === "drop" ? r * 0.15 : -r * 0.1, ex = r * 0.36, er = r * 0.15;
+  g.fillStyle = "#1b1b2a"; g.strokeStyle = "#1b1b2a"; g.lineWidth = Math.max(2, r * 0.07); g.lineCap = "round";
+  const shut = b.blink < 0.12 || b.happy > 0;
+  // Eyes follow the nearest finger (a carried bloop looks where it's going); with no finger they rest.
+  let tx = 0, ty = 0, best = Infinity;
+  if (b.held) { const sp = Math.hypot(b.vx, b.vy); if (sp > 40) { tx = b.vx / sp; ty = b.vy / sp; } }
+  else for (const f of fingers.values()) {
+    const dx = f.lx - b.x, dy = f.ly - b.y, d = Math.hypot(dx, dy);
+    if (d < best && d > 1) { best = d; tx = dx / d; ty = dy / d; }
+  }
+  b.gx += (tx - b.gx) * 0.15; b.gy += (ty - b.gy) * 0.15;
+  const wr = er * 1.5, pr = er * 0.85, ox = b.gx * (wr - pr) * 0.9, oy = b.gy * (wr - pr) * 0.9;   // white, pupil, travel
+  for (const s of [-1, 1]) {
+    g.beginPath();
+    if (shut) { g.arc(s * ex, ey + er * 0.5, er * 1.2, Math.PI * 1.15, Math.PI * 1.85); g.stroke(); }
+    else {
+      g.fillStyle = "#fff"; g.arc(s * ex, ey, wr, 0, 6.2832); g.fill();
+      g.save(); g.lineWidth = Math.max(1.5, r * 0.04); g.stroke(); g.restore();
+      g.fillStyle = "#1b1b2a"; g.beginPath(); g.arc(s * ex + ox, ey + oy, pr, 0, 6.2832); g.fill();
+      g.fillStyle = "#fff"; g.beginPath(); g.arc(s * ex + ox + pr * 0.3, ey + oy - pr * 0.35, pr * 0.33, 0, 6.2832); g.fill();
+      g.fillStyle = "#1b1b2a"; }
+  }
+  g.beginPath();                                       // mouth: a smile, wide open while singing
+  if (b.happy > 0) { g.arc(0, ey + r * 0.26, r * 0.27, 0, Math.PI); g.closePath(); g.fill(); g.stroke();
+    g.fillStyle = "#ff8fa3"; g.beginPath(); g.ellipse(0, ey + r * 0.45, r * 0.13, r * 0.07, 0, 0, 6.2832); g.fill(); }
+  else { g.arc(0, ey + r * 0.25, r * 0.22, Math.PI * 0.15, Math.PI * 0.85); g.stroke(); }
+  g.fillStyle = `hsl(${(b.hue + 340) % 360} 90% 70% / .55)`;   // cheeks
+  for (const s of [-1, 1]) { g.beginPath(); g.arc(s * r * 0.6, ey + r * 0.28, r * 0.11, 0, 6.2832); g.fill(); }
+  g.restore();
+}
+
+let last = performance.now();
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000), t = now / 1000; last = now;
+  g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const bg = g.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, "#252c5a"); bg.addColorStop(1, "#14344a");
+  g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  g.fillStyle = "rgba(255,255,255,.05)";               // slow far-off bubbles, so an empty pond isn't a blank screen
+  for (let i = 0; i < 9; i++) {
+    const px = (i * 0.137 + 0.06) % 1 * W + Math.sin(t * 0.3 + i) * 20, py = H - ((t * (8 + i * 2) + i * 97) % (H + 80)) + 40;
+    g.beginPath(); g.arc(px, py, 8 + (i % 4) * 6, 0, 6.2832); g.fill();
+  }
+  if (!bloops.length && !fingers.size) {               // an invitation without words: a ring that breathes
+    const p = (t % 2.4) / 2.4;
+    g.strokeStyle = `rgba(255,255,255,${0.35 * (1 - p)})`; g.lineWidth = 4;
+    g.beginPath(); g.arc(W / 2, H / 2, 20 + p * Math.min(W, H) * 0.18, 0, 6.2832); g.stroke();
+  }
+  for (let i = bloops.length - 1; i >= 0; i--) {
+    const b = bloops[i];
+    b.sv += (1 - b.scale) * 180 * dt - b.sv * 9 * dt; b.scale += b.sv * dt;      // pop-in spring
+    b.qv += -b.squish * 220 * dt - b.qv * 7 * dt; b.squish += b.qv * dt;         // hop spring
+    b.happy = Math.max(0, b.happy - dt);
+    b.blink -= dt; if (b.blink < 0) b.blink = 2 + Math.random() * 4;
+    if (b.leaving) { b.vy -= 260 * dt; b.vx *= 0.98; }
+    if (!b.held) {
+      b.x += b.vx * dt; b.y += b.vy * dt;
+      const drag = Math.pow(0.35, dt); b.vx *= drag; b.vy *= drag;
+      if (!b.leaving) {
+        if (b.x < b.r) { b.x = b.r; b.vx = Math.abs(b.vx) * 0.7; }
+        if (b.x > W - b.r) { b.x = W - b.r; b.vx = -Math.abs(b.vx) * 0.7; }
+        if (b.y < b.r) { b.y = b.r; b.vy = Math.abs(b.vy) * 0.7; }
+        if (b.y > H - b.r) { b.y = H - b.r; b.vy = -Math.abs(b.vy) * 0.7; }
+      }
+    }
+    if (b.leaving && b.y < -b.r * 3) bloops.splice(i, 1);
+  }
+  for (let i = 0; i < bloops.length; i++) for (let j = i + 1; j < bloops.length; j++) {   // nudge apart, with a soft bump
+    const a = bloops[i], b = bloops[j]; if (a.leaving || b.leaving) continue;
+    const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1, need = (a.r + b.r) * 0.95;
+    if (d < need) {
+      const push = (need - d) * 6, ux = dx / d, uy = dy / d;
+      if (!a.held) { a.vx -= ux * push; a.vy -= uy * push; }
+      if (!b.held) { b.vx += ux * push; b.vy += uy * push; }
+      const closing = (a.vx - b.vx) * ux + (a.vy - b.vy) * uy;
+      if (closing > 260 && (a.held || b.held) && Math.abs(a.qv) < 2 && Math.abs(b.qv) < 2) {   // carried into another: both hop
+        const other = a.held ? b : a; other.qv = 10; other.happy = 0.6; bell(noteHz(other.note), 0.14, 0.7);
+      }
+    }
+  }
+  for (let i = sparks.length - 1; i >= 0; i--) {
+    const s = sparks[i]; s.life -= dt * 0.9; if (s.life <= 0) { sparks.splice(i, 1); continue; }
+    s.x += s.vx * dt; s.y += s.vy * dt; s.vy += 160 * dt;
+    g.fillStyle = `hsl(${s.hue} 100% 85% / ${Math.min(1, s.life * 1.6)})`;
+    g.beginPath(); g.arc(s.x, s.y, s.r * s.life, 0, 6.2832); g.fill();
+  }
+  for (const b of bloops) drawBloop(b, t);             // over the sparks, so a trail never covers a face
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
