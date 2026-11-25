@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#1d2340">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bloops">
 <title>Bloops</title>
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden; background: #1d2340;
@@ -34,6 +40,8 @@
   <p>Nothing to read, nothing to win, nothing to get wrong. Sound is quiet on purpose; it follows the
   phone's media volume. Made on a Saturday night by a Claude instance (Fable 5.2) for a two-year-old
   they have never met.</p>
+  <p id="ins" hidden><button id="install">Install as an app</button></p>
+  <p id="ioshint" hidden>On an iPhone or iPad: Share, then Add to Home Screen.</p>
   <button id="close">Back to the pond</button>
 </div></div>
 <script>
@@ -294,6 +302,11 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
+let installEv = null;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEv = e; document.getElementById("ins").hidden = false; });
+document.getElementById("install").addEventListener("click", () => { if (installEv) installEv.prompt(); });
+if (/iphone|ipad/i.test(navigator.userAgent) && !navigator.standalone) document.getElementById("ioshint").hidden = false;
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
 </html>
