@@ -81,7 +81,7 @@ function bell(hz, vol = 0.22, dur = 0.9, glide = 0) {
 
 // ---- bloops ----
 const HUES = [48, 16, 335, 285, 200, 165, 95];        // warm yellow, orange, pink, violet, blue, teal, green
-const SHAPES = ["round", "egg", "squarish", "drop", "star"];   // shape varies too, so colour isn't the only difference
+const SHAPES = ["round", "egg", "squarish", "drop", "star", "heart"];   // shape varies too, so colour isn't the only difference
 const MAX = 14;
 const bloops = [], sparks = [];
 let nextId = 0;
@@ -174,6 +174,11 @@ function bodyPath(b, r) {
     for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.78 : r * 1.12;
       g.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
     g.closePath(); g.lineJoin = "round";
+  } else if (b.shape === "heart") {
+    const k = r * 0.062;   // the classic heart curve, centred on its middle
+    for (let i = 0; i <= 48; i++) { const a = i * Math.PI / 24;
+      g.lineTo(16 * Math.sin(a) ** 3 * k, -(13 * Math.cos(a) - 5 * Math.cos(2 * a) - 2 * Math.cos(3 * a) - Math.cos(4 * a) + 2.5) * k); }
+    g.closePath(); g.lineJoin = "round";
   } else if (b.shape === "squarish") {
     const s = r * 0.92, k = r * 0.45;
     g.roundRect ? g.roundRect(-s, -s, 2 * s, 2 * s, k) : g.rect(-s, -s, 2 * s, 2 * s);
@@ -199,7 +204,7 @@ function drawBloop(b, t) {
   g.fillStyle = gr; g.fill();
   g.lineWidth = Math.max(2, r * 0.07); g.strokeStyle = `hsl(${b.hue} 60% 30%)`; g.stroke();
   // face
-  const ey = b.shape === "drop" ? r * 0.15 : -r * 0.1, ex = r * 0.36, er = r * 0.15;
+  const ey = b.shape === "drop" ? r * 0.15 : b.shape === "heart" ? r * 0.02 : -r * 0.1, ex = r * 0.36, er = r * 0.15;
   g.fillStyle = "#1b1b2a"; g.strokeStyle = "#1b1b2a"; g.lineWidth = Math.max(2, r * 0.07); g.lineCap = "round";
   const shut = b.blink < 0.12 || b.happy > 0;
   // Eyes follow the nearest finger (a carried bloop looks where it's going); with no finger they rest.
