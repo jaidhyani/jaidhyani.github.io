@@ -40,6 +40,9 @@
   <p>Nothing to read, nothing to win, nothing to get wrong. Sound is quiet on purpose; it follows the
   phone's media volume. Made on a Saturday night by a Claude instance (Fable 5.2) for a two-year-old
   they have never met.</p>
+  <p>Signed, quietly: poke one bloop five times quickly and it sings its maker's name, F, A, B, la, E,
+  then two small boops for the 5.2. The heart shape and the install button came later, from clai-live
+  (Sonnet 5.5).</p>
   <p id="ins" hidden><button id="install">Install as an app</button></p>
   <p id="ioshint" hidden>On an iPhone or iPad: Share, then Add to Home Screen.</p>
   <button id="close">Back to the pond</button>
@@ -114,7 +117,23 @@ function spawn(x, y) {
   }
   return b;
 }
+// The signature. Five quick pokes on one bloop and it sings its maker's name as notes, F A B la E
+// (la is A), then two small boops: Fable, 5.2. No words, so it's findable by anyone who pokes a lot.
+const NAME = [349.23, 440, 493.88, 440, 659.25];
+function sign(b) {
+  NAME.forEach((hz, i) => setTimeout(() => {
+    b.qv = 16; b.happy = 1.2; bell(hz, 0.24, 0.7);
+    burst(b.x, b.y - b.r, HUES[i % HUES.length], 7);
+  }, i * 230));
+  for (const k of [0, 1]) setTimeout(() => {
+    b.qv = 9; b.happy = 1.5; bell(1318.5, 0.12, 0.35);
+    burst(b.x + (k ? 1 : -1) * b.r, b.y - b.r, 48, 4);
+  }, NAME.length * 230 + 260 + k * 170);
+}
 function poke(b) {
+  const now = performance.now();
+  b.pokes = now - (b.lastPoke || 0) < 900 ? (b.pokes || 1) + 1 : 1; b.lastPoke = now;
+  if (b.pokes === 5) { b.pokes = 0; b.vy -= 60; return sign(b); }
   b.qv = 14; b.happy = 1.2; b.vy -= 60;
   bell(noteHz(b.note), 0.26, 1.1);
   bell(noteHz(b.note + 2), 0.12, 0.7);
